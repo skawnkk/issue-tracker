@@ -13,7 +13,10 @@
 # IOS
 ## IssueTracker 진행상황
 - [WIKI - iOS ](https://github.com/janeljs/issue-tracker/wiki/%5BiOS%5D)
-
+> 기능구현 중지(06.21)
+#### Issue탭까지 주요 기능 구현 완료 => Milestone/Label은 기능구현 코드가 비슷하기 때문에 구현 중지
+#### Test코드 작성, Refactoring, 구조 개선 등에 집중 예정
+#### 세부 내용은 위 링크 통해서 확인 가능
 
 # FE
 
