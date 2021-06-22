@@ -7,6 +7,10 @@ interface APItype {
   getUserInfo: string;
   login: (code: string) => string;
 }
+
+export const authorizedHeaders = (token:string|null) => ({ Authorization : `Bearer ${token}`})
+
+    
 const basicURL = `http://3.37.76.224/api`;
 
 const API: APItype = {
