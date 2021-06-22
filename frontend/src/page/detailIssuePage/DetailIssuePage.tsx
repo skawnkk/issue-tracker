@@ -11,7 +11,6 @@ import CommentList from './commentList/CommentList';
 import IssueDetailOption from 'page/createIssuePage/issueDetailOption/IssueDetailOption';
 import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
 
-interface Props {}
 //api에 작성자가 누구인지 있어야될 것 같다.
 export interface DetailIssueType {
   id: number;
@@ -24,7 +23,7 @@ export interface DetailIssueType {
   milestone: MilestoneType | null;
 }
 
-export default function DetailIssuePage({}: Props) {
+export default function DetailIssuePage() {
   const pagePaths = window.location.pathname.split('/');
   const issueNum = +pagePaths[pagePaths.length - 1];
   //issueNum으로 fetch
@@ -53,7 +52,6 @@ const DetailIssuePageBlock = styled.div`
     display: grid;
     grid-template-columns: 80% 20%;
     padding-top: 33px;
-    /* grid-gap: 10px; */
   }
   .issue__delete-btn {
     margin-top: 1rem;
