@@ -15,30 +15,29 @@ function App() {
   const MilestonePage = lazy(() => import('./page/milestonePage/MilestonePage'));
   const setLoginData = useSetRecoilState(controlLoginState);
   const token = localStorage.getItem('token');
-  const isLogin = () => !!token
+  const isLogin = () => !!token;
   useEffect(() => {
     if (isLogin()) {
-      getUserInfoUsingJWT()
+      getUserInfoUsingJWT();
     }
   }, []);
 
-  const getUserInfoUsingJWT = async() =>{
-    
+  const getUserInfoUsingJWT = async () => {
     const headerInfo = {
       headers: {
-        Authorization : `Bearer ${token}`
-        }
-      }
-    
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
-      const response = await fetch(API.getUserInfo, headerInfo)
-      const userData = await response.json()
-      const loginData = {avatarUrl: userData.avatarUrl, name: userData.name}
+      const response = await fetch(API.getUserInfo, headerInfo);
+      const userData = await response.json();
+      const loginData = { avatarUrl: userData.avatarUrl, name: userData.name };
       setLoginData({ isLogin: true, loginData });
-    } catch(err){
-       console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div className='App'>

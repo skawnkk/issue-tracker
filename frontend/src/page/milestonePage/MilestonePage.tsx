@@ -9,11 +9,20 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import MilestoneItem from 'page/milestonePage/MilestoneItem';
 import { ReactComponent as CloseIcon } from 'assets/icon/CloseIcon.svg';
-import { MilestoneType } from 'components/common/tabModal/tapDataType'
+import { MilestoneType } from 'components/common/tabModal/tapDataType';
 
 export default function MilestonePage() {
-  const milestoneData = useRecoilValue(getMilestones)
-  const {id, title, description, openedIssueCount, closedIssueCount, createdDateTime, dueDate, checked}:MilestoneType = milestoneData
+  const milestoneData = useRecoilValue(getMilestones);
+  const {
+    id,
+    title,
+    description,
+    openedIssueCount,
+    closedIssueCount,
+    createdDateTime,
+    dueDate,
+    checked,
+  }: MilestoneType = milestoneData;
 
   const setLabelMilestoneState = useSetRecoilState(labelMilestoneClickedState);
   setLabelMilestoneState({ label: false, milestone: true });

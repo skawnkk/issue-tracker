@@ -24,7 +24,7 @@ function Header() {
   const classes = useStyle();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
-  const {isLogin, loginData} = useRecoilValue(controlLoginState);
+  const { isLogin, loginData } = useRecoilValue(controlLoginState);
   const setIssueTrigger = useSetRecoilState(getIssueTrigger);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

@@ -6,17 +6,20 @@ interface APItype {
   getMilestone: string;
   getUserInfo: string;
   login: (code: string) => string;
+  getIssueDetail: (id: number) => string;
 }
+
 const basicURL = `http://3.37.76.224/api`;
 
 const API: APItype = {
   getIssue: basicURL + `/issues?status=`,
   tabType: basicURL + `/issues/form`,
   createIssue: basicURL + `/issues/form`,
-  getFileURL: basicURL +`/images`,
+  getFileURL: basicURL + `/images`,
   getMilestone: basicURL + `/milestones`,
   login: (code: string) => basicURL + '/login?code=' + code,
-  getUserInfo: basicURL + `/userInfo`
+  getUserInfo: basicURL + `/userInfo`,
+  getIssueDetail: (id) => basicURL + '/api/issues/' + id,
 };
 
 export default API;

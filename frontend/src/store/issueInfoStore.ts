@@ -172,30 +172,4 @@ export const selectedMilestoneState = atom<MilestoneType | null>({
   default: null,
 });
 
-
-//레이블,모달 클릭 감지 및 리셑_____________________________________
-export const lableClick = atom({
-  key:'lablePage',
-  default: false
-})
-export const milestoneClick = atom({
-  key:'milestone',
-  default: false
-})
-
-interface TabClick{
-  lableClickState: boolean;
-  milestoneClickState: boolean;
-}
-export const lableMilestoneCtrl = selector<DefaultValue|TabClick>({
-  key:'clickCtrl',
-  get: ({ get }) => {
-    const lableClickState = get(lableClick)
-    const milestoneClickState = get(milestoneClick)
-    return {lableClickState, milestoneClickState}
-  },
-  set: ({reset})=>{
-    reset(lableClick)
-    reset(milestoneClick)
-  }
-})
+//이슈 디테일 요청
