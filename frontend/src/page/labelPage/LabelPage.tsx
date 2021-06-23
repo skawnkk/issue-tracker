@@ -12,10 +12,14 @@ export default function LabelPage() {
   const setLabelMilestoneState = useSetRecoilState(labelMilestoneClickedState);
   setLabelMilestoneState({ label: true, milestone: false });
 
+  const handelCancelClick = () => setIsCreateLabel(false);
+
   return (
     <LabelBlock>
       <LabelPageHeader {...{ handleCreateClick }} />
-      {isCreateLabel && <LabelEditForm title='새로운 레이블 추가' />}
+      {isCreateLabel && (
+        <LabelEditForm title='새로운 레이블 추가' handelCancelClick={handelCancelClick} />
+      )}
       <LabelTable />
     </LabelBlock>
   );

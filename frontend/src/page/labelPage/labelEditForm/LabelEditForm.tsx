@@ -1,7 +1,7 @@
 import { LabelType } from 'components/common/tabModal/tapDataType';
 import styled from 'styled-components';
 import PrimaryButton from 'components/atom/PrimaryButton';
-import LabelEdit from './LabelEdit';
+import LabelEdit from 'page/labelPage/labelEditForm/LabelEdit';
 import useInput from 'hooks/useInput';
 import { createLabel } from 'util/api/fetchLabel';
 
@@ -9,9 +9,15 @@ interface Props {
   className?: string;
   title: string;
   label?: LabelType;
+  handelCancelClick: () => void;
 }
 
-export default function LabelEditForm({ className, title, label = DEFAULT_LABEL }: Props) {
+export default function LabelEditForm({
+  className,
+  title,
+  label = DEFAULT_LABEL,
+  handelCancelClick,
+}: Props) {
   const titleInput = useInput(label.name);
   const descriptionInput = useInput(label.description);
   const colorInput = useInput(label.color.backgroundColorCode);
@@ -37,6 +43,7 @@ export default function LabelEditForm({ className, title, label = DEFAULT_LABEL 
         <LabelEdit {...{ titleInput, descriptionInput, colorInput, label }} />
       </div>
       <div className='form__submit'>
+        <PrimaryButton onClick={handelCancelClick} value=' 취소' className='form__cancel-btn' />
         <PrimaryButton onClick={handleSubmitClick} value='+ 완료' className='form__submit-btn' />
       </div>
     </LabelEditFormBlock>
@@ -66,9 +73,13 @@ const LabelEditFormBlock = styled.div`
   .form__submit {
     display: flex;
     justify-content: flex-end;
+    .form__cancel-btn {
+      width: 120px;
+      background-color: ${({ theme }) => theme.color.blueGrey};
+    }
     .form__submit-btn {
       width: 120px;
-      background-color: #007aff;
+      background-color: ${({ theme }) => theme.color.skyblue};
     }
   }
 `;
