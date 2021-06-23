@@ -5,5 +5,5 @@ export default function useInput(defaultValue: string = '') {
   const onChange = ({ target }: { target: HTMLInputElement }) => {
     setValue(target.value);
   };
-  return { value, onChange };
+  return { defaultValue: value, onChange };
 }

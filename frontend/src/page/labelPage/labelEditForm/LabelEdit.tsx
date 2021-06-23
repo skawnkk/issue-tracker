@@ -5,34 +5,36 @@ import LabelBadge from 'components/atom/LabelBadge';
 import InputField from 'components/atom/InputField';
 import useInput from 'hooks/useInput';
 import { ReactComponent as RefreshIcon } from 'assets/icon/RefreshIcon.svg';
-interface Props {
-  label: LabelType;
+
+interface inputDataType {
+  defaultValue: string;
+  onChange: ({ target }: { target: HTMLInputElement }) => void;
 }
 
-export default function LabelEdit({ label: { name, color, description } }: Props) {
-  const { value: labelTitle, onChange: setLabelTitle } = useInput(name);
-  const { value: labelDescription, onChange: setLabelDescription } = useInput(description);
-  const { value: labelColor, onChange: setLabelColor } = useInput(color.backgroundColorCode);
+interface Props {
+  label: LabelType;
+  titleInput: inputDataType;
+  descriptionInput: inputDataType;
+  colorInput: inputDataType;
+}
+
+export default function LabelEdit({
+  label: { name, color },
+  titleInput,
+  descriptionInput,
+  colorInput,
+}: Props) {
   return (
     <LabelEditBlock>
       <LabelBadge className='label__edit-badge' color={color} desc={name ? name : '레이블 이름'} />
       <div className='label__edit'>
-        <InputField label='레이블 이름' defaultValue={labelTitle} onChange={setLabelTitle} />
-        <InputField
-          label='설명(선택)'
-          defaultValue={labelDescription}
-          onChange={setLabelDescription}
-        />
+        <InputField label='레이블 이름' {...titleInput} />
+        <InputField label='설명(선택)' {...descriptionInput} />
         <div className='label__edit-color'>
           <div className='label__refresh'>
             <RefreshIcon />
           </div>
-          <InputField
-            className='label__color'
-            label='배경색상'
-            defaultValue={labelColor}
-            onChange={setLabelColor}
-          />
+          <InputField className='label__color' label='배경색상' {...colorInput} />
         </div>
       </div>
     </LabelEditBlock>

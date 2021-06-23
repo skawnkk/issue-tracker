@@ -1,8 +1,9 @@
 import { LabelType } from 'components/common/tabModal/tapDataType';
-import React from 'react';
 import styled from 'styled-components';
 import PrimaryButton from 'components/atom/PrimaryButton';
 import LabelEdit from './LabelEdit';
+import useInput from 'hooks/useInput';
+import { createLabel } from 'util/api/fetchLabel';
 
 interface Props {
   className?: string;
@@ -10,29 +11,48 @@ interface Props {
   label?: LabelType;
 }
 
-export default function LabelEditForm({ className, title, label }: Props) {
-  const DEFAULT_LABEL = {
-    id: 0,
-    name: '',
-    description: '',
-    checked: false,
-    color: {
-      backgroundColorCode: '#EFF0F6',
-      textColorCode: '#000',
-    },
+export default function LabelEditForm({ className, title, label = DEFAULT_LABEL }: Props) {
+  const titleInput = useInput(label.name);
+  const descriptionInput = useInput(label.description);
+  const colorInput = useInput(label.color.backgroundColorCode);
+
+  const handleSubmitClick = () => {
+    //textColor는 나중에 계산으로 적용
+    const newLabelData = {
+      name: titleInput.defaultValue,
+      description: descriptionInput.defaultValue,
+      color: {
+        backgroundColorCode: colorInput.defaultValue,
+        textColorCode: '#000',
+      },
+    };
+    //create인 경우
+    if (label.id === 0) createLabel(newLabelData);
   };
+
   return (
     <LabelEditFormBlock className={className}>
       <div className='form__title'>{title}</div>
       <div className='form__edit'>
-        <LabelEdit label={label ? label : DEFAULT_LABEL} />
+        <LabelEdit {...{ titleInput, descriptionInput, colorInput, label }} />
       </div>
       <div className='form__submit'>
-        <PrimaryButton value='+ 완료' className='form__submit-btn' />
+        <PrimaryButton onClick={handleSubmitClick} value='+ 완료' className='form__submit-btn' />
       </div>
     </LabelEditFormBlock>
   );
 }
+
+const DEFAULT_LABEL = {
+  id: 0,
+  name: '',
+  description: '',
+  checked: false,
+  color: {
+    backgroundColorCode: '#EFF0F6',
+    textColorCode: '#000',
+  },
+};
 
 const LabelEditFormBlock = styled.div`
   padding: 2rem;
@@ -40,8 +60,8 @@ const LabelEditFormBlock = styled.div`
   border: 1px solid ${({ theme }) => theme.color.lineGrey};
   border-radius: 16px;
   .form__title {
-    font-size: ${({ theme }) => theme.size.md2}px;
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 3rem;
   }
   .form__submit {
     display: flex;
