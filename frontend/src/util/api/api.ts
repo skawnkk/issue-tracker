@@ -21,7 +21,7 @@ const API: APItype = {
   getMilestone: basicURL + `/milestones`,
   login: (code: string) => basicURL + '/login?code=' + code,
   getUserInfo: basicURL + `/userInfo`,
-  getIssueDetail: (id) => basicURL + '/api/issues/' + id,
+  getIssueDetail: (id) => basicURL + '/issues/' + id,
 };
 
 export default API;

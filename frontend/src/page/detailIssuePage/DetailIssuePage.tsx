@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   CommentType,
   LabelType,
+  LoginUserType,
   MilestoneType,
   UserType,
 } from 'components/common/tabModal/tapDataType';
@@ -10,6 +11,8 @@ import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHead
 import CommentList from './commentList/CommentList';
 import IssueDetailOption from 'page/createIssuePage/issueDetailOption/IssueDetailOption';
 import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { detailIdState, getDetailIssueData } from 'store/detailStore';
 
 interface Props {}
 //api에 작성자가 누구인지 있어야될 것 같다.
@@ -18,6 +21,7 @@ export interface DetailIssueType {
   title: string;
   status: boolean;
   createdDateTime: string;
+  owner: LoginUserType;
   comments: Array<CommentType> | [];
   assignees: Array<UserType> | [];
   labels: Array<LabelType> | [];
@@ -27,10 +31,11 @@ export interface DetailIssueType {
 export default function DetailIssuePage({}: Props) {
   const pagePaths = window.location.pathname.split('/');
   const issueNum = +pagePaths[pagePaths.length - 1];
-  //issueNum으로 fetch
+  const setDetailIssueId = useSetRecoilState(detailIdState);
+  useEffect(() => setDetailIssueId(issueNum), []);
+  const issueData = useRecoilValue(getDetailIssueData); //fetch해온 데이터 사용예정
 
-  const issueData = sampleData; //fetch해온 데이터 사용예정
-
+  if (!issueData) return null;
   return (
     <DetailIssuePageBlock>
       <DetailIssueHeader issueData={issueData} />
@@ -62,74 +67,3 @@ const DetailIssuePageBlock = styled.div`
     justify-content: flex-end;
   }
 `;
-
-const sampleData = {
-  id: 2,
-  title: '이슈 2',
-  status: true,
-  createdDateTime: '2021-06-18T21:37:13.027',
-  comments: [
-    {
-      id: 2,
-      userName: 'eNoLJ',
-      comment: '이슈 내용',
-      createdDateTime: '2021-06-18T21:37:13.029',
-      author: true,
-      owner: true,
-    },
-    {
-      id: 4,
-      userName: 'hayoung',
-      comment: '코멘트 샘플 데이터',
-      createdDateTime: '2021-06-19T21:37:13.029',
-      author: false,
-      owner: false,
-    },
-  ],
-  assignees: [
-    {
-      id: 1,
-      image: 'https://avatars.githubusercontent.com/u/63284310?v=4',
-      userName: 'eNoLJ',
-      assigned: true,
-    },
-    {
-      id: 2,
-      image: 'https://avatars.githubusercontent.com/u/68000537?v=4',
-      userName: 'janeljs',
-      assigned: true,
-    },
-  ],
-  labels: [
-    {
-      id: 1,
-      name: 'bug',
-      color: {
-        backgroundColorCode: '#F47378',
-        textColorCode: '#000000',
-      },
-      description: 'bug fix',
-      checked: true,
-    },
-    {
-      id: 2,
-      name: 'feature',
-      color: {
-        backgroundColorCode: '#6BD089',
-        textColorCode: '#000000',
-      },
-      description: 'new feature',
-      checked: true,
-    },
-  ],
-  milestone: {
-    id: 2,
-    title: 'M2',
-    description: 'M2 마일스톤에 대한 설명',
-    createdDateTime: '2021-06-18T21:35:00',
-    dueDate: '2021-06-21',
-    openedIssueCount: 1,
-    closedIssueCount: 0,
-    checked: true,
-  },
-};
