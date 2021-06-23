@@ -5,6 +5,7 @@ interface APItype {
   getFileURL: string;
   getMilestone: string;
   getUserInfo: string;
+  getLabelData: string;
   login: (code: string) => string;
   getIssueDetail: (id: number) => string;
   editIssueTitle: (issueId: number) => string;
@@ -24,6 +25,7 @@ const API: APItype = {
   getUserInfo: basicURL + `/userInfo`,
   getIssueDetail: (id) => basicURL + '/issues/' + id,
   editIssueTitle: (issueId: number) => basicURL + `/issues/${issueId}/title`,
+  getLabelData: basicURL + '/labels',
 };
 
 export default API;

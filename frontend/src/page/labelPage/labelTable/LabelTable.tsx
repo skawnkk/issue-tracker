@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import LabelItem from 'page/labelPage/labelTable/LabelItem';
+import { useRecoilValue } from 'recoil';
+import { getLabelData } from 'store/labelStore';
 
 interface Props {}
 
 export default function LabelTable({}: Props) {
+  const labelData = useRecoilValue(getLabelData);
+
   return (
     <LabelTableBlock>
       <div className='tab__table__header'>3개의 레이블</div>

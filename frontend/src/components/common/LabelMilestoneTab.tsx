@@ -13,7 +13,6 @@ interface Props {
 }
 export default function LabelMilestoneTab(): ReactElement {
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
-
   const IssuesInfoData = useRecoilValue(getIssuesInfoState);
 
   return (
