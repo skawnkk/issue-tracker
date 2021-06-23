@@ -45,3 +45,34 @@ export const createLabel = async (newLabelData: newLabelDataType) => {
     throw error;
   }
 };
+
+// 라벨 편집
+
+export const editLabel = async (id: number, newLabelData: newLabelDataType) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch(API.editLabel(id), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+      body: JSON.stringify(newLabelData),
+    });
+    if (response.status === 200) return true;
+    else throw Error('잘못된 생성입니다.');
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteLabel = async (id: number) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch(API.editLabel(id), {
+      method: 'DELETE',
+      headers: authorizedHeaders(token),
+    });
+    if (response.status === 200) return true;
+    else throw Error('잘못된 생성입니다.');
+  } catch (error) {
+    throw error;
+  }
+};
