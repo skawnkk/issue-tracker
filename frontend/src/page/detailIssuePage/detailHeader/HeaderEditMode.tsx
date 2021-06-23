@@ -1,17 +1,24 @@
 import React, {useState, ChangeEvent} from 'react'
 import styled from 'styled-components';
-import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton'
-import { headerMode } from 'store/detailStore'
 import { useSetRecoilState } from 'recoil'
 import { DetailHeaderProps } from 'page/detailIssuePage/detailType'
+import { headerMode, detailTitle } from 'store/detailStore'
 import fetchEditTitle from 'util/api/fetchEditTitle';
+import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton'
 
 export default function HeaderEditMode({issueNumber, title}:DetailHeaderProps){
   const setHeaderMode = useSetRecoilState(headerMode)
   const [editTitle, setEditTitle] = useState(title)
+  const setPickedTitle = useSetRecoilState(detailTitle)
   const handleCancel = () => setHeaderMode({view: true, edit: false})
   const handleChange = (e:ChangeEvent<HTMLInputElement>) => setEditTitle(e.target.value)
-  const handleSubmit = () => fetchEditTitle(issueNumber, editTitle)
+  const handleSubmit = async () => {
+    const fetchResult = await fetchEditTitle(issueNumber, editTitle)
+    if(fetchResult){
+      setPickedTitle(fetchResult)
+      setHeaderMode({view: true, edit: false})
+    }
+  }
   
   return (
     <HeaderEditBlock>
