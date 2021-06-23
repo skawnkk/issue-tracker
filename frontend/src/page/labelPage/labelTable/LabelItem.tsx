@@ -5,16 +5,26 @@ import { ReactComponent as DeleteIcon } from 'assets/icon/DeleteIcon.svg';
 import { ReactComponent as EditIcon } from 'assets/icon/EditIcon.svg';
 import { LabelType } from 'components/common/tabModal/tapDataType';
 import LabelEditForm from 'page/labelPage/labelEditForm/LabelEditForm';
+import { deleteLabel } from 'util/api/fetchLabel';
+import { useSetRecoilState } from 'recoil';
+import { labelTrigger } from 'store/labelStore';
 
 interface Props {
   label: LabelType;
 }
 
 export default function LabelItem({ label: { id, name, color, description }, label }: Props) {
+  const setLabelTrigger = useSetRecoilState(labelTrigger);
   const [isEditLabel, setIsEditLabel] = useState(false);
 
   const handleEditClick = () => setIsEditLabel(true);
   const handelCancelClick = () => setIsEditLabel(false);
+
+  const handleDeleteClick = () => {
+    deleteLabel(id);
+    setLabelTrigger((triggerCount) => triggerCount + 1);
+  };
+
   return isEditLabel ? (
     <EditLabelItemBlock>
       <LabelEditForm
@@ -28,11 +38,11 @@ export default function LabelItem({ label: { id, name, color, description }, lab
       <LabelBadge color={color} desc={name} className='label__badge' />
       <div className='label__description'>{description}</div>
       <div className='label__edit'>
-        <div onClick={handleEditClick}>
+        <div onClick={handleEditClick} className='label__btn-wrapper'>
           <EditIcon className='label__btn' />
           <span>편집</span>
         </div>
-        <div className='delete__btn'>
+        <div onClick={handleDeleteClick} className='delete__btn label__btn-wrapper'>
           <DeleteIcon className='label__btn' />
           <span>삭제</span>
         </div>
@@ -70,6 +80,9 @@ const LabelItemBlock = styled.div`
   }
   .delete__btn {
     color: ${({ theme }) => theme.color.red};
+  }
+  .label__btn-wrapper {
+    cursor: pointer;
   }
 `;
 
