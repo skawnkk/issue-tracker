@@ -9,7 +9,13 @@ interface Props {
   [key: string]: any;
 }
 
-export default function InputField({ label, className, defaultValue, onChange, ...props }: Props) {
+export default function InputField({
+  label,
+  className,
+  defaultValue = '',
+  onChange,
+  ...props
+}: Props) {
   const [isFocus, setIsFocus] = useState(false);
   const handleOnFocus = () => setIsFocus(true);
   const handleOnBlur = () => setIsFocus(false);

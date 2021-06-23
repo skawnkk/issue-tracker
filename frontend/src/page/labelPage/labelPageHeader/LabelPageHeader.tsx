@@ -4,10 +4,17 @@ import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
 import PrimaryButton from 'components/atom/PrimaryButton';
 import styled from 'styled-components';
 
-export default function LabelPageHeader() {
+interface Props {
+  handleCreateClick: () => void;
+}
+
+export default function LabelPageHeader({ handleCreateClick }: Props) {
   const [addClick, setAddClick] = useState(false);
 
-  const handleClick = () => setAddClick((addClick) => !addClick);
+  const handleClick = () => {
+    setAddClick((addClick) => !addClick);
+    handleCreateClick();
+  };
   return (
     <LabelPageHeaderBlock>
       <LabelMilestoneTab />
@@ -23,5 +30,5 @@ export default function LabelPageHeader() {
 const LabelPageHeaderBlock = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin-bottom: 1.5rem;
 `;
