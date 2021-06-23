@@ -116,12 +116,6 @@ export interface selectedTabType {
   [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null;
 }
 
-const headerInfo = {
-  // headers: {
-  //   Authorization: Bearer {token}
-  // }
-};
-
 export const selectedTabState = selector<selectedTabType>({
   key: 'selectedTabState',
   get: ({ get }) => {
@@ -172,30 +166,3 @@ export const selectedMilestoneState = atom<MilestoneType | null>({
   default: null,
 });
 
-
-//레이블,모달 클릭 감지 및 리셑_____________________________________
-export const lableClick = atom({
-  key:'lablePage',
-  default: false
-})
-export const milestoneClick = atom({
-  key:'milestone',
-  default: false
-})
-
-interface TabClick{
-  lableClickState: boolean;
-  milestoneClickState: boolean;
-}
-export const lableMilestoneCtrl = selector<DefaultValue|TabClick>({
-  key:'clickCtrl',
-  get: ({ get }) => {
-    const lableClickState = get(lableClick)
-    const milestoneClickState = get(milestoneClick)
-    return {lableClickState, milestoneClickState}
-  },
-  set: ({reset})=>{
-    reset(lableClick)
-    reset(milestoneClick)
-  }
-})

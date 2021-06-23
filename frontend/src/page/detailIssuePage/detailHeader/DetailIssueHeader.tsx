@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 import { DetailIssueType } from 'page/detailIssuePage/DetailIssuePage';
 import { timeChecker } from '../../../util/util';
 import DetailIssueStatus from './DetailIssueStatus';
 import HeaderViewMode from 'page/detailIssuePage/detailHeader/HeaderViewMode'
 import HeaderEditMode from 'page/detailIssuePage/detailHeader/HeaderEditMode'
-import { headerMode } from 'store/detailStore'
+import { headerMode, detailTitle } from 'store/detailStore'
 interface Props {
   issueData: DetailIssueType;
 }
@@ -14,6 +14,10 @@ interface Props {
 export default function DetailIssueHeader({
   issueData: { id, status, title, createdDateTime, comments },
 }: Props) {
+  
+  const [pickedTitle, setPickedTitle] = useRecoilState(detailTitle)
+  useEffect(()=>setPickedTitle(title),[])
+  
   const { view } = useRecoilValue(headerMode)
   const passedTime = timeChecker(createdDateTime);
   const author = 'hayoung123'; // 임시 author api author필요
@@ -21,8 +25,8 @@ export default function DetailIssueHeader({
   return (
     <DetailIssueHeaderBlock>
       {view 
-      ? <HeaderViewMode issueNumber={id} title={title}/>
-      : <HeaderEditMode issueNumber={id} title={title}/>}
+      ? <HeaderViewMode issueNumber={id} title={pickedTitle}/>
+      : <HeaderEditMode issueNumber={id} title={pickedTitle}/>}
       <div className='header__description'>
         <DetailIssueStatus status={status} />
         <div className='issue__info'>{headerInfo}</div>
