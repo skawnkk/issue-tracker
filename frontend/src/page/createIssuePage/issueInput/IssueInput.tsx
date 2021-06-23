@@ -1,11 +1,18 @@
-import React, { ReactElement, ChangeEvent, useState, RefObject } from 'react';
+import React, {
+  ReactElement,
+  ChangeEvent,
+  useState,
+  RefObject,
+  SetStateAction,
+  Dispatch,
+} from 'react';
 import styled from 'styled-components';
 import { GiPaperClip } from 'react-icons/gi';
 import API, { authorizedHeaders } from 'util/api/api';
 interface inputProps {
   titleRef: RefObject<HTMLInputElement>;
   comment: string;
-  setComment: (comment: string) => void;
+  setComment: Dispatch<SetStateAction<string>>;
 }
 export default function IssueInput({ titleRef, comment, setComment }: inputProps): ReactElement {
   const [length, setLength] = useState(0);
@@ -20,19 +27,22 @@ export default function IssueInput({ titleRef, comment, setComment }: inputProps
     const imageBlob = Object.values(uploadImage)[0];
     const imageName = imageBlob['name'];
     const formData = new FormData();
-    formData.append('img', imageBlob, imageName);
+    formData.append('image', imageBlob, imageName);
 
     try {
       const token = localStorage.getItem('token');
       const postFileURL = await fetch(API.getFileURL, {
         method: 'POST',
-        headers: { ...authorizedHeaders(token), 'content-type': 'multipart/form-data' },
+        headers: authorizedHeaders(token),
         body: formData,
       });
       let fileURL = await postFileURL.json();
-      console.log(fileURL);
+      const markDownImg = `![${imageName}](${fileURL.image})`;
+      setComment((comment) =>
+        comment.length ? comment + '\n' + markDownImg : comment + markDownImg
+      );
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   };
   return (
