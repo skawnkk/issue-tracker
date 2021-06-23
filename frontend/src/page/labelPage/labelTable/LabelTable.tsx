@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import LabelItem from 'page/labelPage/labelTable/LabelItem';
 import { useRecoilValue } from 'recoil';

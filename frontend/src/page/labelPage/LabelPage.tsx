@@ -8,9 +8,10 @@ import LabelEditForm from 'page/labelPage/labelEditForm/LabelEditForm';
 
 export default function LabelPage() {
   const [isCreateLabel, setIsCreateLabel] = useState(false);
-  const handleCreateClick = () => setIsCreateLabel((isCreateLabel) => !isCreateLabel);
   const setLabelMilestoneState = useSetRecoilState(labelMilestoneClickedState);
   setLabelMilestoneState({ label: true, milestone: false });
+
+  const handleCreateClick = () => setIsCreateLabel((isCreateLabel) => !isCreateLabel);
 
   const handelCancelClick = () => setIsCreateLabel(false);
 
