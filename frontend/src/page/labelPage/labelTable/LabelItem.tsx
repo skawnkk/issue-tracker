@@ -2,24 +2,24 @@ import styled from 'styled-components';
 import LabelBadge from 'components/atom/LabelBadge';
 import { ReactComponent as DeleteIcon } from 'assets/icon/DeleteIcon.svg';
 import { ReactComponent as EditIcon } from 'assets/icon/EditIcon.svg';
+import { LabelType } from 'components/common/tabModal/tapDataType';
 
-export default function LabelItem() {
-  const colorData = {
-    backgroundColorCode: 'red',
-    textColorCode: 'white',
-  };
+interface Props {
+  label: LabelType;
+}
 
+export default function LabelItem({ label: { name, color, description } }: Props) {
   return (
     <LabelItemBlock>
-      <LabelBadge color={colorData} desc={'레이블'} className='label__badge' />
-      <div className='label__description'>레이블에 대한 설명</div>
+      <LabelBadge color={color} desc={name} className='label__badge' />
+      <div className='label__description'>{description}</div>
       <div className='label__edit'>
         <div>
-          <EditIcon />
+          <EditIcon className='label__btn' />
           <span>편집</span>
         </div>
         <div className='delete__btn'>
-          <DeleteIcon />
+          <DeleteIcon className='label__btn' />
           <span>삭제</span>
         </div>
       </div>
@@ -49,6 +49,9 @@ const LabelItemBlock = styled.div`
       align-items: center;
       margin-left: 20px;
     }
+  }
+  .label__btn {
+    margin-right: 5px;
   }
   .delete__btn {
     color: ${({ theme }) => theme.color.red};
