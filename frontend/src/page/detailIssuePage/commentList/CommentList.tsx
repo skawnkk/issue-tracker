@@ -24,6 +24,7 @@ export default function CommentList({ comments }: Props) {
 
 const CommentListBlock = styled.div`
   margin-right: 4rem;
+  min-width: 550px;
   .comment__create-btn {
     display: flex;
     justify-content: flex-end;

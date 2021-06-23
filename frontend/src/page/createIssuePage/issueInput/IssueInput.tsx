@@ -1,7 +1,7 @@
 import React, { ReactElement, ChangeEvent, useState, RefObject } from 'react';
 import styled from 'styled-components';
 import { GiPaperClip } from 'react-icons/gi';
-import API from 'util/api/api'
+import API, {authorizedHeaders} from 'util/api/api'
 interface inputProps {
   titleRef: RefObject<HTMLInputElement>;
   comment: string;
@@ -20,16 +20,15 @@ export default function IssueInput({ titleRef, comment, setComment }: inputProps
     const imageBlob = Object.values(uploadImage)[0]
     const imageName = imageBlob['name']
     const formData = new FormData()
-    formData.append('IMG_File', imageBlob, imageName)
-
+    formData.append('img', imageBlob, imageName)
+    
 
     try{
+      const token = localStorage.getItem('token')
       const postFileURL = await fetch(API.getFileURL,
         { 
           method: 'POST', 
-          headers:{ 
-            'content-type': 'multipart/form-data'
-          },
+          headers: {...authorizedHeaders(token), 'content-type': 'multipart/form-data'},
           body: formData
         }
       )
@@ -37,7 +36,7 @@ export default function IssueInput({ titleRef, comment, setComment }: inputProps
       console.log(fileURL)
 
     } catch(err){
-      console.log(err) //TypeError: Failed to fetch
+      console.log(err) 
     }
   }
   return (

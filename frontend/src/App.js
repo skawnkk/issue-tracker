@@ -5,7 +5,7 @@ import Header from './components/header/Header';
 import LoginPage from 'page/loginPage/LoginPage';
 import { useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
-import API from 'util/api/api';
+import API, {authorizedHeaders} from 'util/api/api';
 
 function App() {
   const MainPage = lazy(() => import('./page/mainPage/MainPage'));
@@ -24,14 +24,9 @@ function App() {
 
   const getUserInfoUsingJWT = async() =>{
     
-    const headerInfo = {
-      headers: {
-        Authorization : `Bearer ${token}`
-        }
-      }
-    
     try {
-      const response = await fetch(API.getUserInfo, headerInfo)
+      const response = await fetch(API.getUserInfo, 
+        {headers:authorizedHeaders(token)})
       const userData = await response.json()
       const loginData = {avatarUrl: userData.avatarUrl, name: userData.name}
       setLoginData({ isLogin: true, loginData });
