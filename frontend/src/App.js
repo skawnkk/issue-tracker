@@ -16,10 +16,9 @@ function App() {
   const setLoginData = useSetRecoilState(controlLoginState);
   const token = localStorage.getItem('token');
   const isLogin = () => !!token;
+
   useEffect(() => {
-    if (isLogin()) {
-      getUserInfoUsingJWT();
-    }
+    if (isLogin()) getUserInfoUsingJWT();
   }, []);
 
   const getUserInfoUsingJWT = async () => {
