@@ -7,12 +7,12 @@ import Copyright from 'components/common/Copyright';
 import { useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { fetchLogin } from 'util/api/fetchLogin';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 export default function LoginPage() {
-  const history = useHistory()
+  const history = useHistory();
   const setLoginData = useSetRecoilState(controlLoginState);
 
-  const query = window.location.search; 
+  const query = window.location.search;
   useEffect(() => {
     if (!query) return;
     const loginCode = query.split('=')[1];
@@ -22,8 +22,8 @@ export default function LoginPage() {
   const getLoginUserData = async (loginCode: string) => {
     try {
       const loginData = await fetchLogin(loginCode);
-      const loginUserData = {avatarUrl:loginData.avatarUrl,name:loginData.name}
-      setLoginData({isLogin: true, loginData:loginUserData});
+      const loginUserData = { avatarUrl: loginData.avatarUrl, name: loginData.name };
+      setLoginData({ isLogin: true, loginData: loginUserData });
       localStorage.setItem('token', loginData.token);
       history.push('/main');
     } catch (err) {

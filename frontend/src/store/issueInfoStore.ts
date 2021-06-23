@@ -1,6 +1,6 @@
-import { atom, selector, selectorFamily, SerializableParam, DefaultValue } from 'recoil';
+import { atom, selector } from 'recoil';
 import { LabelType, MilestoneType, UserType } from 'components/common/tabModal/tapDataType';
-import API from 'util/api/api';
+import API, { authorizedHeaders } from 'util/api/api';
 interface countType {
   label: number;
   milestone: number;
@@ -71,12 +71,14 @@ export const getIssueTrigger = atom<boolean>({
 export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
   key: 'GET/issues',
   get: async ({ get }) => {
+    const token = localStorage.getItem('token');
+
     const trigger = get(getIssueTrigger);
     const issueType = get(issueTypeState);
     const isFilterSetting = get(isFilterFullSetting);
     if (!isFilterSetting) return null;
     try {
-      const response = await fetch(API.getIssue + issueType);
+      const response = await fetch(API.getIssue + issueType, { headers: authorizedHeaders(token) });
       const issuesData = await response.json();
       const issuesInfoState = { issues: issuesData.issues, count: issuesData.count };
       return issuesInfoState;
@@ -165,4 +167,3 @@ export const selectedMilestoneState = atom<MilestoneType | null>({
   key: 'selectedMilestoneTabState',
   default: null,
 });
-

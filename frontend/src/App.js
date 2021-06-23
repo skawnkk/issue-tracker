@@ -5,7 +5,7 @@ import Header from './components/header/Header';
 import LoginPage from 'page/loginPage/LoginPage';
 import { useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
-import API, {authorizedHeaders} from 'util/api/api';
+import API, { authorizedHeaders } from 'util/api/api';
 
 function App() {
   const MainPage = lazy(() => import('./page/mainPage/MainPage'));
@@ -15,25 +15,22 @@ function App() {
   const MilestonePage = lazy(() => import('./page/milestonePage/MilestonePage'));
   const setLoginData = useSetRecoilState(controlLoginState);
   const token = localStorage.getItem('token');
-  const isLogin = () => !!token
+  const isLogin = () => !!token;
+
   useEffect(() => {
-    if (isLogin()) {
-      getUserInfoUsingJWT()
-    }
+    if (isLogin()) getUserInfoUsingJWT();
   }, []);
 
-  const getUserInfoUsingJWT = async() =>{
-    
+  const getUserInfoUsingJWT = async () => {
     try {
-      const response = await fetch(API.getUserInfo, 
-        {headers:authorizedHeaders(token)})
-      const userData = await response.json()
-      const loginData = {avatarUrl: userData.avatarUrl, name: userData.name}
+      const response = await fetch(API.getUserInfo, { headers: authorizedHeaders(token) });
+      const userData = await response.json();
+      const loginData = { avatarUrl: userData.avatarUrl, name: userData.name };
       setLoginData({ isLogin: true, loginData });
-    } catch(err){
-       console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div className='App'>

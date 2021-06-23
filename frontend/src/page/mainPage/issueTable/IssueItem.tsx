@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LabelBadge from 'components/atom/LabelBadge';
 import { IssueItemProps } from 'page/mainPage/issueTable/issueType';
@@ -26,16 +26,14 @@ export default function IssueItem({
     .map((label) => <LabelBadge key={label.id} color={label.color} desc={label.name} />);
 
   const passedTime = timeChecker(createdDateTime);
-  const handleClick = () => {
-    //상세페이지 넘어가기
-  }
+
   return (
     <IssueItemBlock>
       <Checkbox />
       <div>
         <div className='issue-item__title'>
           <AdjustRoundedIcon className='issue-itme__icon' style={{ color: 'green' }} />
-          <Link to ={`detail/${id}`}>{title}</Link>
+          <Link to={`detail/${id}`}>{title}</Link>
           {labelList}
         </div>
         <div className='issue-item__description'>

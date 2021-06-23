@@ -34,3 +34,11 @@ export interface CommentType {
   author: boolean;
   owner: boolean;
 }
+
+export interface LoginUserType {
+  avatarUrl: string;
+  email: string;
+  name: string;
+  token: string | null;
+  userName: string;
+}
