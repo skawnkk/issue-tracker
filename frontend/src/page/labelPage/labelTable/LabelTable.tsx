@@ -8,12 +8,11 @@ interface Props {}
 
 export default function LabelTable({}: Props) {
   const labelData = useRecoilValue(getLabelData);
-  console.log(labelData.labels);
   const labelList = labelData.labels.map((label) => <LabelItem key={label.id} label={label} />);
 
   return (
     <LabelTableBlock>
-      <div className='tab__table__header'>3개의 레이블</div>
+      <div className='tab__table__header'>{labelData.labelsCount}개의 레이블</div>
       {labelList}
     </LabelTableBlock>
   );
