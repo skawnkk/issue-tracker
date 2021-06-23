@@ -19,7 +19,6 @@ export default function InputField({
   const [isFocus, setIsFocus] = useState(false);
   const handleOnFocus = () => setIsFocus(true);
   const handleOnBlur = () => setIsFocus(false);
-  console.log(isFocus);
   return (
     <InputFieldBlock isFocus={isFocus} className={className}>
       {label && <div>{label}</div>}
