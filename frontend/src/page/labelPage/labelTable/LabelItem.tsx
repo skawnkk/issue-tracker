@@ -1,20 +1,34 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import LabelBadge from 'components/atom/LabelBadge';
 import { ReactComponent as DeleteIcon } from 'assets/icon/DeleteIcon.svg';
 import { ReactComponent as EditIcon } from 'assets/icon/EditIcon.svg';
 import { LabelType } from 'components/common/tabModal/tapDataType';
+import LabelEditForm from 'page/labelPage/labelEditForm/LabelEditForm';
 
 interface Props {
   label: LabelType;
 }
 
-export default function LabelItem({ label: { name, color, description } }: Props) {
-  return (
+export default function LabelItem({ label: { id, name, color, description }, label }: Props) {
+  const [isEditLabel, setIsEditLabel] = useState(false);
+
+  const handleEditClick = () => setIsEditLabel(true);
+  const handelCancelClick = () => setIsEditLabel(false);
+  return isEditLabel ? (
+    <EditLabelItemBlock>
+      <LabelEditForm
+        className='label__edit-form'
+        title='새로운 레이블 추가'
+        {...{ handelCancelClick, label }}
+      />
+    </EditLabelItemBlock>
+  ) : (
     <LabelItemBlock>
       <LabelBadge color={color} desc={name} className='label__badge' />
       <div className='label__description'>{description}</div>
       <div className='label__edit'>
-        <div>
+        <div onClick={handleEditClick}>
           <EditIcon className='label__btn' />
           <span>편집</span>
         </div>
@@ -33,6 +47,7 @@ const LabelItemBlock = styled.div`
   align-items: center;
   border-top: 1px solid ${({ theme }) => theme.color.lineGrey};
   padding: 32px;
+
   .label__badge {
     margin: 0;
   }
@@ -55,5 +70,13 @@ const LabelItemBlock = styled.div`
   }
   .delete__btn {
     color: ${({ theme }) => theme.color.red};
+  }
+`;
+
+const EditLabelItemBlock = styled.div`
+  .label__edit-form {
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid ${({ theme }) => theme.color.lineGrey};
   }
 `;
