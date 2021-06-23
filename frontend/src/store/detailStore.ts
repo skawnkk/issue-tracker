@@ -16,9 +16,9 @@ export const getDetailIssueData = selector({
   },
 });
 
-export const headerMode = atom({
+export const titleEditMode = atom({
   key: 'view/editMode',
-  default: { view: true, edit: false },
+  default: false,
 });
 
 export const detailTitle = atom<string>({
