@@ -118,12 +118,6 @@ export interface selectedTabType {
   [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null;
 }
 
-const headerInfo = {
-  // headers: {
-  //   Authorization: Bearer {token}
-  // }
-};
-
 export const selectedTabState = selector<selectedTabType>({
   key: 'selectedTabState',
   get: ({ get }) => {
