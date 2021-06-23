@@ -1,9 +1,11 @@
-import { LabelType } from 'components/common/tabModal/tapDataType';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
 import PrimaryButton from 'components/atom/PrimaryButton';
 import LabelEdit from 'page/labelPage/labelEditForm/LabelEdit';
 import useInput from 'hooks/useInput';
-import { createLabel } from 'util/api/fetchLabel';
+import { createLabel, editLabel } from 'util/api/fetchLabel';
+import { labelTrigger } from 'store/labelStore';
+import { LabelType } from 'components/common/tabModal/tapDataType';
 
 interface Props {
   className?: string;
@@ -18,6 +20,8 @@ export default function LabelEditForm({
   label = DEFAULT_LABEL,
   handelCancelClick,
 }: Props) {
+  const setLabelTrigger = useSetRecoilState(labelTrigger);
+
   const titleInput = useInput(label.name);
   const descriptionInput = useInput(label.description);
   const colorInput = useInput(label.color.backgroundColorCode);
@@ -34,6 +38,11 @@ export default function LabelEditForm({
     };
     //create인 경우
     if (label.id === 0) createLabel(newLabelData);
+    else editLabel(label.id, newLabelData);
+
+    setLabelTrigger((triggerCount) => triggerCount + 1);
+
+    handelCancelClick();
   };
 
   return (
