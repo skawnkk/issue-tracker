@@ -2,7 +2,6 @@ interface colorType {
   r: number;
   g: number;
   b: number;
-  textColor?: string;
 }
 
 interface labelColorType {
@@ -16,12 +15,27 @@ const pipe =
     fns.reduce((res, fn) => fn(res), args);
 
 //랜덤 color 구하기
-const getRandomColor = () => {
+const getRandomRGB = () => {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
   const b = Math.floor(Math.random() * 256);
   return { r, g, b };
 };
+//유요한 RBG값만 반환
+const getValidColorCode = (): colorType => {
+  let RGB = getRandomRGB();
+
+  while (!isValidColorCode(RGB)) RGB = getRandomRGB();
+  return RGB;
+};
+
+const isValidColorCode = (RGB: colorType) => RGBToString(RGB).length >= 7;
+
+//RGB값으로 colorCode 구하기
+const numToHex = (num: number) => num.toString(16).toUpperCase();
+const RGBToString = ({ r, g, b }: colorType): string =>
+  `#${numToHex(r)}${numToHex(g)}${numToHex(b)}`;
+
 //textColor 구하기
 const isDarkColor = ({ r, g, b }: colorType) => {
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
@@ -30,16 +44,11 @@ const isDarkColor = ({ r, g, b }: colorType) => {
 const getTextColor = (brightness: boolean) => (brightness ? '#fff' : '#000');
 const getTextColorCode = pipe(isDarkColor, getTextColor);
 
-//rgb값으로 colorCode 구하기
-const numToHex = (num: number) => num.toString(16).toUpperCase();
-const rgbToString = ({ r, g, b }: colorType): string =>
-  `#${numToHex(r)}${numToHex(g)}${numToHex(b)}`;
-
 //backgroundColor, testColor 구하기
 export const getRandomLabelColor = (): labelColorType => {
-  const randomColor = getRandomColor();
+  const randomColor = getValidColorCode();
 
-  const backgroundColorCode = rgbToString(randomColor);
+  const backgroundColorCode = RGBToString(randomColor);
   const textColorCode = getTextColorCode(randomColor);
 
   return { backgroundColorCode, textColorCode };
