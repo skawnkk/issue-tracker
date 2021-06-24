@@ -28,8 +28,8 @@ export async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
   return issueDetailData;
 }
 
-interface pathcAssigneeType {
-  assigness: { id: number; isAssigned: boolean }[];
+interface patchAssigneeType {
+  assignees: { id: number; isAssigned: boolean }[];
 }
 interface patchLabelType {
   labels: { id: number; isAssigned: boolean }[];
@@ -41,7 +41,7 @@ interface patchLabelType {
 export async function editIssueDetailOption(
   issueId: number,
   type: string,
-  patchData: pathcAssigneeType | patchLabelType | patchLabelType
+  patchData: patchAssigneeType | patchLabelType | patchLabelType
 ) {
   const token = localStorage.getItem('token');
 

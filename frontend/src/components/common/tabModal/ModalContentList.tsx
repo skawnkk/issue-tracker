@@ -39,21 +39,21 @@ export default function ModalContentList({
 
   const getContentList: contentListType = {
     assignee: (type: string): JSX.Element[] => {
-      const userData: Array<UserType> = tabInfo[type];
+      const userData = tabInfo[type] as Array<UserType>;
       return userData.map((user) => {
         const selected = isSelectedTabItem(type, user.id, user.assigned);
         return <UserSelectItem key={user.id} {...{ user, selected }}></UserSelectItem>;
       });
     },
     label: (type: string): JSX.Element[] => {
-      const labelData: Array<LabelType> = tabInfo[type];
+      const labelData = tabInfo[type] as Array<LabelType>;
       return labelData.map((label) => {
         const selected = isSelectedTabItem(type, label.id, label.checked);
         return <LabelSelectItem key={label.id} {...{ label, selected }} />;
       });
     },
     milestone: (type: string): JSX.Element[] => {
-      const milestoneData: Array<MilestoneType> = tabInfo[type];
+      const milestoneData = tabInfo[type] as Array<MilestoneType>;
       return milestoneData.map((milestone) => {
         const selected = isSelectedTabItem(type, milestone.id);
         return <MilestoneSelectItem key={milestone.id} {...{ milestone, selected }} />;

@@ -4,7 +4,13 @@ import useToggle from 'hooks/useToggle';
 import OptionItem from 'page/detailIssuePage/detailIssueOption/OptionItem';
 import TabModal from 'components/common/tabModal/TabModal';
 import { useRecoilValue } from 'recoil';
-import { selectedTabState, selectedTabType } from 'store/issueInfoStore';
+import {
+  selectedTabState,
+  selectedTabType,
+  issueFilterSelectState,
+  getTabInfoState,
+} from 'store/issueInfoStore';
+import { editIssueDetailOption } from 'util/api/fetchIssueDetail';
 
 interface Props {
   id: number;
@@ -12,7 +18,10 @@ interface Props {
 
 export default function DetailIssueOption({ id }: Props) {
   const [selectedOption, setSelectedOption] = useState<selectedTabType>(EMPTY_OPTIONS);
-  const selectedOptionData = useRecoilValue(selectedTabState);
+  const optionData = useRecoilValue(getTabInfoState);
+  const selectedOptionData = useRecoilValue<selectedTabType>(selectedTabState);
+  const selectedOptionType = useRecoilValue(issueFilterSelectState);
+
   const assigneeToggle = useRef<HTMLDivElement>(null);
   const labelToggle = useRef<HTMLDivElement>(null);
   const milestoneToggle = useRef<HTMLDivElement>(null);
@@ -32,7 +41,41 @@ export default function DetailIssueOption({ id }: Props) {
   useEffect(() => {
     if (open) return;
     setSelectedOption(selectedOptionData);
+    // if (selectedOptionType === 'assignee') {
+    //   const selectedAssignee = selectedOptionData.assignee.map((v) => v.id);
+    //   const newAssignee = assigneeData
+    //     .map((assignee) => {
+    //       if (selectedAssignee.includes(assignee.id)) return { ...assignee, assigned: true };
+    //       return assignee;
+    //     })
+    //     .map(({ id, assigned }) => ({ id, isAssigned: assigned }));
+
+    //   const fetchData = { assignees: newAssignee };
+    //   editIssueDetailOption(id, selectedOptionType, fetchData);
+    // } else if (selectedOptionType === 'label') {
+    // } else if (selectedOptionType === 'milestone') {
+    // }
   }, [open, selectedOptionData]);
+
+  const getSelectOptionData = (type) => {
+    let selectedData;
+
+    if (selectedOptionData[type] instanceof Array)
+      selectedData = selectedOptionData[type].map((v) => v.id);
+    else selectedData = selectedOptionData[type].id;
+
+    const newOptionData = optionData[type]
+      .map((data) => {
+        if (selectedData.includes(data.id))
+          return type === 'assignee' ? { ...data, assigned: true } : { ...data, checked: true };
+        return data;
+      })
+      .map((data) => {
+        return type === 'assignee'
+          ? { id: data.id, isAssigned: data.assigned }
+          : { id: data.id, isChecked: data.checked };
+      });
+  };
 
   //(담당자 + ,라벨 + )같은 OPTION ITEM
   const issueOptionList = TAB_OPTIONS.map(({ key, name, ref }) => (

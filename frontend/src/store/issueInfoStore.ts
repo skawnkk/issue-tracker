@@ -90,7 +90,10 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
 });
 
 interface TabInfoType {
-  [key: string]: any;
+  assignee: Array<UserType>;
+  label: Array<LabelType>;
+  milestone: Array<MilestoneType>;
+  [key: string]: Array<UserType> | Array<LabelType> | Array<MilestoneType>;
 }
 
 export const getTabInfoState = selector<TabInfoType>({
