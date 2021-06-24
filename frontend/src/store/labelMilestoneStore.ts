@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil';
+import { atom, selector, selectorFamily } from 'recoil';
 import API from 'util/api/api';
 //레이블,모달 클릭 감지 및 리셑_____________________________________
 interface labelMilestoneStateType {
@@ -23,18 +23,14 @@ export const resetTabClickedState = selector({
 });
 
 //마일즈스톤___________________________________________
-const milestones = atom({
-  key: 'milestones',
-  default: null
-})
 
-export const getMilestones = selector({
+export const getMilestones = selectorFamily({
   key: 'GET/milestones',
-  get: async ({get})=>{
+  get: (status:string) => async() => {
     try{  
-      const response = await fetch(API.getMilestone)
+      const response = await fetch(API.getMilestone(status))
       const milestoneData = await response.json()
-      return milestoneData.milestones
+      return milestoneData
     } catch(error){
       console.log('마일스톤조회 에러:', error)
     }

@@ -3,7 +3,7 @@ interface APItype {
   tabType: string;
   createIssue: string;
   getFileURL: string;
-  getMilestone: string;
+  getMilestone: (status?: string) => string;
   getUserInfo: string;
   login: (code: string) => string;
   getIssueDetail: (id: number) => string;
@@ -19,7 +19,7 @@ const API: APItype = {
   tabType: basicURL + `/issues/form`,
   createIssue: basicURL + `/issues/form`,
   getFileURL: basicURL + `/images`,
-  getMilestone: basicURL + `/milestones`,
+  getMilestone: (status ='open') => basicURL + `/milestones?status=${status}`,
   login: (code: string) => basicURL + '/login?code=' + code,
   getUserInfo: basicURL + `/userInfo`,
   getIssueDetail: (id) => basicURL + '/issues/' + id,
