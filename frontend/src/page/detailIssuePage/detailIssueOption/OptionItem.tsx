@@ -2,7 +2,11 @@ import React, { ReactElement, RefObject } from 'react';
 import styled from 'styled-components';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { useSetRecoilState } from 'recoil';
-import { issueFilterTypeState, selectedTabType } from 'store/issueInfoStore';
+import {
+  issueFilterTypeState,
+  selectedTabType,
+  issueFilterSelectState,
+} from 'store/issueInfoStore';
 import SelectedTabUser from 'page/createIssuePage/issueDetailOption/SelectedTabUser';
 import SelectedTabLabel from 'page/createIssuePage/issueDetailOption/SelectedTabLabel';
 import SelectedTabMilestone from 'page/createIssuePage/issueDetailOption/SelectedTabMilestone';
@@ -16,6 +20,8 @@ interface Props {
 
 export default function OptionItem({ optionName, optionKey, optionRef, selectedOption }: Props) {
   const setOptionType = useSetRecoilState(issueFilterTypeState);
+  const setSelectedOptionType = useSetRecoilState(issueFilterSelectState);
+
   const {
     assignee: selectedAssignee,
     label: selectedLabel,
@@ -25,6 +31,7 @@ export default function OptionItem({ optionName, optionKey, optionRef, selectedO
   const handleOptionClick = () => {
     const optionType = { key: optionKey, name: optionName };
     setOptionType(optionType);
+    setSelectedOptionType(optionKey);
   };
 
   const optionSelectedList: { [key: string]: ReactElement | Array<ReactElement> | null } = {
