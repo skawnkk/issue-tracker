@@ -21,18 +21,19 @@ const getRandomRGB = () => {
   const b = Math.floor(Math.random() * 256);
   return { r, g, b };
 };
-//유요한 RBG값만 반환
+//유효한 RGB인지 체크
+const isValidColorCode = (RGB: colorType) => RGBToString(RGB).length >= 7;
+
+//유효한 RBG값만 반환
 const getValidColorCode = (): colorType => {
   let RGB = getRandomRGB();
-
   while (!isValidColorCode(RGB)) RGB = getRandomRGB();
   return RGB;
 };
 
-const isValidColorCode = (RGB: colorType) => RGBToString(RGB).length >= 7;
-
 //RGB값으로 colorCode 구하기
 const numToHex = (num: number) => num.toString(16).toUpperCase();
+
 const RGBToString = ({ r, g, b }: colorType): string =>
   `#${numToHex(r)}${numToHex(g)}${numToHex(b)}`;
 
@@ -42,6 +43,7 @@ const isDarkColor = ({ r, g, b }: colorType) => {
   return brightness < 150;
 };
 const getTextColor = (brightness: boolean) => (brightness ? '#fff' : '#000');
+
 const getTextColorCode = pipe(isDarkColor, getTextColor);
 
 //backgroundColor, testColor 구하기

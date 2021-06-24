@@ -27,7 +27,7 @@ export default function LabelEditForm({
   const descriptionInput = useInput(label.description);
   const colorInput = useInput(label.color.backgroundColorCode);
 
-  const [labletextColor, setLableTextColor] = useState(label.color.textColorCode);
+  const [lableTextColor, setLableTextColor] = useState(label.color.textColorCode);
 
   const handleSubmitClick = () => {
     const newLabelData = {
@@ -35,7 +35,7 @@ export default function LabelEditForm({
       description: descriptionInput.value,
       color: {
         backgroundColorCode: colorInput.value,
-        textColorCode: labletextColor,
+        textColorCode: lableTextColor,
       },
     };
     //create인 경우
