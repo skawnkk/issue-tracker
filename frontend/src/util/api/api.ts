@@ -5,7 +5,7 @@ interface APItype {
   getFileURL: string;
   getMilestone: (status?: string) => string;
   createMilestone:string;
-  deleteMilestone:(milestoneId: number) => string;
+  editDeleteMilestone:(milestoneID: number) => string;
   getUserInfo: string;
   login: (code: string) => string;
   getIssueDetail: (id: number) => string;
@@ -23,7 +23,7 @@ const API: APItype = {
   getFileURL: basicURL + `/images`,
   getMilestone: (status ='open') => basicURL + `/milestones?status=${status}`, //get & close milestone
   createMilestone : basicURL + `/milestones`,
-  deleteMilestone : (milestoneId) => basicURL + `/milestones/${milestoneId}`,
+  editDeleteMilestone : (milestoneID) => basicURL + `/milestones/${milestoneID}`,
   login: (code: string) => basicURL + '/login?code=' + code,
   getUserInfo: basicURL + `/userInfo`,
   getIssueDetail: (id) => basicURL + '/issues/' + id,

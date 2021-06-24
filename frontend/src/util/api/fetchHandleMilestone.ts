@@ -2,6 +2,22 @@ import API, { authorizedHeaders } from 'util/api/api';
 interface NewMilestoneType{
   [key: string]: string;
 }
+
+export async function editMilestone(milestoneID:number, newMilestone:NewMilestoneType){
+  const token = localStorage.getItem('token')
+
+  try{
+    const response = await fetch(API.editDeleteMilestone(milestoneID),{
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json', ... authorizedHeaders(token)},
+      body: JSON.stringify(newMilestone)
+    })
+    if(response.status!==200) throw new Error('잘못된 요청')
+    return response.status
+  } catch(error){
+    console.error(error)
+  }
+}
 export async function fetchCreateMilestone(newMilestone:NewMilestoneType){
   const token = localStorage.getItem('token')
 
@@ -23,10 +39,9 @@ export async function fetchDeleteMilestone(milesetoneID:number){
   const token = localStorage.getItem('token')
   debugger;
   try{
-    const response = await fetch(API.deleteMilestone(milesetoneID),{
+    const response = await fetch(API.editDeleteMilestone(milesetoneID),{
       method: 'DELETE',
-      headers: {'Content-Type': 'application/json',
-       ... authorizedHeaders(token)}
+      headers: authorizedHeaders(token)
     })
     if(response.status!==200) throw new Error('잘못된 요청')
     return response.status
@@ -34,7 +49,6 @@ export async function fetchDeleteMilestone(milesetoneID:number){
     console.error(error)
   }
 }
-
 
 
 export async function fetchHandleMilestone(milestoneID?: number, status: string = 'open'){
