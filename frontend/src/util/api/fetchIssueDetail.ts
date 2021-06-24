@@ -28,13 +28,28 @@ export async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
   return issueDetailData;
 }
 
-export async function editIssueAssignee(issueId: number) {
+interface pathcAssigneeType {
+  assigness: { id: number; isAssigned: boolean }[];
+}
+interface patchLabelType {
+  labels: { id: number; isAssigned: boolean }[];
+}
+interface patchLabelType {
+  milestone: { id: number };
+}
+
+export async function editIssueDetailOption(
+  issueId: number,
+  type: string,
+  patchData: pathcAssigneeType | patchLabelType | patchLabelType
+) {
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch(API.editIssueAssignee(issueId), {
+    const response = await fetch(API.editIssueDetailOption(issueId, type), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+      body: JSON.stringify(patchData),
     });
     if (response.status === 200) return true;
     else throw Error;
