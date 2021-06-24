@@ -10,10 +10,10 @@ import {
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { detailIdState, getDetailIssueData } from 'store/detailStore';
 import { selectedTabState } from 'store/issueInfoStore';
-import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHeader';
-import CommentList from './commentList/CommentList';
-import IssueDetailOption from 'page/createIssuePage/issueDetailOption/IssueDetailOption';
 import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
+import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHeader';
+import DetailIssueOption from 'page/detailIssuePage/detailIssueOption/DetailIssueOption';
+import CommentList from './commentList/CommentList';
 
 //api에 작성자가 누구인지 있어야될 것 같다.
 export interface DetailIssueType {
@@ -51,7 +51,7 @@ export default function DetailIssuePage() {
       <div className='detail__main'>
         <CommentList comments={issueData.comments} />
         <div className='detail__option'>
-          <IssueDetailOption id={issueData.id} />
+          <DetailIssueOption id={issueData.id} />
           <div className='issue__delete-btn'>
             <IssueDeleteBtn />
           </div>
