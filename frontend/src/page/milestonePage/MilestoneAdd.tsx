@@ -2,7 +2,7 @@ import React, { useState, ReactElement, ChangeEvent, Dispatch, SetStateAction } 
 import styled from 'styled-components'
 import Title from 'components/atom/Title'
 import PrimaryButton from 'components/atom/PrimaryButton'
-import { fetchCreateMilestone } from 'util/api/fetchHandleMilestone'
+import { fetchCreateMilestone, editMilestone } from 'util/api/fetchHandleMilestone'
 import PrimaryOutlinedButton from'components/atom/PrimaryOutlinedButton'
 import { MilestoneType } from 'components/common/tabModal/tapDataType'
 interface EditType{
@@ -10,19 +10,18 @@ interface EditType{
   milestone?: MilestoneType
   setEditMode?: Dispatch<SetStateAction<boolean>>
 }
-
-
 export default function MilestoneAdd({type='create', setEditMode, milestone}:EditType){
-  const initTitle = (!!milestone)?milestone.title:'마일스톤 제목'
-  const initDate = (!!milestone)?milestone.dueDate:'ex.YYYY-MM-DD'
-  const initDesc = (!!milestone)?milestone.description:'설명'
+  const initTitle = milestone?.title||'마일스톤 제목'
+  const initDate = milestone?.dueDate||'ex.YYYY-MM-DD'
+  const initDesc = milestone?.description||'설명'
+  const milestoneID = milestone?.id||0 
   const [milestoneInputs, setMilestoneInputs] = useState({title:initTitle, dueDate:initDate, description:initDesc})
   const {title, dueDate, description} = milestoneInputs
  
   const handleSubmit = () => {
     const newMilestone = {title, dueDate, description}
     if(type==='create') fetchCreateMilestone(newMilestone)
-    // else {수정요청}
+    else editMilestone(milestoneID, newMilestone)
     if(setEditMode) setEditMode(false)
   }
 
