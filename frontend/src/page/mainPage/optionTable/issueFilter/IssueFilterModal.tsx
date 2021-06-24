@@ -36,7 +36,7 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
       setIssueStatus(select);
       return;
     }
-    setFilterType({ key, name: value, isMainPage: false });
+    setFilterType({ key, name: value });
     setFilterSelect(select);
     setIsFilterFullSetting(true);
   };
