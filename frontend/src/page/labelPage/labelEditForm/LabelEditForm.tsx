@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import PrimaryButton from 'components/atom/PrimaryButton';
@@ -26,14 +27,15 @@ export default function LabelEditForm({
   const descriptionInput = useInput(label.description);
   const colorInput = useInput(label.color.backgroundColorCode);
 
+  const [labletextColor, setLableTextColor] = useState(label.color.textColorCode);
+
   const handleSubmitClick = () => {
-    //textColor는 나중에 계산으로 적용
     const newLabelData = {
-      name: titleInput.defaultValue,
-      description: descriptionInput.defaultValue,
+      name: titleInput.value,
+      description: descriptionInput.value,
       color: {
-        backgroundColorCode: colorInput.defaultValue,
-        textColorCode: '#000',
+        backgroundColorCode: colorInput.value,
+        textColorCode: labletextColor,
       },
     };
     //create인 경우
@@ -49,7 +51,15 @@ export default function LabelEditForm({
     <LabelEditFormBlock className={className}>
       <div className='form__title'>{title}</div>
       <div className='form__edit'>
-        <LabelEdit {...{ titleInput, descriptionInput, colorInput, label }} />
+        <LabelEdit
+          {...{
+            titleInput,
+            descriptionInput,
+            colorInput,
+            label,
+            setLableTextColor,
+          }}
+        />
       </div>
       <div className='form__submit'>
         <PrimaryButton onClick={handelCancelClick} value=' 취소' className='form__cancel-btn' />

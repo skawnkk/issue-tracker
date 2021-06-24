@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { LabelType } from 'components/common/tabModal/tapDataType';
 import LabelBadge from 'components/atom/LabelBadge';
 import InputField from 'components/atom/InputField';
-import useInput from 'hooks/useInput';
 import { ReactComponent as RefreshIcon } from 'assets/icon/RefreshIcon.svg';
+import { useState } from 'react';
+import { getRandomLabelColor } from 'util/randomColorUtil';
 
 interface inputDataType {
-  defaultValue: string;
-  onChange: ({ target }: { target: HTMLInputElement }) => void;
+  value: string;
+  onChange: ({ target }: { target: HTMLInputElement }, newValue?: string) => void;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 interface Props {
@@ -16,6 +18,7 @@ interface Props {
   titleInput: inputDataType;
   descriptionInput: inputDataType;
   colorInput: inputDataType;
+  setLableTextColor: Dispatch<SetStateAction<string>>;
 }
 
 export default function LabelEdit({
@@ -23,15 +26,29 @@ export default function LabelEdit({
   titleInput,
   descriptionInput,
   colorInput,
+  setLableTextColor,
 }: Props) {
+  const [labelBadgeColor, setLabelBadgeColor] = useState(color);
+
+  const handleRefreshClick = () => {
+    const randomLabelColor = getRandomLabelColor();
+    setLabelBadgeColor(randomLabelColor);
+    colorInput.setValue(randomLabelColor.backgroundColorCode);
+    setLableTextColor(randomLabelColor.textColorCode);
+  };
+
   return (
     <LabelEditBlock>
-      <LabelBadge className='label__edit-badge' color={color} desc={name ? name : '레이블 이름'} />
+      <LabelBadge
+        className='label__edit-badge'
+        color={labelBadgeColor}
+        desc={name ? name : '레이블 이름'}
+      />
       <div className='label__edit'>
         <InputField label='레이블 이름' {...titleInput} />
         <InputField label='설명(선택)' {...descriptionInput} />
         <div className='label__edit-color'>
-          <div className='label__refresh'>
+          <div className='label__refresh' onClick={handleRefreshClick}>
             <RefreshIcon />
           </div>
           <InputField className='label__color' label='배경색상' {...colorInput} />
