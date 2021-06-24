@@ -16,8 +16,8 @@ export default function MilestoneInfo({milestone, setEditMode}:MilestoneItemType
 
   const {id, title, description, dueDate, openedIssueCount, closedIssueCount}:MilestoneType = milestone
   const progress = () =>{
-    if(openedIssueCount===0) return 0;
-    return openedIssueCount/(openedIssueCount+closedIssueCount)
+    if(!(openedIssueCount+closedIssueCount)) return 0
+    return closedIssueCount/(openedIssueCount+closedIssueCount)
   }
   const handleClose = () => fetchHandleMilestone(id)
   const handleEdit = () => {
@@ -42,9 +42,9 @@ export default function MilestoneInfo({milestone, setEditMode}:MilestoneItemType
         <div onClick={handleDelete}><DeleteIcon/><div className='delete'>삭제</div></div>
       </div>
     <div className='milestone__list__progress'>
-      <CustomizedProgressBars progress={Number(progress)}/>
+      <CustomizedProgressBars progress={Number(progress())}/>
       <div className='milestone__state'>
-        <div>{Number(progress)}%</div>
+        <div>{Number(progress())}%</div>
         <div>열린 이슈({openedIssueCount})  &nbsp;&nbsp;닫힌 이슈({closedIssueCount})</div>
       </div>
     </div>

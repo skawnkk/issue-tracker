@@ -33,7 +33,7 @@ export default function CustomizedProgressBars({progress}:Props) {
 
   return (
     <div className={classes.root}>
-      <BorderLinearProgress variant="determinate" value={50} />
+      <BorderLinearProgress variant="determinate" value={progress} />
     </div>
   );
 }
