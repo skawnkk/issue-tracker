@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CommentType } from 'components/common/tabModal/tapDataType';
-import { timeChecker } from '../../../util/util';
+import { timeChecker } from '../../../util/timeUtil';
 import { ReactComponent as EditBtn } from 'assets/icon/EditIcons.svg';
 import { ReactComponent as Emoji } from 'assets/icon/Emoji.svg';
 import ProfileImg from 'components/atom/ProfileImg';

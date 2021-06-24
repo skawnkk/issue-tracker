@@ -15,10 +15,10 @@ interface inputProps {
   setComment: Dispatch<SetStateAction<string>>;
 }
 export default function IssueInput({ titleRef, comment, setComment }: inputProps): ReactElement {
-  const [length, setLength] = useState(0);
+  const [commentLength, setCommentLength] = useState(0);
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
-    setLength(e.target.value.length);
+    setCommentLength(e.target.value.length);
   };
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -70,7 +70,7 @@ export default function IssueInput({ titleRef, comment, setComment }: inputProps
             />
           </form>
         </div>
-        <div className='input__lengthCheck'>공백포함 {length}자</div>
+        <div className='input__lengthCheck'>공백포함 {commentLength}자</div>
       </div>
     </IssueInputBlock>
   );
@@ -98,7 +98,7 @@ const IssueInputBlock = styled.div`
     border-radius: 14px 14px 0 0;
     padding: 24px;
     resize: none;
-    width: -webkit-fill-available;
+    width: -webkit-fill-availabel;
     height: 343px;
     border-bottom: 1px dashed ${({ theme }) => theme.color.fontGrey};
     &:focus {

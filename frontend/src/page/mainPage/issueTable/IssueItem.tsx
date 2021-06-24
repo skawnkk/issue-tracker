@@ -6,7 +6,7 @@ import { IssueItemProps } from 'page/mainPage/issueTable/issueType';
 import { Checkbox } from '@material-ui/core';
 import AdjustRoundedIcon from '@material-ui/icons/AdjustRounded';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
-import { timeChecker } from '../../../util/util';
+import { timeChecker } from '../../../util/timeUtil';
 
 export default function IssueItem({
   issue: {
