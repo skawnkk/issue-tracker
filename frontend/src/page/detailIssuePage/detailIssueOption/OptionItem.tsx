@@ -16,6 +16,11 @@ interface Props {
 
 export default function OptionItem({ optionName, optionKey, optionRef, selectedOption }: Props) {
   const setOptionType = useSetRecoilState(issueFilterTypeState);
+  const {
+    assignee: selectedAssignee,
+    label: selectedLabel,
+    milestone: selectedMilestone,
+  } = selectedOption;
 
   const handleOptionClick = () => {
     const optionType = { key: optionKey, name: optionName };
@@ -23,15 +28,16 @@ export default function OptionItem({ optionName, optionKey, optionRef, selectedO
   };
 
   const optionSelectedList: { [key: string]: ReactElement | Array<ReactElement> | null } = {
-    assignee: selectedOption.assignee?.map((user) => <SelectedTabUser key={user.id} user={user} />),
-    label: selectedOption.label?.map((label) => <SelectedTabLabel key={label.id} label={label} />),
-    milestone: selectedOption.milestone ? (
-      <SelectedTabMilestone
-        key={selectedOption.milestone.id}
-        milestone={selectedOption.milestone}
-      />
+    assignee: selectedAssignee?.map((user) => <SelectedTabUser key={user.id} user={user} />),
+
+    label: selectedLabel?.map((label) => <SelectedTabLabel key={label.id} label={label} />),
+
+    milestone: selectedMilestone ? (
+      <SelectedTabMilestone key={selectedMilestone.id} milestone={selectedMilestone} />
     ) : null,
   };
+
+  const selectedOptionClassName = `selected-option__${optionKey}`;
 
   return (
     <OptionItemBlock ref={optionRef} onClick={handleOptionClick}>
@@ -39,9 +45,18 @@ export default function OptionItem({ optionName, optionKey, optionRef, selectedO
         <span>{optionName}</span>
         <AddOutlinedIcon />
       </div>
-      <div>{optionSelectedList[optionKey]}</div>
+      <div className={selectedOptionClassName}>{optionSelectedList[optionKey]}</div>
     </OptionItemBlock>
   );
 }
 
-const OptionItemBlock = styled.div``;
+const OptionItemBlock = styled.div`
+  .selected__assignee {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .selected-option__label {
+    display: flex;
+  }
+`;
