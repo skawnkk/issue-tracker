@@ -6,7 +6,10 @@ interface MilestoneItemType{
   milestone: MilestoneType
 }
 export default function MilestoneItem({milestone}:MilestoneItemType){
+  console.log(milestone)
   const [isEditMode, setEditMode] = useState(false)
-  return !isEditMode?<MilestoneInfo setEditMode={setEditMode} milestone={milestone}/>:<MilestoneAdd type='edit' setEditMode={setEditMode} milestone={milestone}/>
+  return !isEditMode
+  ?<MilestoneInfo setEditMode={setEditMode} milestone={milestone}/>
+  :<MilestoneAdd type='edit' setEditMode={setEditMode}/>
 }
 

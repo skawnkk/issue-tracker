@@ -4,6 +4,7 @@ interface NewMilestoneType{
 }
 
 export async function editMilestone(milestoneID:number, newMilestone:NewMilestoneType){
+
   const token = localStorage.getItem('token')
 
   try{
@@ -20,7 +21,7 @@ export async function editMilestone(milestoneID:number, newMilestone:NewMileston
 }
 export async function fetchCreateMilestone(newMilestone:NewMilestoneType){
   const token = localStorage.getItem('token')
-
+  console.log(2)
   try{
     const response = await fetch(API.createMilestone,{
       method: 'POST',
@@ -37,7 +38,6 @@ export async function fetchCreateMilestone(newMilestone:NewMilestoneType){
 
 export async function fetchDeleteMilestone(milesetoneID:number){
   const token = localStorage.getItem('token')
-  debugger;
   try{
     const response = await fetch(API.editDeleteMilestone(milesetoneID),{
       method: 'DELETE',

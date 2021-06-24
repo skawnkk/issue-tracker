@@ -24,10 +24,16 @@ export const resetTabClickedState = selector({
 
 //마일즈스톤___________________________________________
 
+export const milestoneTrigger = atom<boolean>({
+  key:'milestoneTrigger',
+  default:false
+})
 export const getMilestones = selectorFamily({
   key: 'GET/milestones',
-  get: (status:string) => async() => {
-    try{  
+  get: (status:string) => async({get}) => {
+    try{ 
+      console.log('get?')
+      get(milestoneTrigger)
       const response = await fetch(API.getMilestone(status))
       const milestoneData = await response.json()
       return milestoneData

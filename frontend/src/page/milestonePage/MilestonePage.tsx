@@ -18,20 +18,18 @@ export default function MilestonePage() {
   setLabelMilestoneState({ label: false, milestone: true });
 
   const [addClick, setAddClick] = useState(false);
-  const handleClick = () => {
-    setAddClick(!addClick);
-  };
+  const handleClick = () => setAddClick(!addClick);
+  
 
   const milestoneList = milestones.map((milestone:MilestoneType)=><MilestoneItem key={milestone.id} milestone={milestone}/>)
+  
   return (
     <MilestoneBlock>
       <div className='tab__option__header'>
         <LabelMilestoneTab />
-        {!addClick ? (
-          <PrimaryButton value={'+ 추가'} onClick={handleClick} />
-        ) : (
-          <PrimaryOutlinedButton value={'× 닫기'} onClick={handleClick} />
-        )}
+        {!addClick 
+          ? (<PrimaryButton value={'+ 추가'} onClick={handleClick} />)
+          : (<PrimaryOutlinedButton value={'× 닫기'} onClick={handleClick} />)}
       </div>
       {addClick && <MilestoneAdd setEditMode={setAddClick}/>}
       <div className='tab__table'>

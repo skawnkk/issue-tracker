@@ -1,30 +1,33 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
+import { useSetRecoilState } from 'recoil'
+import { milestoneTrigger } from 'store/labelMilestoneStore'
 import MilestoneIcon from 'components/atom/MilestoneIcon'
 import { ReactComponent as DeleteIcon} from 'assets/icon/DeleteIcon.svg';
 import { ReactComponent as EditIcon} from 'assets/icon/EditIcon.svg';
 import { ReactComponent as CloseIcon} from 'assets/icon/CloseIcon.svg';
 import { ReactComponent as CalendarIcon} from 'assets/icon/CalendarIcon.svg';
 import CustomizedProgressBars from 'components/atom/Progress'
-import { fetchHandleMilestone, fetchDeleteMilestone } from 'util/api/fetchHandleMilestone'
 import { MilestoneType } from 'components/common/tabModal/tapDataType'
+import { fetchHandleMilestone, fetchDeleteMilestone } from 'util/api/fetchHandleMilestone'
 interface MilestoneItemType{
   milestone: MilestoneType
   setEditMode: Dispatch<SetStateAction<boolean>>
 }
 export default function MilestoneInfo({milestone, setEditMode}:MilestoneItemType){
-
+  
+  const setMilestoneTrigger = useSetRecoilState(milestoneTrigger)
   const {id, title, description, dueDate, openedIssueCount, closedIssueCount}:MilestoneType = milestone
   const progress = () =>{
     if(!(openedIssueCount+closedIssueCount)) return 0
     return closedIssueCount/(openedIssueCount+closedIssueCount)
   }
   const handleClose = () => fetchHandleMilestone(id)
-  const handleEdit = () => {
-    setEditMode(true)
-    //수정api전송
+  const handleEdit = () => setEditMode(true)
+  const handleDelete = () => {
+    fetchDeleteMilestone(id) 
+    setMilestoneTrigger(trigger=>!trigger)
   }
-  const handleDelete = () => fetchDeleteMilestone(id)
 
   return  ( <MilestoneItemBlock>
     <div className='milestone__list__left'>

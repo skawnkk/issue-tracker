@@ -1,16 +1,21 @@
-import React, { useState, ReactElement, ChangeEvent, Dispatch, SetStateAction } from 'react'
+import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
+import { useSetRecoilState } from 'recoil'
+import { milestoneTrigger } from 'store/labelMilestoneStore'
 import Title from 'components/atom/Title'
 import PrimaryButton from 'components/atom/PrimaryButton'
-import { fetchCreateMilestone, editMilestone } from 'util/api/fetchHandleMilestone'
 import PrimaryOutlinedButton from'components/atom/PrimaryOutlinedButton'
 import { MilestoneType } from 'components/common/tabModal/tapDataType'
+import { fetchCreateMilestone, editMilestone } from 'util/api/fetchHandleMilestone'
+
 interface EditType{
   type?: string
   milestone?: MilestoneType
   setEditMode?: Dispatch<SetStateAction<boolean>>
 }
 export default function MilestoneAdd({type='create', setEditMode, milestone}:EditType){
+ 
+  const setMilestoneTrigger = useSetRecoilState(milestoneTrigger)
   const initTitle = milestone?.title||'마일스톤 제목'
   const initDate = milestone?.dueDate||'ex.YYYY-MM-DD'
   const initDesc = milestone?.description||'설명'
@@ -20,9 +25,13 @@ export default function MilestoneAdd({type='create', setEditMode, milestone}:Edi
  
   const handleSubmit = () => {
     const newMilestone = {title, dueDate, description}
+    console.log(1)
     if(type==='create') fetchCreateMilestone(newMilestone)
     else editMilestone(milestoneID, newMilestone)
+    
     if(setEditMode) setEditMode(false)
+    console.log(3)
+    setMilestoneTrigger(trigger=>!trigger)
   }
 
   const handleChange = (type: string, e:ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +40,7 @@ export default function MilestoneAdd({type='create', setEditMode, milestone}:Edi
     if(type==='description') setMilestoneInputs({...milestoneInputs, description: e.target.value})
   }
 
-  const handleClick = () => {}
+  const handleClick = () => {if(setEditMode) setEditMode(false)}
 
   const pageTitle = (type==='create')?'새로운 마일스톤 추가':'마일스톤 편집'
   return (
@@ -44,9 +53,9 @@ export default function MilestoneAdd({type='create', setEditMode, milestone}:Edi
         </div>
         <input type='text' className='milestone__description' placeholder='설명(선택)' value={description} onChange={(e)=>handleChange('description', e)}/>
       </MilestoneInputBlock>
-      <div className='milestone__add__submit' onClick={handleSubmit}>
+      <div className='milestone__add__submit' >
         {type!=='create' && <PrimaryOutlinedButton value={'× 취소'} onClick={handleClick}/>}
-        <PrimaryButton value={'+ 완료'}/>
+        <PrimaryButton value={'+ 완료'} onClick={handleSubmit}/>
       </div>
     </MilestoneAddBlock>
   )
