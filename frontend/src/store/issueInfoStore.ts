@@ -111,24 +111,6 @@ export const getTabInfoState = selector({
   },
 });
 
-export interface selectedTabType {
-  assignee: Array<UserType> | [];
-  label: Array<LabelType> | [];
-  milestone: MilestoneType | null;
-  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null;
-}
-
-export const selectedTabState = selector<selectedTabType>({
-  key: 'selectedTabState',
-  get: ({ get }) => {
-    const selectUser = get(selectedUserState);
-    const selectLabel = get(selectedLabelState);
-    const selectMilestone = get(selectedMilestoneState);
-
-    return { assignee: selectUser, label: selectLabel, milestone: selectMilestone };
-  },
-});
-
 //create
 export const IssueFormDataState = selector({
   key: 'create/issue/form',
@@ -145,6 +127,45 @@ export const IssueFormDataState = selector({
   },
 });
 
+export interface selectedTabType {
+  assignee: Array<UserType> | [];
+  label: Array<LabelType> | [];
+  milestone: MilestoneType | null;
+  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null;
+}
+
+export const selectedUserState = atom<Array<UserType> | []>({
+  key: 'selectedUserTabState',
+  default: [],
+});
+
+export const selectedLabelState = atom<Array<LabelType> | []>({
+  key: 'selectedLabelTabState',
+  default: [],
+});
+
+export const selectedMilestoneState = atom<MilestoneType | null>({
+  key: 'selectedMilestoneTabState',
+  default: null,
+});
+
+export const selectedTabState = selector<selectedTabType>({
+  key: 'selectedTabState',
+  get: ({ get }) => {
+    const selectUser = get(selectedUserState);
+    const selectLabel = get(selectedLabelState);
+    const selectMilestone = get(selectedMilestoneState);
+
+    return { assignee: selectUser, label: selectLabel, milestone: selectMilestone };
+  },
+  set: ({ set }, newValue) => {
+    const { assignee, label, milestone } = newValue as selectedTabType;
+    set(selectedUserState, assignee);
+    set(selectedLabelState, label);
+    set(selectedMilestoneState, milestone);
+  },
+});
+
 export const resetSelectedTab = selector<null>({
   key: 'resetSelectedTab',
   get: () => null,
@@ -153,17 +174,4 @@ export const resetSelectedTab = selector<null>({
     reset(selectedLabelState);
     reset(selectedMilestoneState);
   },
-});
-
-export const selectedUserState = atom<Array<UserType> | []>({
-  key: 'selectedUserTabState',
-  default: [],
-});
-export const selectedLabelState = atom<Array<LabelType> | []>({
-  key: 'selectedLabelTabState',
-  default: [],
-});
-export const selectedMilestoneState = atom<MilestoneType | null>({
-  key: 'selectedMilestoneTabState',
-  default: null,
 });
