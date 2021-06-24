@@ -9,20 +9,11 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import MilestoneItem from 'page/milestonePage/MilestoneItem';
 import { ReactComponent as CloseIcon } from 'assets/icon/CloseIcon.svg';
-import { MilestoneType } from 'components/common/tabModal/tapDataType';
 
+import { MilestoneType } from 'components/common/tabModal/tapDataType'
 export default function MilestonePage() {
-  const milestoneData = useRecoilValue(getMilestones);
-  const {
-    id,
-    title,
-    description,
-    openedIssueCount,
-    closedIssueCount,
-    createdDateTime,
-    dueDate,
-    checked,
-  }: MilestoneType = milestoneData;
+  const status = 'open'
+  const {closedMilestonesCount, openedMilestonesCount, milestones} = useRecoilValue(getMilestones(status));
 
   const setLabelMilestoneState = useSetRecoilState(labelMilestoneClickedState);
   setLabelMilestoneState({ label: false, milestone: true });
@@ -31,6 +22,8 @@ export default function MilestonePage() {
   const handleClick = () => {
     setAddClick(!addClick);
   };
+
+  const milestoneList = milestones.map((milestone:MilestoneType)=><MilestoneItem key={milestone.id} milestone={milestone}/>)
   return (
     <MilestoneBlock>
       <div className='tab__option__header'>
@@ -47,15 +40,15 @@ export default function MilestonePage() {
           <div>
             <div>
               <MilestoneIcon />
-              열린 마일스톤(2)
+              열린 마일스톤({openedMilestonesCount})
             </div>
             <div>
               <CloseIcon />
-              &nbsp;&nbsp;닫힌 마일스톤(2)
+              &nbsp;&nbsp;닫힌 마일스톤({closedMilestonesCount})
             </div>
           </div>
         </div>
-        <MilestoneItem />
+        {milestoneList}
       </div>
     </MilestoneBlock>
   );

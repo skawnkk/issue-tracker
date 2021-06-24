@@ -24,6 +24,7 @@ export interface MilestoneType {
   openedIssueCount: number;
   closedIssueCount: number;
   checked?: boolean;
+  open?: boolean;
 }
 
 export interface CommentType {
