@@ -14,7 +14,3 @@ export function timeChecker(createDate: string) {
   if (passedSeconds / min >= 1) return `${Math.ceil(passedSeconds / min)} minutes ago`;
   return 'now';
 }
-
-export const add1 = (num: number) => {
-  return num + 1;
-};
