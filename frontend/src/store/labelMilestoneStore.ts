@@ -24,9 +24,9 @@ export const resetTabClickedState = selector({
 
 //마일즈스톤___________________________________________
 
-export const milestoneTrigger = atom<boolean>({
+export const milestoneTrigger = atom<number>({
   key:'milestoneTrigger',
-  default:false
+  default:0
 })
 export const getMilestones = selectorFamily({
   key: 'GET/milestones',

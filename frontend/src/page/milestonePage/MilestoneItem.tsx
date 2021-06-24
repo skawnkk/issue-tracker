@@ -10,6 +10,6 @@ export default function MilestoneItem({milestone}:MilestoneItemType){
   const [isEditMode, setEditMode] = useState(false)
   return !isEditMode
   ?<MilestoneInfo setEditMode={setEditMode} milestone={milestone}/>
-  :<MilestoneAdd type='edit' setEditMode={setEditMode}/>
+  :<MilestoneAdd type='edit' setEditMode={setEditMode} milestone={milestone}/>
 }
 

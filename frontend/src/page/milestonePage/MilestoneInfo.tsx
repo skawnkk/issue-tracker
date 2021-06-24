@@ -26,7 +26,7 @@ export default function MilestoneInfo({milestone, setEditMode}:MilestoneItemType
   const handleEdit = () => setEditMode(true)
   const handleDelete = () => {
     fetchDeleteMilestone(id) 
-    setMilestoneTrigger(trigger=>!trigger)
+    setMilestoneTrigger(trigger=>trigger+1)
   }
 
   return  ( <MilestoneItemBlock>

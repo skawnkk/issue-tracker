@@ -14,7 +14,7 @@ interface EditType{
   setEditMode?: Dispatch<SetStateAction<boolean>>
 }
 export default function MilestoneAdd({type='create', setEditMode, milestone}:EditType){
- 
+
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger)
   const initTitle = milestone?.title||'마일스톤 제목'
   const initDate = milestone?.dueDate||'ex.YYYY-MM-DD'
@@ -25,13 +25,12 @@ export default function MilestoneAdd({type='create', setEditMode, milestone}:Edi
  
   const handleSubmit = () => {
     const newMilestone = {title, dueDate, description}
-    console.log(1)
+  
     if(type==='create') fetchCreateMilestone(newMilestone)
     else editMilestone(milestoneID, newMilestone)
     
     if(setEditMode) setEditMode(false)
-    console.log(3)
-    setMilestoneTrigger(trigger=>!trigger)
+    setMilestoneTrigger(trigger=>trigger+1)
   }
 
   const handleChange = (type: string, e:ChangeEvent<HTMLInputElement>) => {
