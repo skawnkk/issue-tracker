@@ -4,18 +4,12 @@ import styled from 'styled-components';
 interface Props {
   className?: string;
   label?: string;
-  defaultValue?: string;
+  value?: string;
   onChange?: ({ target }: { target: HTMLInputElement }) => void;
   [key: string]: any;
 }
 
-export default function InputField({
-  label,
-  className,
-  defaultValue = '',
-  onChange,
-  ...props
-}: Props) {
+export default function InputField({ label, className, value = '', onChange, ...props }: Props) {
   const [isFocus, setIsFocus] = useState(false);
   const handleOnFocus = () => setIsFocus(true);
   const handleOnBlur = () => setIsFocus(false);
@@ -24,7 +18,7 @@ export default function InputField({
       {label && <div>{label}</div>}
       <input
         type='text'
-        defaultValue={defaultValue}
+        value={value}
         onChange={onChange}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
