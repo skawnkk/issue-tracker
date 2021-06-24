@@ -8,21 +8,20 @@ import { Link } from 'react-router-dom';
 import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
 
 interface Props {
-  lableState?: boolean;
+  labelState?: boolean;
   milestoneState?: boolean;
 }
 export default function LabelMilestoneTab(): ReactElement {
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
-
   const IssuesInfoData = useRecoilValue(getIssuesInfoState);
 
   return (
     <LabelMilestoneTabBlock>
       <Link to='/label'>
-        <LableBlock lableState={labelMilestoneClick.label}>
+        <LabelBlock labelState={labelMilestoneClick.label}>
           <LoyaltyIcon fontSize='small' />
           &nbsp;레이블 ({IssuesInfoData?.count?.label})
-        </LableBlock>
+        </LabelBlock>
       </Link>
       <Link to='/milestone'>
         <MilestoneBlock milestoneState={labelMilestoneClick.milestone}>
@@ -38,10 +37,10 @@ const MilestoneBlock = styled.div<Props>`
   background-color: ${({ milestoneState, theme }) =>
     milestoneState ? theme.color.bgGrey : theme.color.white};
 `;
-const LableBlock = styled.div<Props>`
+const LabelBlock = styled.div<Props>`
   border-radius: 11px 0 0 11px;
-  background-color: ${({ lableState, theme }) =>
-    lableState ? theme.color.bgGrey : theme.color.white};
+  background-color: ${({ labelState, theme }) =>
+    labelState ? theme.color.bgGrey : theme.color.white};
 `;
 const LabelMilestoneTabBlock = styled.div`
   display: flex;

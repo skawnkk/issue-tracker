@@ -8,7 +8,7 @@ import IssueDetailOption from 'page/createIssuePage/issueDetailOption/IssueDetai
 import PrimaryButton from 'components/atom/PrimaryButton';
 import { useRecoilValue } from 'recoil';
 import { IssueFormDataState } from 'store/issueInfoStore';
-import fetchCreate from 'util/api/fetchCreate';
+import fetchCreateIssue from 'util/api/fetchCreateIssue';
 import ErrorPage from 'page/errorPage/ErrorPage';
 
 type inputsType = {
@@ -27,27 +27,28 @@ export default function CreateIssuePage(): ReactElement {
   const [error, setError] = useState(false);
 
   const handleClick = async (btnType: string) => {
-    if (btnType === 'cancle') {
+    if (btnType === 'cancel') {
       history.push('/main');
-    } else {
-      const titleInput = titleRef?.current as HTMLInputElement | null;
-      const titleValue = titleInput?.value;
-      const sample: inputsType = {
-        title: titleValue ? titleValue : '제목 없음',
-        comment: comment ? comment : '',
-        assignees: assigneeID,
-        labels: labelID,
-        milestone: milestoneID ? milestoneID : null,
-      };
+      return;
+    }
 
-      try {
-        const isSuccess = await fetchCreate(sample);
-        const createdIssueID = isSuccess?.issueId;
-        history.push(`/detail/${createdIssueID}`);
-      } catch (error) {
-        console.log('에러가발생했다!', error);
-        setError(true);
-      }
+    const titleInput = titleRef?.current as HTMLInputElement | null;
+    const titleValue = titleInput?.value;
+    const sample: inputsType = {
+      title: titleValue ? titleValue : '제목 없음',
+      comment: comment ? comment : '',
+      assignees: assigneeID,
+      labels: labelID,
+      milestone: milestoneID ? milestoneID : null,
+    };
+
+    try {
+      const isSuccess = await fetchCreateIssue(sample);
+      const createdIssueID = isSuccess?.issueId;
+      history.push(`/detail/${createdIssueID}`);
+    } catch (error) {
+      console.log('에러가발생했다!', error);
+      setError(true);
     }
   };
 

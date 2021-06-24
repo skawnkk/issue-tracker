@@ -2,6 +2,7 @@ interface APItype {
   getIssue: string;
   tabType: string;
   createIssue: string;
+  labelURL: string;
   getFileURL: string;
   getMilestone: (status?: string) => string;
   createMilestone:string;
@@ -10,6 +11,7 @@ interface APItype {
   login: (code: string) => string;
   getIssueDetail: (id: number) => string;
   editIssueTitle: (issueId: number) => string;
+  editLabel: (id: number) => string;
 }
 
 export const authorizedHeaders = (token: string | null) => ({ Authorization: `Bearer ${token}` });
@@ -28,6 +30,8 @@ const API: APItype = {
   getUserInfo: basicURL + `/userInfo`,
   getIssueDetail: (id) => basicURL + '/issues/' + id,
   editIssueTitle: (issueId: number) => basicURL + `/issues/${issueId}/title`,
+  labelURL: basicURL + '/labels',
+  editLabel: (id) => basicURL + '/labels/' + id,
 };
 
 export default API;
