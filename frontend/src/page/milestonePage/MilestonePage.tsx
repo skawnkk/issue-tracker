@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import LabelMilestoneTab from 'components/common/LabelMilestoneTab';
-import PrimaryButton from 'components/atom/PrimaryButton';
-import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
-import MilestoneAdd from 'page/milestonePage/MilestoneAdd';
 import styled from 'styled-components';
 import { labelMilestoneClickedState, getMilestones } from 'store/labelMilestoneStore';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
+import LabelMilestoneTab from 'components/common/LabelMilestoneTab';
+import PrimaryButton from 'components/atom/PrimaryButton';
+import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
+import MilestoneAdd from 'page/milestonePage/MilestoneAdd';
 import MilestoneItem from 'page/milestonePage/MilestoneItem';
 import { ReactComponent as CloseIcon } from 'assets/icon/CloseIcon.svg';
-
 import { MilestoneType } from 'components/common/tabModal/tapDataType'
 export default function MilestonePage() {
   const status = 'open'
@@ -34,7 +33,7 @@ export default function MilestonePage() {
           <PrimaryOutlinedButton value={'× 닫기'} onClick={handleClick} />
         )}
       </div>
-      {addClick && <MilestoneAdd />}
+      {addClick && <MilestoneAdd setEditMode={setAddClick}/>}
       <div className='tab__table'>
         <div className='tab__table__header'>
           <div>
