@@ -4,6 +4,8 @@ interface APItype {
   createIssue: string;
   getFileURL: string;
   getMilestone: (status?: string) => string;
+  createMilestone:string;
+  deleteMilestone:(milestoneId: number) => string;
   getUserInfo: string;
   login: (code: string) => string;
   getIssueDetail: (id: number) => string;
@@ -19,7 +21,9 @@ const API: APItype = {
   tabType: basicURL + `/issues/form`,
   createIssue: basicURL + `/issues/form`,
   getFileURL: basicURL + `/images`,
-  getMilestone: (status ='open') => basicURL + `/milestones?status=${status}`,
+  getMilestone: (status ='open') => basicURL + `/milestones?status=${status}`, //get & close milestone
+  createMilestone : basicURL + `/milestones`,
+  deleteMilestone : (milestoneId) => basicURL + `/milestones/${milestoneId}`,
   login: (code: string) => basicURL + '/login?code=' + code,
   getUserInfo: basicURL + `/userInfo`,
   getIssueDetail: (id) => basicURL + '/issues/' + id,
