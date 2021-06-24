@@ -18,7 +18,7 @@ interface Props {
   titleInput: inputDataType;
   descriptionInput: inputDataType;
   colorInput: inputDataType;
-  setLableTextColor: Dispatch<SetStateAction<string>>;
+  setLabelTextColor: Dispatch<SetStateAction<string>>;
 }
 
 export default function LabelEdit({
@@ -26,7 +26,7 @@ export default function LabelEdit({
   titleInput,
   descriptionInput,
   colorInput,
-  setLableTextColor,
+  setLabelTextColor,
 }: Props) {
   const [labelBadgeColor, setLabelBadgeColor] = useState(color);
 
@@ -34,7 +34,7 @@ export default function LabelEdit({
     const randomLabelColor = getRandomLabelColor();
     setLabelBadgeColor(randomLabelColor);
     colorInput.setValue(randomLabelColor.backgroundColorCode);
-    setLableTextColor(randomLabelColor.textColorCode);
+    setLabelTextColor(randomLabelColor.textColorCode);
   };
 
   return (

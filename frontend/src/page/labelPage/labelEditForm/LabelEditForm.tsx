@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import PrimaryButton from 'components/atom/PrimaryButton';
-import LabelEdit from 'page/labelPage/labelEditForm/LabelEdit';
-import useInput from 'hooks/useInput';
-import { createLabel, editLabel } from 'util/api/fetchLabel';
 import { labelTrigger } from 'store/labelStore';
+import LabelEdit from 'page/labelPage/labelEditForm/LabelEdit';
 import { LabelType } from 'components/common/tabModal/tapDataType';
+import PrimaryButton from 'components/atom/PrimaryButton';
+import { createLabel, editLabel } from 'util/api/fetchLabel';
+import useInput from 'hooks/useInput';
 
 interface Props {
   className?: string;
@@ -27,7 +27,7 @@ export default function LabelEditForm({
   const descriptionInput = useInput(label.description);
   const colorInput = useInput(label.color.backgroundColorCode);
 
-  const [lableTextColor, setLableTextColor] = useState(label.color.textColorCode);
+  const [labelTextColor, setLabelTextColor] = useState(label.color.textColorCode);
 
   const handleSubmitClick = () => {
     const newLabelData = {
@@ -35,7 +35,7 @@ export default function LabelEditForm({
       description: descriptionInput.value,
       color: {
         backgroundColorCode: colorInput.value,
-        textColorCode: lableTextColor,
+        textColorCode: labelTextColor,
       },
     };
     //create인 경우
@@ -57,7 +57,7 @@ export default function LabelEditForm({
             descriptionInput,
             colorInput,
             label,
-            setLableTextColor,
+            setLabelTextColor,
           }}
         />
       </div>

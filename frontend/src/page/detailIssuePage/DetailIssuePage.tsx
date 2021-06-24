@@ -31,8 +31,9 @@ export default function DetailIssuePage() {
   const pagePaths = window.location.pathname.split('/');
   const issueNum = +pagePaths[pagePaths.length - 1];
   const setDetailIssueId = useSetRecoilState(detailIdState);
-  useEffect(() => setDetailIssueId(issueNum), []);
   const issueData = useRecoilValue(getDetailIssueData); //fetch해온 데이터 사용예정
+
+  useEffect(() => setDetailIssueId(issueNum), []);
 
   if (!issueData) return null;
   return (
