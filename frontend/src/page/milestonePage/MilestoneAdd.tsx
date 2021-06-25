@@ -34,12 +34,10 @@ export default function MilestoneAdd({type='create', setEditMode, milestone}:Edi
   }
 
   const handleChange = (type: string, e:ChangeEvent<HTMLInputElement>) => {
-    if(type==='title') setMilestoneInputs({...milestoneInputs, title: e.target.value})
-    if(type==='dueDate') setMilestoneInputs({...milestoneInputs, dueDate: e.target.value})
-    if(type==='description') setMilestoneInputs({...milestoneInputs, description: e.target.value})
+    setMilestoneInputs({...milestoneInputs, [type]: e.target.value})
   }
 
-  const handleClick = () => {if(setEditMode) setEditMode(false)}
+  const handleClick = () => setEditMode && setEditMode(false)
 
   const pageTitle = (type==='create')?'새로운 마일스톤 추가':'마일스톤 편집'
   return (

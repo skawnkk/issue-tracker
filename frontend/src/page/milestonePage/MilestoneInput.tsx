@@ -12,9 +12,7 @@ interface MilestoneInput{
 export default function MilestoneInput({milestoneInputs, setMilestoneInputs}:MilestoneInput):ReactElement{
   const {title, dueDate, description} = milestoneInputs
   const handleChange = (type: string, e:ChangeEvent<HTMLInputElement>) => {
-    if(type==='title') setMilestoneInputs({...milestoneInputs, title: e.target.value})
-    if(type==='dueDate') setMilestoneInputs({...milestoneInputs, dueDate: e.target.value})
-    if(type==='description') setMilestoneInputs({...milestoneInputs, description: e.target.value})
+    setMilestoneInputs({...milestoneInputs, [type]: e.target.value})
   }
   return (
     <MilestoneInputBlock>
