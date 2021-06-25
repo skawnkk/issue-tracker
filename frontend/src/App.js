@@ -5,6 +5,7 @@ import Header from './components/header/Header';
 import LoginPage from 'page/loginPage/LoginPage';
 import { useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
+import { milestoneTrigger } from 'store/labelMilestoneStore';
 import API, { authorizedHeaders } from 'util/api/api';
 
 function App() {

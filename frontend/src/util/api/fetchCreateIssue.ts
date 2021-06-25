@@ -1,4 +1,4 @@
-import API from 'util/api/api';
+import API, {authorizedHeaders} from 'util/api/api';
 
 type inputsType = {
   title?: string;
@@ -10,16 +10,14 @@ type inputsType = {
 
 export default async function fetchCreateIssue(issueInputs: inputsType) {
   try {
+    const token = localStorage.getItem('token')
     const response = await fetch(API.createIssue, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJcImlzc3VlLXRyYWNrZXItdGVhbS0wNlwiIiwidXNlcklkIjoxfQ.WCMSnjyZCjZ80aSBN9GCNckS8Q_FkdpWXPWJwsx3kVA',
+        'Content-Type': 'application/json',...authorizedHeaders(token)
       },
       body: JSON.stringify(issueInputs),
     });
-    console.log('try');
     if (response.status !== 200) throw new Error('잘못된 요청입니다.');
     const issueID = response.json();
     return issueID;
