@@ -1,4 +1,4 @@
-import API, {authorizedHeaders} from 'util/api/api';
+import API, { authorizedHeaders } from 'util/api/api';
 
 type inputsType = {
   title?: string;
@@ -10,11 +10,12 @@ type inputsType = {
 
 export default async function fetchCreateIssue(issueInputs: inputsType) {
   try {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const response = await fetch(API.createIssue, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',...authorizedHeaders(token)
+        'Content-Type': 'application/json',
+        ...authorizedHeaders(token),
       },
       body: JSON.stringify(issueInputs),
     });
