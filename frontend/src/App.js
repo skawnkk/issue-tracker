@@ -3,14 +3,12 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Header from './components/header/Header';
 import LoginPage from 'page/loginPage/LoginPage';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { milestoneTrigger } from 'store/labelMilestoneStore';
 import API, { authorizedHeaders } from 'util/api/api';
 
 function App() {
-  const trigger = useRecoilValue(milestoneTrigger)
-  console.log(trigger)
   const MainPage = lazy(() => import('./page/mainPage/MainPage'));
   const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
   const DetailIssuePage = lazy(() => import('./page/detailIssuePage/DetailIssuePage'));
