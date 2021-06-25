@@ -7,13 +7,18 @@ import { useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { milestoneTrigger } from 'store/labelMilestoneStore';
 import API, { authorizedHeaders } from 'util/api/api';
+import MainPage from './page/mainPage/MainPage';
+import CreateIssuePage from './page/createIssuePage/CreateIssuePage';
+import DetailIssuePage from './page/detailIssuePage/DetailIssuePage';
+import LabelPage from './page/labelPage/LabelPage';
+import MilestonePage from './page/milestonePage/MilestonePage';
 
 function App() {
-  const MainPage = lazy(() => import('./page/mainPage/MainPage'));
-  const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
-  const DetailIssuePage = lazy(() => import('./page/detailIssuePage/DetailIssuePage'));
-  const LabelPage = lazy(() => import('./page/labelPage/LabelPage'));
-  const MilestonePage = lazy(() => import('./page/milestonePage/MilestonePage'));
+  // const MainPage = lazy(() => import('./page/mainPage/MainPage'));
+  // const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
+  // const DetailIssuePage = lazy(() => import('./page/detailIssuePage/DetailIssuePage'));
+  // const LabelPage = lazy(() => import('./page/labelPage/LabelPage'));
+  // const MilestonePage = lazy(() => import('./page/milestonePage/MilestonePage'));
   const setLoginData = useSetRecoilState(controlLoginState);
   const token = localStorage.getItem('token');
   const isLogin = () => !!token;
