@@ -63,9 +63,9 @@ export const issueFilterSelectState = atom<string>({
   default: '',
 });
 
-export const getIssueTrigger = atom<boolean>({
+export const getIssueTrigger = atom<number>({
   key: 'getIssueTrigger',
-  default: false,
+  default: 0,
 });
 
 export const getIssuesInfoState = selector<IssuesInfoStateType | null>({

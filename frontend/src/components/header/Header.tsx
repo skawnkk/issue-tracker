@@ -37,7 +37,7 @@ function Header() {
     padding: '0 80px',
   };
   const handleLogoClick = () => {
-    setIssueTrigger(true);
+    setIssueTrigger((triggerCount) => triggerCount + 1);
   };
   return (
     <HeaderBlock isLogin={isLogin}>
