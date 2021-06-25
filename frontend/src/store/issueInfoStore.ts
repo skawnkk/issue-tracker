@@ -99,8 +99,10 @@ interface TabInfoType {
 export const getTabInfoState = selector<TabInfoType>({
   key: 'GET/tabinfo',
   get: async () => {
+    const token = localStorage.getItem('token');
+
     try {
-      const response = await fetch(API.tabType);
+      const response = await fetch(API.tabType, { headers: authorizedHeaders(token) });
       const tabData = await response.json();
       const tabInfos = {
         assignee: tabData.assignees,
