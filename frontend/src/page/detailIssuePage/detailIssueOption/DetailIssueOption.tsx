@@ -73,7 +73,7 @@ export default function DetailIssueOption({ id }: Props) {
     if (type === 'milestone') {
       const selectedId = selectedOptionData[type]?.id;
       const newOptionData = optionData[type].find((data) => data.id === selectedId);
-      if (!newOptionData || !selectedId) return null;
+      if (!newOptionData || !selectedId) return { id: null };
       return { id: newOptionData.id };
     }
     return null;

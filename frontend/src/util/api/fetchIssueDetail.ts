@@ -30,14 +30,14 @@ export async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
 
 type patchAssigneeType = { id: number; isAssigned: boolean }[];
 type patchLabelType = { id: number; isChecked: boolean }[];
-type patchMilestoneType = { id: number } | null;
+type patchMilestoneType = { id: number | null };
 
 export async function editIssueDetailOption(
   issueId: number,
   type: string,
-  patchData: patchAssigneeType | patchLabelType | patchMilestoneType
+  patchData: patchAssigneeType | patchLabelType | patchMilestoneType | null
 ) {
-  if (!type) return;
+  if (!type || !patchData) return;
   const token = localStorage.getItem('token');
   const newValue = type === 'milestone' ? { [type]: patchData } : { [`${type}s`]: patchData };
   try {
