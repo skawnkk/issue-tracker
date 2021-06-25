@@ -84,6 +84,7 @@ const IssueInputBlock = styled.div`
     border: none;
     background-color: ${({ theme }) => theme.color.inputBg};
     font-size: ${({ theme }) => theme.size.md}px;
+    width: 100%;
     height: 56px;
     &:focus {
       text-decoration: none;
@@ -100,7 +101,7 @@ const IssueInputBlock = styled.div`
     resize: none;
     width: -webkit-fill-availabel;
     height: 343px;
-    border-bottom: 1px dashed ${({ theme }) => theme.color.fontGrey};
+   
     &:focus {
       .input__addFile {
         background-color: ${({ theme }) => theme.color.white}; //?이거 어케해야함?
