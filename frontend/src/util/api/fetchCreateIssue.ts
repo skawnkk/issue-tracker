@@ -19,7 +19,6 @@ export default async function fetchCreateIssue(issueInputs: inputsType) {
       },
       body: JSON.stringify(issueInputs),
     });
-    console.log('try');
     if (response.status !== 200) throw new Error('잘못된 요청입니다.');
     const issueID = response.json();
     return issueID;

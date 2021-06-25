@@ -32,7 +32,6 @@ export const getMilestones = selectorFamily({
   key: 'GET/milestones',
   get: (status:string) => async({get}) => {
     try{ 
-      console.log('get?')
       get(milestoneTrigger)
       const response = await fetch(API.getMilestone(status))
       const milestoneData = await response.json()
