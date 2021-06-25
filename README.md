@@ -34,11 +34,11 @@
 - Spring boot, Spring Data JPA, Querydsl
 - AWS EC2, S3, VPC, RDS, Code Deploy
 - Nginx
-- MySQL
+- MySQL, Elasticsearch
 
 ## API 구조
 - [API 구조 초안](https://github.com/janeljs/issue-tracker/wiki/API-%EA%B5%AC%EC%A1%B0)
-- [포스트맨 API 문서](https://documenter.getpostman.com/view/11926984/TzY7dtBd)
+- [포스트맨 API 문서](https://documenter.getpostman.com/view/14946697/TzecDQj4)
 
 ## 데이터베이스 구조
 - [스키마](https://github.com/janeljs/issue-tracker/wiki/%5BBE%5D)
