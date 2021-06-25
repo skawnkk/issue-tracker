@@ -28,28 +28,23 @@ export async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
   return issueDetailData;
 }
 
-interface patchAssigneeType {
-  assignees: { id: number; isAssigned: boolean }[];
-}
-interface patchLabelType {
-  labels: { id: number; isAssigned: boolean }[];
-}
-interface patchLabelType {
-  milestone: { id: number };
-}
+type patchAssigneeType = { id: number; isAssigned: boolean }[];
+type patchLabelType = { id: number; isChecked: boolean }[];
+type patchMilestoneType = { id: number } | null;
 
 export async function editIssueDetailOption(
   issueId: number,
   type: string,
-  patchData: patchAssigneeType | patchLabelType | patchLabelType
+  patchData: patchAssigneeType | patchLabelType | patchMilestoneType
 ) {
+  if (!type) return;
   const token = localStorage.getItem('token');
-
+  const newValue = type === 'milestone' ? { [type]: patchData } : { [`${type}s`]: patchData };
   try {
     const response = await fetch(API.editIssueDetailOption(issueId, type), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
-      body: JSON.stringify(patchData),
+      body: JSON.stringify(newValue),
     });
     if (response.status === 200) return true;
     else throw Error;

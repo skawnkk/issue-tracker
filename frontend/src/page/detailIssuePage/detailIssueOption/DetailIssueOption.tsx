@@ -41,40 +41,42 @@ export default function DetailIssueOption({ id }: Props) {
   useEffect(() => {
     if (open) return;
     setSelectedOption(selectedOptionData);
-    // if (selectedOptionType === 'assignee') {
-    //   const selectedAssignee = selectedOptionData.assignee.map((v) => v.id);
-    //   const newAssignee = assigneeData
-    //     .map((assignee) => {
-    //       if (selectedAssignee.includes(assignee.id)) return { ...assignee, assigned: true };
-    //       return assignee;
-    //     })
-    //     .map(({ id, assigned }) => ({ id, isAssigned: assigned }));
+    const newSelectedOptionData = getSelectOptionData(selectedOptionType);
 
-    //   const fetchData = { assignees: newAssignee };
-    //   editIssueDetailOption(id, selectedOptionType, fetchData);
-    // } else if (selectedOptionType === 'label') {
-    // } else if (selectedOptionType === 'milestone') {
-    // }
+    editIssueDetailOption(id, selectedOptionType, newSelectedOptionData);
   }, [open, selectedOptionData]);
 
-  const getSelectOptionData = (type) => {
-    let selectedData;
+  const getSelectOptionData = (type: string) => {
+    if (type === 'assignee') {
+      const selectedId = selectedOptionData[type].map((v) => v.id);
+      const newOptionData = optionData[type]
+        .map((data) => {
+          if (selectedId.includes(data.id)) return { ...data, assigned: true };
+          return data;
+        })
+        .map((data) => ({ id: data.id, isAssigned: data.assigned }));
 
-    if (selectedOptionData[type] instanceof Array)
-      selectedData = selectedOptionData[type].map((v) => v.id);
-    else selectedData = selectedOptionData[type].id;
+      return newOptionData;
+    }
 
-    const newOptionData = optionData[type]
-      .map((data) => {
-        if (selectedData.includes(data.id))
-          return type === 'assignee' ? { ...data, assigned: true } : { ...data, checked: true };
-        return data;
-      })
-      .map((data) => {
-        return type === 'assignee'
-          ? { id: data.id, isAssigned: data.assigned }
-          : { id: data.id, isChecked: data.checked };
-      });
+    if (type === 'label') {
+      const selectedId = selectedOptionData[type].map((v) => v.id);
+      const newOptionData = optionData[type]
+        .map((data) => {
+          if (selectedId.includes(data.id)) return { ...data, checked: true };
+          return data;
+        })
+        .map((data) => ({ id: data.id, isChecked: data.checked }));
+
+      return newOptionData;
+    }
+    if (type === 'milestone') {
+      const selectedId = selectedOptionData[type]?.id;
+      const newOptionData = optionData[type].find((data) => data.id === selectedId);
+      if (!newOptionData || !selectedId) return null;
+      return { id: newOptionData.id };
+    }
+    return null;
   };
 
   //(담당자 + ,라벨 + )같은 OPTION ITEM
