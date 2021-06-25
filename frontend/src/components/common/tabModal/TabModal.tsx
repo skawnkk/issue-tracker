@@ -1,21 +1,22 @@
-import React, { ReactElement, RefObject } from 'react';
+import React, { RefObject } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { issueFilterTypeState } from 'store/issueInfoStore';
 import ModalContentList from './ModalContentList';
 interface TabModalProps {
   modalRef: RefObject<HTMLDivElement>;
+  className?: string;
 }
 interface filterObjType {
   key: string;
   name: string;
-  isMainPage: boolean;
 }
-export default function TabModal({ modalRef }: TabModalProps): ReactElement {
+export default function TabModal({ modalRef, className }: TabModalProps) {
   const filterType = useRecoilValue<filterObjType>(issueFilterTypeState);
 
+  if (!filterType.key) return null;
   return (
-    <TabModalBlock filterType={filterType.key} ref={modalRef} isMainPage={filterType.isMainPage}>
+    <TabModalBlock className={className} filterType={filterType.key} ref={modalRef}>
       <div className='modal__header'>{filterType.name} 선택</div>
       <ModalContentList filterType={filterType.key} />
     </TabModalBlock>
@@ -24,13 +25,11 @@ export default function TabModal({ modalRef }: TabModalProps): ReactElement {
 
 interface StyleProps {
   filterType: string;
-  isMainPage: boolean;
 }
 const TabModalBlock = styled.div<StyleProps>`
   position: absolute;
-  top: ${({ theme, filterType, isMainPage }) => (isMainPage ? '50px' : '6%')};
-  right: ${({ filterType, theme, isMainPage }) =>
-    isMainPage ? `${theme.tabModalRightPosition[filterType]}px` : '19.4%'};
+  top: 50px;
+  right: ${({ filterType, theme }) => `${theme.tabModalRightPosition[filterType]}px`};
   width: 240px;
   border: 1px solid ${({ theme }) => theme.color.lineGrey};
   border-radius: 16px;

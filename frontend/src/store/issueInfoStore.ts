@@ -53,9 +53,9 @@ export const isFilterFullSetting = atom<boolean>({
   default: true,
 });
 
-export const issueFilterTypeState = atom<{ key: string; name: string; isMainPage: boolean }>({
+export const issueFilterTypeState = atom<{ key: string; name: string }>({
   key: 'issueFilterTypeState',
-  default: { name: '', key: '', isMainPage: true },
+  default: { name: '', key: '' },
 });
 
 export const issueFilterSelectState = atom<string>({
@@ -90,16 +90,19 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
 });
 
 interface TabInfoType {
-  [key: string]: any;
+  assignee: Array<UserType>;
+  label: Array<LabelType>;
+  milestone: Array<MilestoneType>;
+  [key: string]: Array<UserType> | Array<LabelType> | Array<MilestoneType>;
 }
 
-export const getTabInfoState = selector({
+export const getTabInfoState = selector<TabInfoType>({
   key: 'GET/tabinfo',
   get: async () => {
     try {
       const response = await fetch(API.tabType);
       const tabData = await response.json();
-      const tabInfos: TabInfoType = {
+      const tabInfos = {
         assignee: tabData.assignees,
         label: tabData.labels,
         milestone: tabData.milestones,

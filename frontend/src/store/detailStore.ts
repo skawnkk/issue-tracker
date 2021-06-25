@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil';
-import fetchIssueDetail from 'util/api/fetchIssueDetail';
+import { fetchIssueDetail } from 'util/api/fetchIssueDetail';
 
 export const detailIdState = atom({
   key: 'detailIssueId',

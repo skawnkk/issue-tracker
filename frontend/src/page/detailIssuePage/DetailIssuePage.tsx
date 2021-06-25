@@ -7,12 +7,13 @@ import {
   MilestoneType,
   UserType,
 } from 'components/common/tabModal/tapDataType';
-import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHeader';
-import CommentList from './commentList/CommentList';
-import IssueDetailOption from 'page/createIssuePage/issueDetailOption/IssueDetailOption';
-import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { detailIdState, getDetailIssueData } from 'store/detailStore';
+import { selectedTabState } from 'store/issueInfoStore';
+import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
+import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHeader';
+import DetailIssueOption from 'page/detailIssuePage/detailIssueOption/DetailIssueOption';
+import CommentList from './commentList/CommentList';
 
 //api에 작성자가 누구인지 있어야될 것 같다.
 export interface DetailIssueType {
@@ -32,8 +33,16 @@ export default function DetailIssuePage() {
   const issueNum = +pagePaths[pagePaths.length - 1];
   const setDetailIssueId = useSetRecoilState(detailIdState);
   const issueData = useRecoilValue(getDetailIssueData); //fetch해온 데이터 사용예정
+  const setSelectdedOption = useSetRecoilState(selectedTabState);
 
   useEffect(() => setDetailIssueId(issueNum), []);
+
+  useEffect(() => {
+    if (!issueData) return;
+    const { assignees: assignee, labels: label, milestone } = issueData;
+    const newSelectedOption = { assignee, label, milestone };
+    setSelectdedOption(newSelectedOption);
+  }, [issueData]);
 
   if (!issueData) return null;
   return (
@@ -42,7 +51,7 @@ export default function DetailIssuePage() {
       <div className='detail__main'>
         <CommentList comments={issueData.comments} />
         <div className='detail__option'>
-          <IssueDetailOption />
+          <DetailIssueOption id={issueData.id} />
           <div className='issue__delete-btn'>
             <IssueDeleteBtn />
           </div>

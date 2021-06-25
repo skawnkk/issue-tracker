@@ -12,14 +12,14 @@ interface Props {
 }
 
 export default function DetailIssueHeader({
-  issueData: { id, status, title, createdDateTime, comments },
+  issueData: { id, owner, status, title, createdDateTime, comments },
 }: Props) {
   const [pickedTitle, setPickedTitle] = useRecoilState(detailTitle);
   useEffect(() => setPickedTitle(title), []);
 
   const isTitleEditMode = useRecoilValue(titleEditMode);
   const passedTime = timeChecker(createdDateTime);
-  const author = 'hayoung123'; // 임시 author api author필요
+  const author = owner.userName;
   const headerInfo = `이 이슈가 ${author}님에 의해 열렸습니다 ∙ 코멘트 ${comments.length} ∙ ${passedTime}`;
 
   return (
