@@ -19,11 +19,36 @@ type IssueDetailType = {
   milestone: MilestoneType | null;
 };
 
-export default async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
+export async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
   const token = localStorage.getItem('token');
   const response = await fetch(API.getIssueDetail(id), {
     headers: authorizedHeaders(token),
   });
   const issueDetailData = await response.json();
   return issueDetailData;
+}
+
+type patchAssigneeType = { id: number; isAssigned: boolean }[];
+type patchLabelType = { id: number; isChecked: boolean }[];
+type patchMilestoneType = { id: number | null };
+
+export async function editIssueDetailOption(
+  issueId: number,
+  type: string,
+  patchData: patchAssigneeType | patchLabelType | patchMilestoneType | null
+) {
+  if (!type || !patchData) return;
+  const token = localStorage.getItem('token');
+  const newValue = type === 'milestone' ? { [type]: patchData } : { [`${type}s`]: patchData };
+  try {
+    const response = await fetch(API.editIssueDetailOption(issueId, type), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+      body: JSON.stringify(newValue),
+    });
+    if (response.status === 200) return true;
+    else throw Error;
+  } catch (error) {
+    throw error;
+  }
 }

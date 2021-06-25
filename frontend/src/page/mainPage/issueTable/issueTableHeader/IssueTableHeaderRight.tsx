@@ -31,9 +31,7 @@ export default function IssueListHeaderRight({}: Props): ReactElement {
     modal: modalRef,
   });
 
-  const handleClick = ({ key, name }: filterObjType): void => {
-    setFilterType({ key, name, isMainPage: true });
-  };
+  const handleClick = ({ key, name }: filterObjType): void => setFilterType({ key, name });
 
   const filterStandardList = filterStandards.map(({ key, name, ref }, idx) => (
     <div ref={ref} key={idx} onClick={() => handleClick({ key, name })}>
