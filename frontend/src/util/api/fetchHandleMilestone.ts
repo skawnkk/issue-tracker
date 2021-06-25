@@ -21,6 +21,7 @@ export async function editMilestone(milestoneID:number, newMilestone:NewMileston
 }
 export async function fetchCreateMilestone(newMilestone:NewMilestoneType){
   const token = localStorage.getItem('token')
+  debugger;
   try{
     const response = await fetch(API.createMilestone,{
       method: 'POST',

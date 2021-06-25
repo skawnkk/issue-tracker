@@ -25,7 +25,7 @@ export default function MilestoneAdd({type='create', setEditMode, milestone}:Edi
  
   const handleSubmit = () => {
     const newMilestone = {title, dueDate, description}
-  
+   debugger;
     if(type==='create') fetchCreateMilestone(newMilestone)
     else editMilestone(milestoneID, newMilestone)
     
