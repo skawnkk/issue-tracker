@@ -5,58 +5,47 @@ import Header from './components/header/Header';
 import LoginPage from 'page/loginPage/LoginPage';
 import { useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
-import { milestoneTrigger } from 'store/labelMilestoneStore';
-import API, { authorizedHeaders } from 'util/api/api';
-import MainPage from './page/mainPage/MainPage';
-import CreateIssuePage from './page/createIssuePage/CreateIssuePage';
-import DetailIssuePage from './page/detailIssuePage/DetailIssuePage';
-import LabelPage from './page/labelPage/LabelPage';
-import MilestonePage from './page/milestonePage/MilestonePage';
+import { getUserInfoUsingJWT } from 'util/api/fetchLogin';
 
 function App() {
-  // const MainPage = lazy(() => import('./page/mainPage/MainPage'));
-  // const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
-  // const DetailIssuePage = lazy(() => import('./page/detailIssuePage/DetailIssuePage'));
-  // const LabelPage = lazy(() => import('./page/labelPage/LabelPage'));
-  // const MilestonePage = lazy(() => import('./page/milestonePage/MilestonePage'));
-  const setLoginData = useSetRecoilState(controlLoginState);
-  const token = localStorage.getItem('token');
-  const isLogin = () => !!token;
+	const MainPage = lazy(() => import('./page/mainPage/MainPage'));
+	const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
+	const DetailIssuePage = lazy(() => import('./page/detailIssuePage/DetailIssuePage'));
+	const LabelPage = lazy(() => import('./page/labelPage/LabelPage'));
+	const MilestonePage = lazy(() => import('./page/milestonePage/MilestonePage'));
+	const setLoginData = useSetRecoilState(controlLoginState);
+	const token = localStorage.getItem('token');
+	const isLogin = () => !!token;
+	useEffect(() => {
+		if (!isLogin()) return;
+		try {
+			const userData = getUserInfoUsingJWT();
+			const loginData = { avatarURL: userData.avatarUrl, name: userData.name };
+			setLoginData({ isLogin: true, loginData });
+		} catch (err) {
+			console.error(err);
+		}
+	}, []);
 
-  useEffect(() => {
-    if (isLogin()) getUserInfoUsingJWT();
-  }, []);
-
-  const getUserInfoUsingJWT = async () => {
-    try {
-      const response = await fetch(API.getUserInfo, { headers: authorizedHeaders(token) });
-      const userData = await response.json();
-      const loginData = { avatarUrl: userData.avatarUrl, name: userData.name };
-      setLoginData({ isLogin: true, loginData });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  return (
-    <div className='App'>
-      <Router>
-        <Header />
-        <Suspense fallback={<h1>Loading...</h1>}>
-          <Switch>
-            <Route path='/' exact>
-              {isLogin() ? <Redirect to='/main' /> : <LoginPage />}
-            </Route>
-            <Route path='/main' component={MainPage} />
-            <Route path='/create' component={CreateIssuePage} />
-            <Route path='/detail' component={DetailIssuePage} />
-            <Route path='/label' component={LabelPage} />
-            <Route path='/milestone' component={MilestonePage} />
-          </Switch>
-        </Suspense>
-      </Router>
-    </div>
-  );
+	return (
+		<div className='App'>
+			<Router>
+				<Header />
+				<Suspense fallback={<h1>Loading...</h1>}>
+					<Switch>
+						<Route path='/' exact>
+							{isLogin() ? <Redirect to='/main' /> : <LoginPage />}
+						</Route>
+						<Route path='/main' component={MainPage} />
+						<Route path='/create' component={CreateIssuePage} />
+						<Route path='/detail' component={DetailIssuePage} />
+						<Route path='/label' component={LabelPage} />
+						<Route path='/milestone' component={MilestonePage} />
+					</Switch>
+				</Suspense>
+			</Router>
+		</div>
+	);
 }
 
 export default App;
