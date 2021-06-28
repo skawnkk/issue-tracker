@@ -12,12 +12,9 @@ interface Props {
 
 export default function CommentInput({ comment, setComment }: Props) {
   const { loginData } = useRecoilValue(controlLoginState);
-  const [length, setLength] = useState(0);
 
-  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value);
-    setLength(e.target.value.length);
-  };
+  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
+
   return (
     <CommentInputBlock>
       <div className='comment__avatar'>
@@ -37,7 +34,7 @@ export default function CommentInput({ comment, setComment }: Props) {
           </label>
           <input type='file' id='add_file' className='input__file' accept='.png, .jpg, .jpeg' />
         </div>
-        <div className='input__lengthCheck'>공백포함 {length}자</div>
+        <div className='input__lengthCheck'>공백포함 {comment.length}자</div>
       </div>
     </CommentInputBlock>
   );
