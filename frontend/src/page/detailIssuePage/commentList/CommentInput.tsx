@@ -1,8 +1,9 @@
-import React, { useState, ChangeEvent, Dispatch, RefObject } from 'react';
+import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { controlLoginState } from 'store/loginStore';
 import { GiPaperClip } from 'react-icons/gi';
 import ProfileImg from 'components/atom/ProfileImg';
-import { SetStateAction } from 'react';
 
 interface Props {
   comment: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function CommentInput({ comment, setComment }: Props) {
+  const { loginData } = useRecoilValue(controlLoginState);
   const [length, setLength] = useState(0);
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -19,7 +21,7 @@ export default function CommentInput({ comment, setComment }: Props) {
   return (
     <CommentInputBlock>
       <div className='comment__avatar'>
-        <ProfileImg className='comment__avatar-img' />
+        <ProfileImg className='comment__avatar-img' avatarURL={loginData?.avatarUrl} />
       </div>
       <div className='comment__input'>
         <textarea
@@ -46,6 +48,11 @@ const CommentInputBlock = styled.div`
   margin-bottom: 1.5rem;
   .comment__avatar {
     margin-right: 1rem;
+    .comment__avatar-img {
+      margin-top: 0.7rem;
+      width: 44px;
+      height: 44px;
+    }
   }
   .comment__input {
     position: relative;

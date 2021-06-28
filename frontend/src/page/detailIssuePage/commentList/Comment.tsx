@@ -11,13 +11,14 @@ interface Props {
 }
 
 export default function Comment({
-  comment: { userName, comment, createdDateTime, author, owner },
+  comment: { avatarUrl, userName, comment, createdDateTime, author, owner },
 }: Props) {
   const passedTime = timeChecker(createdDateTime);
+  console.log(userName, author, owner);
   return (
     <CommentBlock>
       <div className='comment__avatar'>
-        <ProfileImg className='comment__avatar-img' />
+        <ProfileImg className='comment__avatar-img' avatarURL={avatarUrl} />
       </div>
       <div className='comment'>
         <div className='comment__header'>
@@ -26,8 +27,8 @@ export default function Comment({
             <div className='comment__passed-time'>{passedTime}</div>
           </div>
           <div className='header__section'>
-            {author && <div className='comment__author-label'>작성자</div>}
-            {owner && (
+            {owner && <div className='comment__author-label'>작성자</div>}
+            {author && (
               <div className='comment__edit-btn'>
                 <EditBtn />
                 <div>편집</div>
@@ -47,6 +48,11 @@ const CommentBlock = styled.div`
   margin-bottom: 1.5rem;
   .comment__avatar {
     margin-right: 1rem;
+    .comment__avatar-img {
+      margin-top: 0.7rem;
+      width: 44px;
+      height: 44px;
+    }
   }
   .comment {
     display: flex;
@@ -80,6 +86,10 @@ const CommentBlock = styled.div`
     }
   }
   .header__section:last-child {
+    & > div,
+    & > svg {
+      cursor: pointer;
+    }
     & > div {
       margin-right: 1rem;
     }

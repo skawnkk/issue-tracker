@@ -4,7 +4,7 @@ import { CommentType } from 'components/common/tabModal/tapDataType';
 import Comment from 'page/detailIssuePage/commentList/Comment';
 import CommentInput from './CommentInput';
 import PrimaryButton from 'components/atom/PrimaryButton';
-import { createComments } from 'util/api/fetchIssueDetail';
+import { editComments } from 'util/api/fetchIssueDetail';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { detailIssueTrigger } from 'store/detailStore';
@@ -20,11 +20,10 @@ export default function CommentList({ issueId, comments }: Props) {
 
   const handleCreateCommentClick = () => {
     if (!comment) return;
-    createComments(issueId, comment);
+    editComments(issueId, comment);
     setComment('');
     setDetailIssueTrigger((triggerCount) => triggerCount + 1);
   };
-
   const commentList = comments.map((comment) => <Comment key={comment.id} comment={comment} />);
   return (
     <CommentListBlock>

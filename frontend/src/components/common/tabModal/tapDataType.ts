@@ -34,6 +34,7 @@ export interface CommentType {
   createdDateTime: string;
   author: boolean;
   owner: boolean;
+  avatarUrl: string;
 }
 
 export interface LoginUserType {
