@@ -1,10 +1,15 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, Dispatch, RefObject } from 'react';
 import styled from 'styled-components';
 import { GiPaperClip } from 'react-icons/gi';
 import ProfileImg from 'components/atom/ProfileImg';
+import { SetStateAction } from 'react';
 
-export default function CommentInput() {
-  const [comment, setComment] = useState('');
+interface Props {
+  comment: string;
+  setComment: Dispatch<SetStateAction<string>>;
+}
+
+export default function CommentInput({ comment, setComment }: Props) {
   const [length, setLength] = useState(0);
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

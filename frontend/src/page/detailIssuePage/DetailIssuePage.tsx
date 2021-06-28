@@ -49,7 +49,7 @@ export default function DetailIssuePage() {
     <DetailIssuePageBlock>
       <DetailIssueHeader issueData={issueData} />
       <div className='detail__main'>
-        <CommentList comments={issueData.comments} />
+        <CommentList issueId={issueData.id} comments={issueData.comments} />
         <div className='detail__option'>
           <DetailIssueOption id={issueData.id} />
           <div className='issue__delete-btn'>
