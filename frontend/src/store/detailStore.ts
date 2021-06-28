@@ -6,9 +6,15 @@ export const detailIdState = atom({
   default: 0,
 });
 
+export const detailIssueTrigger = atom({
+  key: 'detailIssueTrigger',
+  default: 0,
+});
+
 export const getDetailIssueData = selector({
   key: 'GET/DetailIssueData',
   get: async ({ get }) => {
+    get(detailIssueTrigger);
     const id = get(detailIdState);
     if (!id) return;
     const detailData = await fetchIssueDetail(id);
