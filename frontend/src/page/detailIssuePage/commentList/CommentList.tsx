@@ -24,7 +24,9 @@ export default function CommentList({ issueId, comments }: Props) {
     setComment('');
     setDetailIssueTrigger((triggerCount) => triggerCount + 1);
   };
-  const commentList = comments.map((comment) => <Comment key={comment.id} comment={comment} />);
+  const commentList = comments.map((comment) => (
+    <Comment key={comment.id} {...{ issueId, comment }} />
+  ));
   return (
     <CommentListBlock>
       {commentList}
