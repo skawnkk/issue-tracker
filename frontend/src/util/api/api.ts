@@ -13,7 +13,7 @@ interface APItype {
   editIssueTitle: (issueId: number) => string;
   editLabel: (id: number) => string;
   editIssueDetailOption: (issueId: number, type: string) => string;
-  createComments: (issueId: number) => string;
+  editComments: (issueId: number) => string;
 }
 
 export const authorizedHeaders = (token: string | null) => ({ Authorization: `Bearer ${token}` });
@@ -35,7 +35,7 @@ const API: APItype = {
   labelURL: basicURL + '/labels',
   editLabel: (id) => basicURL + '/labels/' + id,
   editIssueDetailOption: (id, type) => basicURL + `/issues/${id}/${type}s`,
-  createComments: (issueId) => basicURL + `/issues/${issueId}/comments`,
+  editComments: (issueId) => basicURL + `/issues/${issueId}/comments`,
 };
 
 export default API;

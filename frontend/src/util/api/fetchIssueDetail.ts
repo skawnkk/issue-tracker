@@ -53,13 +53,12 @@ export async function editIssueDetailOption(
   }
 }
 
-export async function createComments(issueId: number, comment: string) {
-  if (!comment) return;
+export async function editComments(issueId: number, comment: string, commentId?: number) {
   const token = localStorage.getItem('token');
-  const newComment = { comment };
+  const newComment = commentId ? { id: commentId, comment } : { comment };
   try {
-    const response = await fetch(API.createComments(issueId), {
-      method: 'POST',
+    const response = await fetch(API.editComments(issueId), {
+      method: commentId ? 'PATCH' : 'POST',
       headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
       body: JSON.stringify(newComment),
     });
@@ -69,11 +68,3 @@ export async function createComments(issueId: number, comment: string) {
     throw error;
   }
 }
-
-// export async function editComments(issueId: number, commentId: number, comment: string) {
-//   const token = localStorage.getItem('token');
-//   const newComment = { comment };
-//   try {
-//     const response = await
-//   }
-// }
