@@ -5,14 +5,15 @@ interface APItype {
   labelURL: string;
   getFileURL: string;
   getMilestone: (status?: string) => string;
-  createMilestone:string;
-  editDeleteMilestone:(milestoneID: number) => string;
+  createMilestone: string;
+  editDeleteMilestone: (milestoneID: number) => string;
   getUserInfo: string;
   login: (code: string) => string;
   getIssueDetail: (id: number) => string;
   editIssueTitle: (issueId: number) => string;
   editLabel: (id: number) => string;
   editIssueDetailOption: (issueId: number, type: string) => string;
+  editComments: (issueId: number) => string;
 }
 
 export const authorizedHeaders = (token: string | null) => ({ Authorization: `Bearer ${token}` });
@@ -24,9 +25,9 @@ const API: APItype = {
   tabType: basicURL + `/issues/form`,
   createIssue: basicURL + `/issues/form`,
   getFileURL: basicURL + `/images`,
-  getMilestone: (status ='open') => basicURL + `/milestones?status=${status}`, //get & close milestone
-  createMilestone : basicURL + `/milestones`,
-  editDeleteMilestone : (milestoneID) => basicURL + `/milestones/${milestoneID}`,
+  getMilestone: (status = 'open') => basicURL + `/milestones?status=${status}`, //get & close milestone
+  createMilestone: basicURL + `/milestones`,
+  editDeleteMilestone: (milestoneID) => basicURL + `/milestones/${milestoneID}`,
   login: (code: string) => basicURL + '/login?code=' + code,
   getUserInfo: basicURL + `/userInfo`,
   getIssueDetail: (id) => basicURL + '/issues/' + id,
@@ -34,6 +35,7 @@ const API: APItype = {
   labelURL: basicURL + '/labels',
   editLabel: (id) => basicURL + '/labels/' + id,
   editIssueDetailOption: (id, type) => basicURL + `/issues/${id}/${type}s`,
+  editComments: (issueId) => basicURL + `/issues/${issueId}/comments`,
 };
 
 export default API;

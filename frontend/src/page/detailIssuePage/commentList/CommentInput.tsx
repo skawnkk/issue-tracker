@@ -1,20 +1,24 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { controlLoginState } from 'store/loginStore';
 import { GiPaperClip } from 'react-icons/gi';
 import ProfileImg from 'components/atom/ProfileImg';
 
-export default function CommentInput() {
-  const [comment, setComment] = useState('');
-  const [length, setLength] = useState(0);
+interface Props {
+  comment: string;
+  setComment: Dispatch<SetStateAction<string>>;
+}
 
-  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value);
-    setLength(e.target.value.length);
-  };
+export default function CommentInput({ comment, setComment }: Props) {
+  const { loginData } = useRecoilValue(controlLoginState);
+
+  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
+
   return (
     <CommentInputBlock>
       <div className='comment__avatar'>
-        <ProfileImg className='comment__avatar-img' />
+        <ProfileImg className='comment__avatar-img' avatarURL={loginData?.avatarUrl} />
       </div>
       <div className='comment__input'>
         <textarea
@@ -30,7 +34,7 @@ export default function CommentInput() {
           </label>
           <input type='file' id='add_file' className='input__file' accept='.png, .jpg, .jpeg' />
         </div>
-        <div className='input__lengthCheck'>공백포함 {length}자</div>
+        <div className='input__lengthCheck'>공백포함 {comment.length}자</div>
       </div>
     </CommentInputBlock>
   );
@@ -41,6 +45,11 @@ const CommentInputBlock = styled.div`
   margin-bottom: 1.5rem;
   .comment__avatar {
     margin-right: 1rem;
+    .comment__avatar-img {
+      margin-top: 0.7rem;
+      width: 44px;
+      height: 44px;
+    }
   }
   .comment__input {
     position: relative;
