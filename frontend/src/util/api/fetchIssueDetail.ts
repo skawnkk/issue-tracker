@@ -61,3 +61,19 @@ export async function getFileURL(formData: any) {
 		throw err;
 	}
 }
+
+export async function editComments(issueId: number, comment: string, commentId?: number) {
+  const token = localStorage.getItem('token');
+  const newComment = commentId ? { id: commentId, comment } : { comment };
+  try {
+    const response = await fetch(API.editComments(issueId), {
+      method: commentId ? 'PATCH' : 'POST',
+      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+      body: JSON.stringify(newComment),
+    });
+    if (response.status === 200) return true;
+    else throw Error;
+  } catch (error) {
+    throw error;
+  }
+}
