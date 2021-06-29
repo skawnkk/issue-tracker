@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import LabelMilestoneTab from 'components/common/LabelMilestoneTab';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
 import PrimaryButton from 'components/atom/PrimaryButton';

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LabelBadge from 'components/atom/LabelBadge';
@@ -9,23 +9,13 @@ import MilestoneIcon from 'components/atom/MilestoneIcon';
 import { timeChecker } from '../../../util/timeUtil';
 
 export default function IssueItem({
-  issue: {
-    id,
-    assignees,
-    author,
-    comment,
-    commentNumber,
-    createdDateTime,
-    labels,
-    milestone,
-    title,
-  },
+  issue: { id, author, createdDateTime, labels, milestone, title },
 }: IssueItemProps): ReactElement {
   const labelList = labels
     .filter((label) => label.checked)
     .map((label) => <LabelBadge key={label.id} color={label.color} desc={label.name} />);
 
-  const passedTime = timeChecker(createdDateTime);
+  const passedTime = useMemo(() => timeChecker(createdDateTime), [createdDateTime]);
 
   return (
     <IssueItemBlock>

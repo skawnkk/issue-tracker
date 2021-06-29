@@ -36,7 +36,7 @@ export const getMilestones = selectorFamily({
       const token = localStorage.getItem('token');
       try {
         get(milestoneTrigger);
-        const response = await fetch(API.getMilestone(status), {
+        const response = await fetch(API.MILESTONE.GET(status), {
           headers: authorizedHeaders(token),
         });
         const milestoneData = await response.json();

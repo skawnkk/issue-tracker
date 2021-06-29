@@ -1,17 +1,17 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
+import { getIssuesInfoState } from 'store/issueInfoStore';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
-import { getIssuesInfoState } from 'store/issueInfoStore';
-import { Link } from 'react-router-dom';
-import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
 
 interface Props {
   labelState?: boolean;
   milestoneState?: boolean;
 }
-export default function LabelMilestoneTab(): ReactElement {
+function LabelMilestoneTab(): ReactElement {
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
   const IssuesInfoData = useRecoilValue(getIssuesInfoState);
 
@@ -32,6 +32,9 @@ export default function LabelMilestoneTab(): ReactElement {
     </LabelMilestoneTabBlock>
   );
 }
+
+export default React.memo(LabelMilestoneTab);
+
 const MilestoneBlock = styled.div<Props>`
   border-radius: 0 11px 11px 0;
   background-color: ${({ milestoneState, theme }) =>

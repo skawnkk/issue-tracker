@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   [key: string]: any;
 }
 
-export default function InputField({ label, className, value = '', onChange, ...props }: Props) {
+function InputField({ label, className, value = '', onChange, ...props }: Props) {
   const [isFocus, setIsFocus] = useState(false);
   const handleOnFocus = () => setIsFocus(true);
   const handleOnBlur = () => setIsFocus(false);
@@ -27,7 +27,7 @@ export default function InputField({ label, className, value = '', onChange, ...
     </InputFieldBlock>
   );
 }
-
+export default React.memo(InputField);
 interface StyleProps {
   isFocus: boolean;
 }

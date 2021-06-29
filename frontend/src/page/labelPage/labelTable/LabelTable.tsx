@@ -1,11 +1,10 @@
+import React from 'react';
 import styled from 'styled-components';
-import LabelItem from 'page/labelPage/labelTable/LabelItem';
 import { useRecoilValue } from 'recoil';
 import { getLabelData } from 'store/labelStore';
+import LabelItem from 'page/labelPage/labelTable/LabelItem';
 
-interface Props {}
-
-export default function LabelTable({}: Props) {
+function LabelTable() {
   const labelData = useRecoilValue(getLabelData);
   const labelList = labelData.labels.map((label) => <LabelItem key={label.id} label={label} />);
 
@@ -16,6 +15,8 @@ export default function LabelTable({}: Props) {
     </LabelTableBlock>
   );
 }
+
+export default React.memo(LabelTable);
 
 const LabelTableBlock = styled.div`
   border-radius: 16px;

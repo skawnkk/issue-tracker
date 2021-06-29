@@ -21,7 +21,7 @@ type IssueDetailType = {
 
 export async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
   const token = localStorage.getItem('token');
-  const response = await fetch(API.getIssueDetail(id), {
+  const response = await fetch(API.ISSUE_DETAIL.GET(id), {
     headers: authorizedHeaders(token),
   });
   const issueDetailData = await response.json();
@@ -41,7 +41,7 @@ export async function editIssueDetailOption(
   const token = localStorage.getItem('token');
   const newValue = type === 'milestone' ? { [type]: patchData } : { [`${type}s`]: patchData };
   try {
-    const response = await fetch(API.editIssueDetailOption(issueId, type), {
+    const response = await fetch(API.ISSUE_DETAIL.EDIT.OPTION(issueId, type), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
       body: JSON.stringify(newValue),
@@ -53,11 +53,26 @@ export async function editIssueDetailOption(
   }
 }
 
+export async function getFileURL(formData: any) {
+  try {
+    const token = localStorage.getItem('token');
+    const postFileURL = await fetch(API.ISSUE_DETAIL.EDIT.FILE, {
+      method: 'POST',
+      headers: authorizedHeaders(token),
+      body: formData,
+    });
+    let fileURL = await postFileURL.json();
+    return fileURL;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export async function editComments(issueId: number, comment: string, commentId?: number) {
   const token = localStorage.getItem('token');
   const newComment = commentId ? { id: commentId, comment } : { comment };
   try {
-    const response = await fetch(API.editComments(issueId), {
+    const response = await fetch(API.ISSUE_DETAIL.EDIT.COMMENTS(issueId), {
       method: commentId ? 'PATCH' : 'POST',
       headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
       body: JSON.stringify(newComment),

@@ -32,7 +32,7 @@ export default function DetailIssuePage() {
   const pagePaths = window.location.pathname.split('/');
   const issueNum = +pagePaths[pagePaths.length - 1];
   const setDetailIssueId = useSetRecoilState(detailIdState);
-  const issueData = useRecoilValue(getDetailIssueData); //fetch해온 데이터 사용예정
+  const issueData = useRecoilValue(getDetailIssueData);
   const setSelectdedOption = useSetRecoilState(selectedTabState);
 
   useEffect(() => setDetailIssueId(issueNum), []);

@@ -1,14 +1,15 @@
-import React, { useState, ReactElement, useRef, MutableRefObject, RefObject } from 'react';
+import React, { useState, ReactElement, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { IssueFormDataState } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
+import fetchCreateIssue from 'util/api/fetchCreateIssue';
 import Title from 'components/atom/Title';
 import ProfileImg from 'components/atom/ProfileImg';
 import IssueInput from 'page/createIssuePage/issueInput/IssueInput';
 import IssueDetailOption from 'page/createIssuePage/issueDetailOption/IssueDetailOption';
 import PrimaryButton from 'components/atom/PrimaryButton';
-import { useRecoilValue } from 'recoil';
-import { IssueFormDataState } from 'store/issueInfoStore';
-import fetchCreateIssue from 'util/api/fetchCreateIssue';
 import ErrorPage from 'page/errorPage/ErrorPage';
 
 type inputsType = {
@@ -19,7 +20,8 @@ type inputsType = {
   milestone: number | null;
 };
 
-export default function CreateIssuePage(): ReactElement {
+function CreateIssuePage(): ReactElement {
+  const { loginData } = useRecoilValue(controlLoginState);
   const { assigneeID, labelID, milestoneID } = useRecoilValue(IssueFormDataState);
   const history = useHistory();
   const titleRef = useRef(null);
@@ -47,7 +49,7 @@ export default function CreateIssuePage(): ReactElement {
       const createdIssueID = isSuccess?.issueId;
       history.push(`/detail/${createdIssueID}`);
     } catch (error) {
-      console.log('에러가발생했다!', error);
+      console.log('에러가발생했', error);
       setError(true);
     }
   };
@@ -60,12 +62,11 @@ export default function CreateIssuePage(): ReactElement {
         <Title className='create__title'>새로운 이슈 작성</Title>
       </div>
       <div className='create__section__body'>
-        <ProfileImg />
+        <ProfileImg avatarURL={loginData?.avatarUrl} />
         <IssueInput titleRef={titleRef} comment={comment} setComment={setComment} />
         <IssueDetailOption />
       </div>
       <div className='create__section__footer'>
-        {/* //?onClick사용하기 위해 styled로 변경, 상위에서 한번만 내리고 싶음 => spanButton styled도 지우고*/}
         <SpanButton onClick={() => handleClick('cancel')}>⨯ 작성 취소</SpanButton>
         <PrimaryButton
           value='완료'
@@ -76,6 +77,8 @@ export default function CreateIssuePage(): ReactElement {
     </CreateIssuePageBlock>
   );
 }
+
+export default React.memo(CreateIssuePage);
 const SpanButton = styled.div`
   cursor: pointer;
 `;

@@ -36,9 +36,7 @@ export default function OptionItem({ optionName, optionKey, optionRef, selectedO
 
   const optionSelectedList: { [key: string]: ReactElement | Array<ReactElement> | null } = {
     assignee: selectedAssignee?.map((user) => <SelectedTabUser key={user.id} user={user} />),
-
     label: selectedLabel?.map((label) => <SelectedTabLabel key={label.id} label={label} />),
-
     milestone: selectedMilestone ? (
       <SelectedTabMilestone key={selectedMilestone.id} milestone={selectedMilestone} />
     ) : null,

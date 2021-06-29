@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import { labelTrigger } from 'store/labelStore';
@@ -14,13 +14,7 @@ interface Props {
   label?: LabelType;
   handelCancelClick: () => void;
 }
-
-export default function LabelEditForm({
-  className,
-  title,
-  label = DEFAULT_LABEL,
-  handelCancelClick,
-}: Props) {
+function LabelEditForm({ className, title, label = DEFAULT_LABEL, handelCancelClick }: Props) {
   const setLabelTrigger = useSetRecoilState(labelTrigger);
 
   const titleInput = useInput(label.name);
@@ -68,7 +62,7 @@ export default function LabelEditForm({
     </LabelEditFormBlock>
   );
 }
-
+export default React.memo(LabelEditForm);
 const DEFAULT_LABEL = {
   id: 0,
   name: '',

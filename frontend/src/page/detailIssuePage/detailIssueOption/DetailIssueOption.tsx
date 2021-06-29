@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import useToggle from 'hooks/useToggle';
-import OptionItem from 'page/detailIssuePage/detailIssueOption/OptionItem';
-import TabModal from 'components/common/tabModal/TabModal';
 import { useRecoilValue } from 'recoil';
 import {
   selectedTabState,
@@ -11,7 +9,8 @@ import {
   getTabInfoState,
 } from 'store/issueInfoStore';
 import { editIssueDetailOption } from 'util/api/fetchIssueDetail';
-
+import OptionItem from 'page/detailIssuePage/detailIssueOption/OptionItem';
+import TabModal from 'components/common/tabModal/TabModal';
 interface Props {
   id: number;
 }

@@ -15,9 +15,6 @@ const useStyle = makeStyles(() => ({
     fontFamily: "'Raleway', sans-serif",
     fontSize: '30px',
   },
-  modalStyles: {
-    backgroundColor: 'red',
-  },
 }));
 
 function Header() {
@@ -54,8 +51,7 @@ function Header() {
               aria-controls='menu-appbar'
               aria-haspopup='true'
               onClick={handleMenu}
-              color='inherit'
-            >
+              color='inherit'>
               {loginData ? (
                 <ProfileImg avatarURL={loginData?.avatarUrl} className='login__profile-img' />
               ) : (
@@ -64,8 +60,8 @@ function Header() {
             </IconButton>
             <Menu id='menu-appbar' anchorEl={anchorEl} open={open} onClose={handleClose}>
               <MenuItem onClick={handleClose}>{loginData?.name}</MenuItem>
-              <MenuItem onClick={handleClose} className={classes.modalStyles + ' header__modal'}>
-                My account
+              <MenuItem onClick={handleClose} className={'header__modal'}>
+                My account*
               </MenuItem>
               <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
@@ -76,7 +72,7 @@ function Header() {
   );
 }
 
-export default Header;
+export default React.memo(Header);
 
 interface StyleProps {
   isLogin: boolean;

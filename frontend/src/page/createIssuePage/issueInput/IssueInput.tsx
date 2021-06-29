@@ -8,41 +8,35 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import { GiPaperClip } from 'react-icons/gi';
-import API, { authorizedHeaders } from 'util/api/api';
+import { getFileURL } from 'util/api/fetchIssueDetail';
 interface inputProps {
   titleRef: RefObject<HTMLInputElement>;
   comment: string;
   setComment: Dispatch<SetStateAction<string>>;
 }
-export default function IssueInput({ titleRef, comment, setComment }: inputProps): ReactElement {
+function IssueInput({ titleRef, comment, setComment }: inputProps): ReactElement {
   const [commentLength, setCommentLength] = useState(0);
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
     setCommentLength(e.target.value.length);
   };
 
-  const handleChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
     e.preventDefault();
     const uploadImage = e.target.files as FileList;
     const imageBlob = Object.values(uploadImage)[0];
     const imageName = imageBlob['name'];
     const formData = new FormData();
     formData.append('image', imageBlob, imageName);
-
     try {
-      const token = localStorage.getItem('token');
-      const postFileURL = await fetch(API.getFileURL, {
-        method: 'POST',
-        headers: authorizedHeaders(token),
-        body: formData,
-      });
-      let fileURL = await postFileURL.json();
+      const fileURL = await getFileURL(formData);
       const markDownImg = `![${imageName}](${fileURL.image})`;
       setComment((comment) =>
         comment.length ? comment + '\n' + markDownImg : comment + markDownImg
       );
+      setCommentLength(comment.length);
     } catch (err) {
-      throw err;
+      console.error(err);
     }
   };
   return (
@@ -66,7 +60,7 @@ export default function IssueInput({ titleRef, comment, setComment }: inputProps
               id='add_file'
               className='input__file'
               accept='.png, .jpg, .jpeg'
-              onChange={handleChange}
+              onChange={handleFileChange}
             />
           </form>
         </div>
@@ -75,7 +69,7 @@ export default function IssueInput({ titleRef, comment, setComment }: inputProps
     </IssueInputBlock>
   );
 }
-
+export default React.memo(IssueInput);
 const IssueInputBlock = styled.div`
   display: flex;
   flex-direction: column;
@@ -101,10 +95,10 @@ const IssueInputBlock = styled.div`
     resize: none;
     width: -webkit-fill-availabel;
     height: 343px;
-   
+
     &:focus {
       .input__addFile {
-        background-color: ${({ theme }) => theme.color.white}; //?이거 어케해야함?
+        background-color: ${({ theme }) => theme.color.white};
       }
     }
   }

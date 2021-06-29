@@ -20,8 +20,7 @@ interface Props {
   colorInput: inputDataType;
   setLabelTextColor: Dispatch<SetStateAction<string>>;
 }
-
-export default function LabelEdit({
+function LabelEdit({
   label: { name, color },
   titleInput,
   descriptionInput,
@@ -58,6 +57,7 @@ export default function LabelEdit({
   );
 }
 
+export default React.memo(LabelEdit);
 const LabelEditBlock = styled.div`
   display: grid;
   grid-template-columns: 10% 90%;
@@ -74,7 +74,6 @@ const LabelEditBlock = styled.div`
       margin-bottom: 1rem;
     }
   }
-
   .label__edit-color {
     display: flex;
     align-items: center;

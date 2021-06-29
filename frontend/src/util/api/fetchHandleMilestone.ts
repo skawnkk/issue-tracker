@@ -7,9 +7,12 @@ export async function editMilestone(milestoneID: number, newMilestone: NewMilest
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch(API.editDeleteMilestone(milestoneID), {
+    const response = await fetch(API.MILESTONE.EDIT(milestoneID), {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+      headers: {
+        'Content-Type': 'application/json',
+        ...authorizedHeaders(token),
+      },
       body: JSON.stringify(newMilestone),
     });
     if (response.status !== 200) throw new Error('잘못된 요청');
@@ -22,9 +25,12 @@ export async function fetchCreateMilestone(newMilestone: NewMilestoneType) {
   const token = localStorage.getItem('token');
   debugger;
   try {
-    const response = await fetch(API.createMilestone, {
+    const response = await fetch(API.MILESTONE.CREATE, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+      headers: {
+        'Content-Type': 'application/json',
+        ...authorizedHeaders(token),
+      },
       body: JSON.stringify(newMilestone),
     });
     if (response.status !== 200) throw new Error('잘못된 요청');
@@ -37,7 +43,7 @@ export async function fetchCreateMilestone(newMilestone: NewMilestoneType) {
 export async function fetchDeleteMilestone(milesetoneID: number) {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch(API.editDeleteMilestone(milesetoneID), {
+    const response = await fetch(API.MILESTONE.DELETE(milesetoneID), {
       method: 'DELETE',
       headers: authorizedHeaders(token),
     });
@@ -51,9 +57,12 @@ export async function fetchDeleteMilestone(milesetoneID: number) {
 export async function fetchHandleMilestone(milestoneID?: number, status: string = 'open') {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch(API.getMilestone(status), {
+    const response = await fetch(API.MILESTONE.GET(status), {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+      headers: {
+        'Content-Type': 'application/json',
+        ...authorizedHeaders(token),
+      },
       body: JSON.stringify({ issueNumbers: [milestoneID] }),
     });
     if (response.status !== 200) throw new Error('잘못된 요청입니다.');

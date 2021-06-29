@@ -17,8 +17,7 @@ interface filterObjType {
   key: string;
   name: string;
 }
-
-export default function IssueDetailOption({ id }: Props): ReactElement {
+function IssueDetailOption({ id }: Props): ReactElement {
   const setFilterType = useSetRecoilState(issueFilterTypeState);
   //선택한 애들?
   const selectTab = useRecoilValue(selectedTabState);
@@ -91,6 +90,8 @@ export default function IssueDetailOption({ id }: Props): ReactElement {
     </IssueDetailOptionWrapper>
   );
 }
+
+export default React.memo(IssueDetailOption);
 
 const IssueDetailOptionWrapper = styled.div`
   position: relative;

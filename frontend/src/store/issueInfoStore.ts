@@ -43,11 +43,6 @@ export const issueTypeState = atom<string>({
   default: 'open',
 });
 
-// interface IssueFilterType {
-//   type: string;
-//   select: string;
-// }
-
 export const isFilterFullSetting = atom<boolean>({
   key: 'isFilterFullSetting',
   default: true,
@@ -78,12 +73,13 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
     const isFilterSetting = get(isFilterFullSetting);
     if (!isFilterSetting) return null;
     try {
-      const response = await fetch(API.getIssue + issueType, { headers: authorizedHeaders(token) });
+      const response = await fetch(API.ISSUE_MAIN.GET + issueType, {
+        headers: authorizedHeaders(token),
+      });
       const issuesData = await response.json();
       const issuesInfoState = { issues: issuesData.issues, count: issuesData.count };
       return issuesInfoState;
     } catch (err) {
-      console.log('이슈 리스트 패치');
       throw err;
     }
   },
@@ -102,7 +98,7 @@ export const getTabInfoState = selector<TabInfoType>({
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(API.tabType, { headers: authorizedHeaders(token) });
+      const response = await fetch(API.TAB, { headers: authorizedHeaders(token) });
       const tabData = await response.json();
       const tabInfos = {
         assignee: tabData.assignees,

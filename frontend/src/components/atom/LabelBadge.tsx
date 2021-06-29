@@ -35,4 +35,4 @@ const LabelBadgeBlock = styled.div<StyledProps>`
   background-color: ${({ labelColor }) => labelColor.backgroundColorCode};
 `;
 
-export default LabelBadge;
+export default React.memo(LabelBadge);
