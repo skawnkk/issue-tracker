@@ -17,6 +17,7 @@ const API: APItype = {
 			OPTION: (id, type) => basicURL + `/issues/${id}/${type}s`,
 			TITLE: (issueId) => basicURL + `/issues/${issueId}/title`,
 			FILE: basicURL + `/images`,
+			COMMENTS: (issueId) => basicURL + `/issues/${issueId}/comments`,
 		},
 	},
 	MILESTONE: {

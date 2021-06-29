@@ -6,6 +6,7 @@ export default interface newAPItype {
 			OPTION: (id: number, type: string) => string;
 			TITLE: (issueId: number) => string;
 			FILE: string;
+			COMMENTS: (issueId: number) => string;
 		};
 	};
 	MILESTONE: {
