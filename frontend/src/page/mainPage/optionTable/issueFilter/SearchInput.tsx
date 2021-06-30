@@ -1,21 +1,54 @@
-import React, { ChangeEvent, ReactElement, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useState, useEffect, KeyboardEvent } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { filterSearchInputState } from 'store/issueInfoStore';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { filterSearchInputState, resetSelectedTab, searchWordState } from 'store/issueInfoStore';
 import SearchIcon from '@material-ui/icons/Search';
 
 interface Props {}
 
 export default function SearchInput({}: Props): ReactElement {
   const searchInput = useRecoilValue(filterSearchInputState);
-  const [inputState, setInputState] = useState('is:issue is:open');
+  // const [searchWord, setSearchWord] = useRecoilState(searchWordState);
+  const [searchWord, setSearchWord] = useState('');
+  const resetSelectOption = useResetRecoilState(resetSelectedTab);
+
+  const [inputState, setInputState] = useState(searchInput);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputState(e.target.value);
   };
+
+  useEffect(() => {
+    console.log('1');
+    setInputState(searchInput + ' ' + searchWord);
+  }, [searchInput]);
+
+  useEffect(() => {
+    console.log('2');
+    setInputState(searchInput + ' ' + searchWord);
+  }, [searchWord]);
+
+  const handelSubmit = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    setSearchWord(inputState);
+    resetSelectOption();
+    (e.target as HTMLInputElement)?.blur();
+    //issueType = inputState => 파싱
+    //setFilterIssueType(issueType)
+  };
+
+  const handleFocus = () => setInputState('');
+  const handleBlur = () => setInputState(searchInput);
+
   return (
     <SearchInputBlock>
       <SearchIcon />
-      <Input value={searchInput} onChange={handleChange}></Input>
+      <Input
+        value={inputState}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        onKeyPress={handelSubmit}
+      ></Input>
     </SearchInputBlock>
   );
 }

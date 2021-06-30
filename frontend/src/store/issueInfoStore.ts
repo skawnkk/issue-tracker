@@ -82,6 +82,11 @@ export const getIssueTrigger = atom<number>({
   default: 0,
 });
 
+export const searchWordState = atom<string>({
+  key: 'searchWord',
+  default: '',
+});
+
 export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
   key: 'GET/issues',
   get: async ({ get }) => {
@@ -89,6 +94,11 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
     get(getIssueTrigger);
 
     let issueType = get(filterSearchInputState).replace(/:/g, '=').replace(/ /g, '&');
+    // let issueType = get(filterIssueType)
+
+    //inputData가 필요
+    //공백으로 스플릿
+    //:앞뒤로 키값
 
     try {
       const response = await fetch(API.ISSUE_MAIN.GET + issueType, {
