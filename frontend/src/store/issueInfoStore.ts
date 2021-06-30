@@ -70,7 +70,7 @@ export const filterSearchInputState = selector<string>({
       ''
     );
     const milestoneQuery = milestone ? `milestone:${milestone.title} ` : '';
-    const authorQuery = author ? `author:${author.id} ` : '';
+    const authorQuery = author ? `author:${author.userName} ` : '';
 
     const query = statusQuery + assigneeQuery + labelQuery + milestoneQuery + authorQuery;
     return query.trim();
@@ -86,9 +86,10 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
   key: 'GET/issues',
   get: async ({ get }) => {
     const token = localStorage.getItem('token');
-
     get(getIssueTrigger);
-    const issueType = get(issueTypeState);
+
+    let issueType = get(filterSearchInputState).replace(/:/g, '=').replace(/ /g, '&');
+
     try {
       const response = await fetch(API.ISSUE_MAIN.GET + issueType, {
         headers: authorizedHeaders(token),
