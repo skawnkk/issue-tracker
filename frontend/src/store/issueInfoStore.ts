@@ -191,7 +191,7 @@ export const selectedTabState = selector<selectedTabType>({
     const selectLabel = get(selectedLabelState);
     const selectMilestone = get(selectedMilestoneState);
     const selectAuthor = get(selectedAuthorState);
-
+    console.log(selectUser);
     return {
       assignee: selectUser,
       label: selectLabel,
