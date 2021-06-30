@@ -132,7 +132,8 @@ export interface selectedTabType {
   assignee: Array<UserType> | [];
   label: Array<LabelType> | [];
   milestone: MilestoneType | null;
-  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null;
+  author?: Array<UserType> | [];
+  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null | void;
 }
 
 export const selectedUserState = atom<Array<UserType> | []>({
@@ -150,20 +151,32 @@ export const selectedMilestoneState = atom<MilestoneType | null>({
   default: null,
 });
 
+export const selectedAuthorState = atom<Array<UserType> | []>({
+  key: 'selectedAuthorState',
+  default: [],
+});
+
 export const selectedTabState = selector<selectedTabType>({
   key: 'selectedTabState',
   get: ({ get }) => {
     const selectUser = get(selectedUserState);
     const selectLabel = get(selectedLabelState);
     const selectMilestone = get(selectedMilestoneState);
+    const selectAuthor = get(selectedAuthorState);
 
-    return { assignee: selectUser, label: selectLabel, milestone: selectMilestone };
+    return {
+      assignee: selectUser,
+      label: selectLabel,
+      milestone: selectMilestone,
+      author: selectAuthor,
+    };
   },
   set: ({ set }, newValue) => {
-    const { assignee, label, milestone } = newValue as selectedTabType;
+    const { assignee, label, milestone, author } = newValue as selectedTabType;
     set(selectedUserState, assignee);
     set(selectedLabelState, label);
     set(selectedMilestoneState, milestone);
+    if (author) set(selectedAuthorState, author);
   },
 });
 
@@ -174,5 +187,6 @@ export const resetSelectedTab = selector<null>({
     reset(selectedUserState);
     reset(selectedLabelState);
     reset(selectedMilestoneState);
+    reset(selectedAuthorState);
   },
 });
