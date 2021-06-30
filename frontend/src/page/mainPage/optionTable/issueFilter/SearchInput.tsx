@@ -19,7 +19,7 @@ function SearchInput({}: Props): ReactElement {
     </SearchInputBlock>
   );
 }
-export default React.memo(SearchInput);
+export default SearchInput;
 const SearchInputBlock = styled.div`
   padding: 0px 10px;
   display: flex;
