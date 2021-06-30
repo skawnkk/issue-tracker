@@ -1,14 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { titleEditMode } from 'store/detailStore';
+import { issueTypeState } from 'store/issueInfoStore';
 import Title from 'components/atom/Title';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
-import { titleEditMode } from 'store/detailStore';
 import { DetailHeaderProps } from 'page/detailIssuePage/detailType';
+import { fetchIssueClose } from 'util/api/fetchCreateIssue';
+
 export default function HeaderViewMode({ issueNumber, title }: DetailHeaderProps) {
   const setTitleEditMode = useSetRecoilState(titleEditMode);
-
+  const [issueStatus, setIssueStatus] = useRecoilState(issueTypeState);
+  const issueStateValue: string = issueStatus === 'open' ? '이슈닫기' : '이슈열기';
   const handleEditClick = () => setTitleEditMode(true);
+  const handleOpenClose = async () => {
+    const response = await fetchIssueClose(issueNumber);
+    if (response === 200) setIssueStatus(issueStatus === 'open' ? 'close' : 'open');
+  };
 
   return (
     <HeaderViewBlock>
@@ -18,7 +26,7 @@ export default function HeaderViewMode({ issueNumber, title }: DetailHeaderProps
       </div>
       <div className='header__edit__btn'>
         <PrimaryOutlinedButton value='제목편집' onClick={handleEditClick} />
-        <PrimaryOutlinedButton value='이슈닫기' />
+        <PrimaryOutlinedButton value={issueStateValue} onClick={handleOpenClose} />
       </div>
     </HeaderViewBlock>
   );

@@ -8,6 +8,7 @@ export default interface newAPItype {
       FILE: string;
       COMMENTS: (issueId: number) => string;
     };
+    OPEN_CLOSE: string;
   };
   MILESTONE: {
     GET: (status: string) => string;
