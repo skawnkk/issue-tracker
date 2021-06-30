@@ -2,12 +2,7 @@ import React, { ReactElement, RefObject } from 'react';
 import styled from 'styled-components';
 import RadioBtn from 'components/atom/RadioBtn';
 import { useSetRecoilState } from 'recoil';
-import {
-  issueFilterSelectState,
-  issueFilterTypeState,
-  issueTypeState,
-  isFilterFullSetting,
-} from 'store/issueInfoStore';
+import { issueFilterSelectState, issueFilterTypeState, issueTypeState } from 'store/issueInfoStore';
 
 interface ModalProps {
   modalRef: RefObject<HTMLDivElement>;
@@ -21,7 +16,6 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
   const setIssueStatus = useSetRecoilState(issueTypeState);
   const setFilterType = useSetRecoilState(issueFilterTypeState);
   const setFilterSelect = useSetRecoilState(issueFilterSelectState);
-  const setIsFilterFullSetting = useSetRecoilState(isFilterFullSetting);
 
   const FILTER_LIST: filterItmeType[] = [
     { key: 'status', select: 'open', value: '열린 이슈' },
@@ -38,7 +32,6 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
     }
     setFilterType({ key, name: value });
     setFilterSelect(select);
-    setIsFilterFullSetting(true);
   };
 
   const filterList = FILTER_LIST.map((list, idx) => (

@@ -21,9 +21,9 @@ export default function AuthorSelectItem({
 
   const handeClick = () => {
     if (selected) {
-      setSelectAuthor((selectedAuthor) => selectedAuthor.filter((item) => item.id !== id));
+      setSelectAuthor(null);
     } else {
-      setSelectAuthor((selectedAuthor) => [...selectedAuthor, author]);
+      setSelectAuthor(author);
     }
   };
 

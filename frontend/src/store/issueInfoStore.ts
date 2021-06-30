@@ -43,19 +43,38 @@ export const issueTypeState = atom<string>({
   default: 'open',
 });
 
-export const isFilterFullSetting = atom<boolean>({
-  key: 'isFilterFullSetting',
-  default: true,
-});
-
 export const issueFilterTypeState = atom<{ key: string; name: string }>({
   key: 'issueFilterTypeState',
   default: { name: '', key: '' },
 });
 
+//현재 선택한 option 타입이 누군지
 export const issueFilterSelectState = atom<string>({
   key: 'issueFilterSelectState',
   default: '',
+});
+
+export const filterSearchInputState = selector<string>({
+  key: 'filterSearchInputState',
+  get: ({ get }) => {
+    const issueStatus = get(issueTypeState);
+    const { assignee, label, milestone, author } = get(selectedTabState);
+
+    const statusQuery = `status:${issueStatus} `;
+    const assigneeQuery = (assignee as Array<UserType>).reduce(
+      (acc, user) => (acc += `assignee:${user.userName} `),
+      ''
+    );
+    const labelQuery = (label as Array<LabelType>).reduce(
+      (acc, label) => (acc += `label:${label.name} `),
+      ''
+    );
+    const milestoneQuery = milestone ? `milestone:${milestone.title} ` : '';
+    const authorQuery = author ? `author:${author.id} ` : '';
+
+    const query = statusQuery + assigneeQuery + labelQuery + milestoneQuery + authorQuery;
+    return query.trim();
+  },
 });
 
 export const getIssueTrigger = atom<number>({
@@ -68,10 +87,8 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
   get: async ({ get }) => {
     const token = localStorage.getItem('token');
 
-    const trigger = get(getIssueTrigger);
+    get(getIssueTrigger);
     const issueType = get(issueTypeState);
-    const isFilterSetting = get(isFilterFullSetting);
-    if (!isFilterSetting) return null;
     try {
       const response = await fetch(API.ISSUE_MAIN.GET + issueType, {
         headers: authorizedHeaders(token),
@@ -132,8 +149,8 @@ export interface selectedTabType {
   assignee: Array<UserType> | [];
   label: Array<LabelType> | [];
   milestone: MilestoneType | null;
-  author?: Array<UserType> | [];
-  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null | void;
+  author?: UserType | null;
+  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | UserType | null | void;
 }
 
 export const selectedUserState = atom<Array<UserType> | []>({
@@ -151,9 +168,9 @@ export const selectedMilestoneState = atom<MilestoneType | null>({
   default: null,
 });
 
-export const selectedAuthorState = atom<Array<UserType> | []>({
+export const selectedAuthorState = atom<UserType | null>({
   key: 'selectedAuthorState',
-  default: [],
+  default: null,
 });
 
 export const selectedTabState = selector<selectedTabType>({
