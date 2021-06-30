@@ -4,9 +4,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { filterSearchInputState, resetSelectedTab, searchWordState } from 'store/issueInfoStore';
 import SearchIcon from '@material-ui/icons/Search';
 
-interface Props {}
-
-function SearchInput({}: Props): ReactElement {
+function SearchInput(): ReactElement {
   const searchInput = useRecoilValue(filterSearchInputState);
   // const [searchWord, setSearchWord] = useRecoilState(searchWordState);
   const [searchWord, setSearchWord] = useState('');

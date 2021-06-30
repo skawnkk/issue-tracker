@@ -4,9 +4,8 @@ import IssueFilterModal from './IssueFilterModal';
 import SearchInput from './SearchInput';
 import useToggle from 'hooks/useToggle';
 import IssueFilterBtn from './IssueFilterBtn';
-interface Props {}
 
-export default function IssueFilter({}: Props): ReactElement {
+export default function IssueFilter(): ReactElement {
   const filterButtonRef = useRef<HTMLDivElement>(null);
   const filterModalRef = useRef<HTMLDivElement>(null);
   const { open } = useToggle({ toggle: [filterButtonRef], modal: filterModalRef });
