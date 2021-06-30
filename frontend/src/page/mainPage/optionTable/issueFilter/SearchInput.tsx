@@ -4,7 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 interface Props {}
 
-export default function SearchInput({}: Props): ReactElement {
+function SearchInput({}: Props): ReactElement {
   const [inputState, setInputState] = useState('is:issue is:open');
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputState(e.target.value);
@@ -16,7 +16,7 @@ export default function SearchInput({}: Props): ReactElement {
     </SearchInputBlock>
   );
 }
-
+export default React.memo(SearchInput);
 const SearchInputBlock = styled.div`
   padding: 0px 10px;
   display: flex;
