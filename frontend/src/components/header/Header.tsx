@@ -8,6 +8,7 @@ import { controlLoginState } from 'store/loginStore';
 import ProfileImg from 'components/atom/ProfileImg';
 import { getIssueTrigger } from 'store/issueInfoStore';
 import { Link } from 'react-router-dom';
+import { resetSelectedTab } from 'store/issueInfoStore';
 
 const useStyle = makeStyles(() => ({
   typographyStyles: {
@@ -23,7 +24,7 @@ function Header() {
   const open = Boolean(anchorEl);
   const { isLogin, loginData } = useRecoilValue(controlLoginState);
   const setIssueTrigger = useSetRecoilState(getIssueTrigger);
-
+  const resetSelectTab = useSetRecoilState(resetSelectedTab);
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -35,6 +36,7 @@ function Header() {
   };
   const handleLogoClick = () => {
     setIssueTrigger((triggerCount) => triggerCount + 1);
+    resetSelectTab(null);
   };
   return (
     <HeaderBlock isLogin={isLogin}>
