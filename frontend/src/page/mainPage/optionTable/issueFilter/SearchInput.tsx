@@ -1,10 +1,13 @@
 import React, { ChangeEvent, ReactElement, useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { filterSearchInputState } from 'store/issueInfoStore';
 import SearchIcon from '@material-ui/icons/Search';
 
 interface Props {}
 
 function SearchInput({}: Props): ReactElement {
+  const searchInput = useRecoilValue(filterSearchInputState);
   const [inputState, setInputState] = useState('is:issue is:open');
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputState(e.target.value);
