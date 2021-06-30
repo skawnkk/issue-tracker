@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { hoverGrey } from 'style/Theme';
 import { MilestoneType } from 'components/common/tabModal/tapDataType';
 import { ReactComponent as RadioButton } from 'assets/icon/RadioButton.svg';
-import { selectedMilestoneState } from 'store/issueInfoStore';
+import { selectedMilestoneState, getIssueTrigger } from 'store/issueInfoStore';
 
 interface Props {
   milestone: MilestoneType;
@@ -17,6 +17,7 @@ export default function MilestoneSelectItem({
   selected,
 }: Props): ReactElement {
   const setSelectMilestone = useSetRecoilState(selectedMilestoneState);
+  const setIssueListTrigger = useSetRecoilState(getIssueTrigger);
 
   const handleClick = () => {
     if (selected) {
@@ -24,6 +25,7 @@ export default function MilestoneSelectItem({
     } else {
       setSelectMilestone(milestone);
     }
+    setIssueListTrigger((triggerCount) => triggerCount + 1);
   };
 
   return (

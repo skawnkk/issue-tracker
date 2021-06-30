@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import ProfileImg from 'components/atom/ProfileImg';
 import { UserType } from 'components/common/tabModal/tapDataType';
 import { ReactComponent as RadioButton } from 'assets/icon/RadioButton.svg';
-import { selectedUserState } from 'store/issueInfoStore';
+import { selectedUserState, getIssueTrigger } from 'store/issueInfoStore';
 
 interface UserProps {
   user: UserType;
@@ -18,6 +18,7 @@ export default function UserSelectItem({
   selected,
 }: UserProps) {
   const setSelectUser = useSetRecoilState(selectedUserState);
+  const setIssueListTrigger = useSetRecoilState(getIssueTrigger);
 
   const handeClick = () => {
     if (selected) {
@@ -25,6 +26,7 @@ export default function UserSelectItem({
     } else {
       setSelectUser((selectedUser) => [...selectedUser, user]);
     }
+    setIssueListTrigger((triggerCount) => triggerCount + 1);
   };
 
   return (
