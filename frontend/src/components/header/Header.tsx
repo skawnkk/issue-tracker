@@ -6,7 +6,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import ProfileImg from 'components/atom/ProfileImg';
-import { getIssueTrigger } from 'store/issueInfoStore';
+import { getIssueTrigger, issueTypeState } from 'store/issueInfoStore';
 import { Link } from 'react-router-dom';
 import { resetSelectedTab } from 'store/issueInfoStore';
 
@@ -25,6 +25,8 @@ function Header() {
   const { isLogin, loginData } = useRecoilValue(controlLoginState);
   const setIssueTrigger = useSetRecoilState(getIssueTrigger);
   const resetSelectTab = useSetRecoilState(resetSelectedTab);
+  const setIssueOpen = useSetRecoilState(issueTypeState);
+
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,6 +39,7 @@ function Header() {
   const handleLogoClick = () => {
     setIssueTrigger((triggerCount) => triggerCount + 1);
     resetSelectTab(null);
+    setIssueOpen('open');
   };
   return (
     <HeaderBlock isLogin={isLogin}>
