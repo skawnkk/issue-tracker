@@ -9,6 +9,7 @@ export const authorizedHeaders = (token: string | null) => ({
 const API: APItype = {
   ISSUE_MAIN: {
     GET: basicURL + `/issues?`,
+    SEARCH: basicURL + `/issues/search?`,
     CREATE: basicURL + `/issues/form`,
   },
   ISSUE_DETAIL: {
