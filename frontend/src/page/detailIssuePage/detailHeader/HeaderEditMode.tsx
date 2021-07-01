@@ -2,21 +2,21 @@ import React, { useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import { DetailHeaderProps } from 'page/detailIssuePage/detailType';
-import { titleEditMode, detailTitle } from 'store/detailStore';
+import { titleEditMode, detailTitle, detailIssueTrigger } from 'store/detailStore';
 import fetchEditTitle from 'util/api/fetchEditTitle';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
 
 export default function HeaderEditMode({ issueNumber, title }: DetailHeaderProps) {
+  const setDetailRender = useSetRecoilState(detailIssueTrigger);
   const setTitleEditMode = useSetRecoilState(titleEditMode);
   const [editTitle, setEditTitle] = useState(title);
-  const setPickedTitle = useSetRecoilState(detailTitle);
   const handleCancel = () => setTitleEditMode(false);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setEditTitle(e.target.value);
   const handleSubmit = async () => {
     const fetchResult = await fetchEditTitle(issueNumber, editTitle);
     if (fetchResult) {
-      setPickedTitle(fetchResult);
       setTitleEditMode(false);
+      setDetailRender((trigger) => trigger + 1);
     }
   };
 
