@@ -6,7 +6,6 @@ export async function fetchLogin(code: string): Promise<any> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...authorizedHeaders(token),
       },
     };
     const response = await fetch(API.LOGIN.ACCESS(code), postLoginOption);
