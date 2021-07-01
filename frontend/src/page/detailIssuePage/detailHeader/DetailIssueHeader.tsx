@@ -14,8 +14,9 @@ interface Props {
 export default function DetailIssueHeader({
   issueData: { id, owner, status, title, createdDateTime, comments },
 }: Props) {
+  console.log(title);
   const [pickedTitle, setPickedTitle] = useRecoilState(detailTitle);
-  useEffect(() => setPickedTitle(title), []);
+  useEffect(() => setPickedTitle(title), [title]);
 
   const isTitleEditMode = useRecoilValue(titleEditMode);
   const passedTime = timeChecker(createdDateTime);
