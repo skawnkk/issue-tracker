@@ -8,7 +8,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { getIssueTrigger, resetSelectedTab, issueTypeState } from 'store/issueInfoStore';
 import ProfileImg from 'components/atom/ProfileImg';
-
+import { fetchLogout } from 'util/api/fetchLogin';
 const useStyle = makeStyles(() => ({
   typographyStyles: {
     flex: 1,
@@ -39,6 +39,8 @@ function Header() {
   };
 
   const handelLogOutClick = () => {
+    fetchLogout();
+    //로그아웃 status 200을 받고 아래 처리를 하면 좋을듯함. (아직 400에러'-';;)
     setAnchorEl(null);
     localStorage.clear();
     setLoginState({ isLogin: false, loginData: null });
@@ -60,8 +62,7 @@ function Header() {
               aria-controls='menu-appbar'
               aria-haspopup='true'
               onClick={handleMenu}
-              color='inherit'
-            >
+              color='inherit'>
               {loginData ? (
                 <ProfileImg avatarURL={loginData?.avatarUrl} className='login__profile-img' />
               ) : (

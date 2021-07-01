@@ -23,8 +23,9 @@ export default interface newAPItype {
     GET: string;
     CREATE: string;
   };
-  LOGIN: {
-    ACCESS: (code: string) => string;
+  SIGN: {
+    LOGIN: (code: string) => string;
+    LOGOUT: string;
     USER: string;
   };
   TAB: string;
