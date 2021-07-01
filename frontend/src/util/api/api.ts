@@ -19,7 +19,8 @@ const API: APItype = {
       FILE: basicURL + `/images`,
       COMMENTS: (issueId) => basicURL + `/issues/${issueId}/comments`,
     },
-    OPEN_CLOSE: basicURL + `/issues?status=open`,
+    OPEN: basicURL + `/issues?status=close`,
+    CLOSE: basicURL + `/issues?status=open`,
   },
   MILESTONE: {
     GET: (status = 'open') => basicURL + `/milestones?status=${status}`,

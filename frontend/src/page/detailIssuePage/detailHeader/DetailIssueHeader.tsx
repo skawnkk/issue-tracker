@@ -27,7 +27,7 @@ export default function DetailIssueHeader({
       {isTitleEditMode ? (
         <HeaderEditMode issueNumber={id} title={pickedTitle} />
       ) : (
-        <HeaderViewMode issueNumber={id} title={pickedTitle} />
+        <HeaderViewMode issueNumber={id} status={status} title={pickedTitle} />
       )}
       <div className='header__description'>
         <DetailIssueStatus status={status} />
