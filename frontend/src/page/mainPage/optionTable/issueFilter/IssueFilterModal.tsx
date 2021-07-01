@@ -36,12 +36,14 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
     { key: 'status', select: 'close', value: '닫힌 이슈' },
   ];
 
-  const handleFilterClick = ({ key, select, value }: filterItmeType) => {
+  const handleFilterClick = ({ key, select }: filterItmeType) => {
+    setAuthorFilterSelect(null);
+    setAssigneeFilterSelect([]);
     if (key === 'status') {
       setIssueStatus(select);
       return;
     }
-    //내 정보 인식
+
     const myInfo: UserType = {
       id: 11,
       userName: loginData?.userName as string,
@@ -49,7 +51,6 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
       image: loginData?.avatarUrl as string,
     };
     if (key === 'author') setAuthorFilterSelect(myInfo);
-    if (key === 'assignee') setAssigneeFilterSelect([myInfo]);
     if (key === 'assignee') setAssigneeFilterSelect([myInfo]);
   };
 
