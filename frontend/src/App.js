@@ -19,9 +19,11 @@ function App() {
   useEffect(() => {
     if (!isLogin()) return;
     try {
-      const userData = getUserInfoUsingJWT();
-      const loginData = { avatarURL: userData.avatarUrl, name: userData.name };
-      setLoginData({ isLogin: true, loginData });
+      (async () => {
+        const userData = await getUserInfoUsingJWT();
+        const loginData = { avatarUrl: userData.avatarUrl, name: userData.name };
+        setLoginData({ isLogin: true, loginData });
+      })();
     } catch (err) {
       console.error(err);
     }

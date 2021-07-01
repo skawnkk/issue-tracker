@@ -1,22 +1,49 @@
-import React, { ChangeEvent, ReactElement, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useState, useEffect, KeyboardEvent } from 'react';
 import styled from 'styled-components';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { filterSearchInputState, resetSelectedTab, searchWordState } from 'store/issueInfoStore';
 import SearchIcon from '@material-ui/icons/Search';
 
-interface Props {}
+function SearchInput(): ReactElement {
+  const searchInput = useRecoilValue(filterSearchInputState);
+  const [searchWord, setSearchWord] = useRecoilState(searchWordState);
+  const resetSelectOption = useResetRecoilState(resetSelectedTab);
 
-export default function SearchInput({}: Props): ReactElement {
-  const [inputState, setInputState] = useState('is:issue is:open');
+  const [inputState, setInputState] = useState(searchInput);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputState(e.target.value);
   };
+
+  useEffect(() => {
+    setInputState(searchInput + ' ' + searchWord);
+  }, [searchInput, searchWord]);
+
+  const handelSubmit = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    setSearchWord(inputState);
+    resetSelectOption();
+    (e.target as HTMLInputElement)?.blur();
+    //issueType = inputState => 파싱
+    //setFilterIssueType(issueType)
+  };
+
+  const handleFocus = () => setInputState('');
+  const handleBlur = () => setInputState(searchInput + ' ' + searchWord);
+
   return (
     <SearchInputBlock>
       <SearchIcon />
-      <Input value={inputState} onChange={handleChange}></Input>
+      <Input
+        value={inputState}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        onKeyPress={handelSubmit}
+      ></Input>
     </SearchInputBlock>
   );
 }
-
+export default SearchInput;
 const SearchInputBlock = styled.div`
   padding: 0px 10px;
   display: flex;

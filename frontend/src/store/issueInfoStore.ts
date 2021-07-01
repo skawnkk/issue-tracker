@@ -43,19 +43,38 @@ export const issueTypeState = atom<string>({
   default: 'open',
 });
 
-export const isFilterFullSetting = atom<boolean>({
-  key: 'isFilterFullSetting',
-  default: true,
-});
-
 export const issueFilterTypeState = atom<{ key: string; name: string }>({
   key: 'issueFilterTypeState',
   default: { name: '', key: '' },
 });
 
+//현재 선택한 option 타입이 누군지
 export const issueFilterSelectState = atom<string>({
   key: 'issueFilterSelectState',
   default: '',
+});
+
+export const filterSearchInputState = selector<string>({
+  key: 'filterSearchInputState',
+  get: ({ get }) => {
+    const issueStatus = get(issueTypeState);
+    const { assignee, label, milestone, author } = get(selectedTabState);
+
+    const statusQuery = `status:${issueStatus} `;
+    const assigneeQuery = (assignee as Array<UserType>).reduce(
+      (acc, user) => (acc += `assignee:${user.userName} `),
+      ''
+    );
+    const labelQuery = (label as Array<LabelType>).reduce(
+      (acc, label) => (acc += `label:${label.name} `),
+      ''
+    );
+    const milestoneQuery = milestone ? `milestone:${milestone.title} ` : '';
+    const authorQuery = author ? `author:${author.userName} ` : '';
+
+    const query = statusQuery + assigneeQuery + labelQuery + milestoneQuery + authorQuery;
+    return query.trim();
+  },
 });
 
 export const getIssueTrigger = atom<number>({
@@ -63,17 +82,24 @@ export const getIssueTrigger = atom<number>({
   default: 0,
 });
 
+export const searchWordState = atom<string>({
+  key: 'searchWord',
+  default: '',
+});
+
 export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
   key: 'GET/issues',
   get: async ({ get }) => {
     const token = localStorage.getItem('token');
+    get(getIssueTrigger);
+    const searchWord = get(searchWordState);
+    const issueQuery = get(filterSearchInputState).replace(/:/g, '=').replace(/ /g, '&');
 
-    const trigger = get(getIssueTrigger);
-    const issueType = get(issueTypeState);
-    const isFilterSetting = get(isFilterFullSetting);
-    if (!isFilterSetting) return null;
+    const URL = searchWord ? API.ISSUE_MAIN.SEARCH : API.ISSUE_MAIN.GET;
+    const query = searchWord ? issueQuery + `&query=${searchWord}` : issueQuery;
+
     try {
-      const response = await fetch(API.ISSUE_MAIN.GET + issueType, {
+      const response = await fetch(URL + query, {
         headers: authorizedHeaders(token),
       });
       const issuesData = await response.json();
@@ -132,7 +158,8 @@ export interface selectedTabType {
   assignee: Array<UserType> | [];
   label: Array<LabelType> | [];
   milestone: MilestoneType | null;
-  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | null;
+  author?: UserType | null;
+  [key: string]: [] | Array<UserType> | Array<LabelType> | MilestoneType | UserType | null | void;
 }
 
 export const selectedUserState = atom<Array<UserType> | []>({
@@ -150,20 +177,31 @@ export const selectedMilestoneState = atom<MilestoneType | null>({
   default: null,
 });
 
+export const selectedAuthorState = atom<UserType | null>({
+  key: 'selectedAuthorState',
+  default: null,
+});
+
 export const selectedTabState = selector<selectedTabType>({
   key: 'selectedTabState',
   get: ({ get }) => {
     const selectUser = get(selectedUserState);
     const selectLabel = get(selectedLabelState);
     const selectMilestone = get(selectedMilestoneState);
-
-    return { assignee: selectUser, label: selectLabel, milestone: selectMilestone };
+    const selectAuthor = get(selectedAuthorState);
+    return {
+      assignee: selectUser,
+      label: selectLabel,
+      milestone: selectMilestone,
+      author: selectAuthor,
+    };
   },
   set: ({ set }, newValue) => {
-    const { assignee, label, milestone } = newValue as selectedTabType;
+    const { assignee, label, milestone, author } = newValue as selectedTabType;
     set(selectedUserState, assignee);
     set(selectedLabelState, label);
     set(selectedMilestoneState, milestone);
+    if (author) set(selectedAuthorState, author);
   },
 });
 
@@ -174,5 +212,6 @@ export const resetSelectedTab = selector<null>({
     reset(selectedUserState);
     reset(selectedLabelState);
     reset(selectedMilestoneState);
+    reset(selectedAuthorState);
   },
 });

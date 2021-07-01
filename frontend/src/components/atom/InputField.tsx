@@ -27,7 +27,7 @@ function InputField({ label, className, value = '', onChange, ...props }: Props)
     </InputFieldBlock>
   );
 }
-export default React.memo(InputField);
+export default InputField;
 interface StyleProps {
   isFocus: boolean;
 }

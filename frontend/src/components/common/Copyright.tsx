@@ -12,7 +12,7 @@ export default function Copyright({}: Props): ReactElement {
         {'Copyright © '}
         <Link color='inherit' href='https://material-ui.com/'>
           Issue Tracker
-        </Link>{' '}
+        </Link>
         {new Date().getFullYear()}
         {'.'}
       </Typography>

@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import LabelSelectItem from 'components/common/tabModal/LabelSelectItem';
 import MilestoneSelectItem from 'components/common/tabModal/MilestoneSelectItem';
 import UserSelectItem from 'components/common/tabModal/UserSelectItem';
+import AuthorSelectItem from './AuthorSelectItem';
 import { getTabInfoState, selectedTabState } from 'store/issueInfoStore';
 import { useRecoilValue } from 'recoil';
 import { UserType, LabelType, MilestoneType } from 'components/common/tabModal/tapDataType';
+
 interface ModalContentListProps {
   filterType: string;
   setModalClose?: () => void;
@@ -59,10 +61,18 @@ export default function ModalContentList({
         return <MilestoneSelectItem key={milestone.id} {...{ milestone, selected }} />;
       });
     },
+    author: (type: string): JSX.Element[] => {
+      const authorData = tabInfo[type] as Array<UserType>;
+      return authorData.map((author) => {
+        //tabInfo에서 author key값이 없기 때문에 인자의 type은 assignee로 바꿔서 받고 isSelected판단할 때는 author을 사용
+        const selected = isSelectedTabItem('author', author.id, author.assigned);
+        return <AuthorSelectItem key={author.id} {...{ author, selected }}></AuthorSelectItem>;
+      });
+    },
   };
 
   const type = filterType === 'author' ? 'assignee' : filterType;
-  const contentList = getContentList[type](type);
+  const contentList = getContentList[filterType](type);
   return <ModalContentListBlock>{contentList}</ModalContentListBlock>;
 }
 

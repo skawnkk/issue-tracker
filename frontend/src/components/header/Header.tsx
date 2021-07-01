@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Link } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
+import { getIssueTrigger, resetSelectedTab, issueTypeState } from 'store/issueInfoStore';
 import ProfileImg from 'components/atom/ProfileImg';
-import { getIssueTrigger } from 'store/issueInfoStore';
-import { Link } from 'react-router-dom';
 
 const useStyle = makeStyles(() => ({
   typographyStyles: {
@@ -23,18 +23,18 @@ function Header() {
   const open = Boolean(anchorEl);
   const { isLogin, loginData } = useRecoilValue(controlLoginState);
   const setIssueTrigger = useSetRecoilState(getIssueTrigger);
+  const resetSelectTab = useSetRecoilState(resetSelectedTab);
+  const setIssueOpen = useSetRecoilState(issueTypeState);
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
   const toolbarStyle = {
     padding: '0 80px',
   };
   const handleLogoClick = () => {
     setIssueTrigger((triggerCount) => triggerCount + 1);
+    resetSelectTab(null);
+    setIssueOpen('open');
   };
   return (
     <HeaderBlock isLogin={isLogin}>

@@ -5,61 +5,61 @@ import { useSetRecoilState } from 'recoil';
 import ProfileImg from 'components/atom/ProfileImg';
 import { UserType } from 'components/common/tabModal/tapDataType';
 import { ReactComponent as RadioButton } from 'assets/icon/RadioButton.svg';
-import { selectedUserState, getIssueTrigger, searchWordState } from 'store/issueInfoStore';
+import { selectedAuthorState, getIssueTrigger, searchWordState } from 'store/issueInfoStore';
 
-interface UserProps {
-  user: UserType;
+interface AuthorProps {
+  author: UserType;
   selected: boolean;
 }
 
-export default function UserSelectItem({
-  user: { id, image, userName },
-  user,
+export default function AuthorSelectItem({
+  author: { id, image, userName },
+  author,
   selected,
-}: UserProps) {
-  const setSelectUser = useSetRecoilState(selectedUserState);
+}: AuthorProps) {
+  const setSelectAuthor = useSetRecoilState(selectedAuthorState);
   const setIssueListTrigger = useSetRecoilState(getIssueTrigger);
   const setSearchWord = useSetRecoilState(searchWordState);
 
   const handeClick = () => {
     if (selected) {
-      setSelectUser((selectedUser) => selectedUser.filter((item) => item.id !== id));
+      setSelectAuthor(null);
     } else {
-      setSelectUser((selectedUser) => [...selectedUser, user]);
+      setSelectAuthor(author);
     }
     setSearchWord('');
     setIssueListTrigger((triggerCount) => triggerCount + 1);
   };
 
   return (
-    <UserSelectItemBlock onClick={handeClick}>
-      <div className='user-select__info'>
-        <div className='user-select__image'>
+    <AuthorSelectItemBlock onClick={handeClick}>
+      <div className='author-select__info'>
+        <div className='author-select__image'>
           <ProfileImg avatarURL={image} isSmall={true} />
         </div>
-        <div className='user-select__name'>{userName}</div>
+        <div className='author-select__name'>{userName}</div>
       </div>
       {selected && <RadioButton />}
-    </UserSelectItemBlock>
+    </AuthorSelectItemBlock>
   );
 }
 
-const UserSelectItemBlock = styled(hoverGrey)`
+const AuthorSelectItemBlock = styled(hoverGrey)`
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  .user-select__info {
+  .author-select__info {
     display: flex;
   }
   div {
     display: flex;
   }
-  .user-select__image {
+  .author-select__image {
     margin-right: 8px;
   }
-  .user-select__name {
+  .author-select__name {
     color: ${({ theme }) => theme.color.fontBlack};
   }
 `;

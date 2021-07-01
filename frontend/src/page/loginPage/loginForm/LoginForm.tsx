@@ -7,9 +7,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 
-interface Props {}
-
-export default function LoginForm({}: Props): ReactElement {
+export default function LoginForm(): ReactElement {
   return (
     <LoginFormBlock>
       <form className='login__form' noValidate>
@@ -44,8 +42,7 @@ export default function LoginForm({}: Props): ReactElement {
           fullWidth
           variant='contained'
           color='primary'
-          className='login__submit'
-        >
+          className='login__submit'>
           Sign In
         </Button>
         <Grid container>

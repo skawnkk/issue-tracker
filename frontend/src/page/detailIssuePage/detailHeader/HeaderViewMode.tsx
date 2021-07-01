@@ -1,15 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { titleEditMode, detailIssueTrigger } from 'store/detailStore';
+import { issueTypeState } from 'store/issueInfoStore';
 import Title from 'components/atom/Title';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
-import { titleEditMode } from 'store/detailStore';
 import { DetailHeaderProps } from 'page/detailIssuePage/detailType';
-export default function HeaderViewMode({ issueNumber, title }: DetailHeaderProps) {
+import { fetchIssueClose, fetchIssueOpen } from 'util/api/fetchCreateIssue';
+
+export default function HeaderViewMode({ issueNumber, status, title }: DetailHeaderProps) {
   const setTitleEditMode = useSetRecoilState(titleEditMode);
-
+  const setIssueOpenClose = useSetRecoilState(detailIssueTrigger); //이슈를 여닫으면서 상세페이지 데이터를 새로 요청함.
+  const [issueStatus, setIssueStatus] = useRecoilState(issueTypeState);
+  const issueStateValue = status ? '이슈닫기' : '이슈열기';
   const handleEditClick = () => setTitleEditMode(true);
-
+  const handleOpenClose = async () => {
+    const response = status
+      ? await fetchIssueClose(issueNumber)
+      : await fetchIssueOpen(issueNumber);
+    if (response === 200) {
+      setIssueOpenClose((trigger) => trigger + 1);
+      // setIssueStatus(status ? 'close' : 'open');
+    }
+  };
   return (
     <HeaderViewBlock>
       <div className='header__title'>
@@ -18,7 +31,7 @@ export default function HeaderViewMode({ issueNumber, title }: DetailHeaderProps
       </div>
       <div className='header__edit__btn'>
         <PrimaryOutlinedButton value='제목편집' onClick={handleEditClick} />
-        <PrimaryOutlinedButton value='이슈닫기' />
+        <PrimaryOutlinedButton value={issueStateValue} onClick={handleOpenClose} />
       </div>
     </HeaderViewBlock>
   );

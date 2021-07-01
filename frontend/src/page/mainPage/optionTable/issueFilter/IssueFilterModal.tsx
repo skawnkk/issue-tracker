@@ -1,13 +1,17 @@
 import React, { ReactElement, RefObject } from 'react';
 import styled from 'styled-components';
+import { UserType } from 'components/common/tabModal/tapDataType';
 import RadioBtn from 'components/atom/RadioBtn';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import {
+  selectedTabState,
+  selectedUserState,
   issueFilterSelectState,
   issueFilterTypeState,
   issueTypeState,
-  isFilterFullSetting,
+  selectedAuthorState,
 } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
 
 interface ModalProps {
   modalRef: RefObject<HTMLDivElement>;
@@ -21,13 +25,15 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
   const setIssueStatus = useSetRecoilState(issueTypeState);
   const setFilterType = useSetRecoilState(issueFilterTypeState);
   const setFilterSelect = useSetRecoilState(issueFilterSelectState);
-  const setIsFilterFullSetting = useSetRecoilState(isFilterFullSetting);
+  const setAuthorFilterSelect = useSetRecoilState(selectedAuthorState);
+  const setAssigneeFilterSelect = useSetRecoilState(selectedUserState);
+  const { loginData } = useRecoilValue(controlLoginState);
 
   const FILTER_LIST: filterItmeType[] = [
     { key: 'status', select: 'open', value: '열린 이슈' },
     { key: 'author', select: 'me', value: '내가 작성한 이슈' },
     { key: 'assignee', select: 'me', value: '나에게 할당된 이슈' },
-    { key: 'comments', select: 'me', value: '내가 댓글을 남긴 이슈' },
+    // { key: 'comments', select: 'me', value: '내가 댓글을 남긴 이슈' },//!코멘트는 하지 않기로
     { key: 'status', select: 'close', value: '닫힌 이슈' },
   ];
 
@@ -36,9 +42,19 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
       setIssueStatus(select);
       return;
     }
-    setFilterType({ key, name: value });
-    setFilterSelect(select);
-    setIsFilterFullSetting(true);
+    //내 정보 인식
+    const myInfo: UserType = {
+      id: 11,
+      userName: loginData?.name as string,
+      assigned: false,
+      image: loginData?.avatarUrl as string,
+    };
+    if (key === 'author') setAuthorFilterSelect(myInfo); //?네이밍으로 변경해야할까?
+    if (key === 'assignee') setAssigneeFilterSelect([myInfo]);
+    if (key === 'assignee') setAssigneeFilterSelect([myInfo]);
+
+    // setFilterType({ key, name: value });//?->왜필요한건지
+    // setFilterSelect(select);
   };
 
   const filterList = FILTER_LIST.map((list, idx) => (

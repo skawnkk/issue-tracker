@@ -8,7 +8,8 @@ export const authorizedHeaders = (token: string | null) => ({
 
 const API: APItype = {
   ISSUE_MAIN: {
-    GET: basicURL + `/issues?status=`,
+    GET: basicURL + `/issues?`,
+    SEARCH: basicURL + `/issues/search?`,
     CREATE: basicURL + `/issues/form`,
   },
   ISSUE_DETAIL: {
@@ -19,6 +20,8 @@ const API: APItype = {
       FILE: basicURL + `/images`,
       COMMENTS: (issueId) => basicURL + `/issues/${issueId}/comments`,
     },
+    OPEN: basicURL + `/issues?status=close`,
+    CLOSE: basicURL + `/issues?status=open`,
   },
   MILESTONE: {
     GET: (status = 'open') => basicURL + `/milestones?status=${status}`,

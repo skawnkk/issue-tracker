@@ -1,5 +1,5 @@
 export default interface newAPItype {
-  ISSUE_MAIN: { GET: string; CREATE: string };
+  ISSUE_MAIN: { GET: string; SEARCH: string; CREATE: string };
   ISSUE_DETAIL: {
     GET: (id: number) => string;
     EDIT: {
@@ -8,6 +8,8 @@ export default interface newAPItype {
       FILE: string;
       COMMENTS: (issueId: number) => string;
     };
+    OPEN: string;
+    CLOSE: string;
   };
   MILESTONE: {
     GET: (status: string) => string;

@@ -29,13 +29,13 @@ export interface DetailIssueType {
 }
 
 export default function DetailIssuePage() {
+  const setDetailIssueId = useSetRecoilState(detailIdState);
+  const setSelectdedOption = useSetRecoilState(selectedTabState);
   const pagePaths = window.location.pathname.split('/');
   const issueNum = +pagePaths[pagePaths.length - 1];
-  const setDetailIssueId = useSetRecoilState(detailIdState);
-  const issueData = useRecoilValue(getDetailIssueData);
-  const setSelectdedOption = useSetRecoilState(selectedTabState);
-
   useEffect(() => setDetailIssueId(issueNum), []);
+
+  const issueData = useRecoilValue(getDetailIssueData);
 
   useEffect(() => {
     if (!issueData) return;
