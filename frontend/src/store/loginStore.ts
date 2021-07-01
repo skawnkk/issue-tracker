@@ -9,6 +9,7 @@ export const isLoginState = atom({
 interface loginStateType {
   avatarUrl: string;
   name: string;
+  userName: string;
 }
 
 //로그인 사용자 및 토큰 정보
