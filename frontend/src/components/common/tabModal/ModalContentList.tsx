@@ -10,13 +10,9 @@ import { UserType, LabelType, MilestoneType } from 'components/common/tabModal/t
 
 interface ModalContentListProps {
   filterType: string;
-  setModalClose?: () => void;
 }
 
-export default function ModalContentList({
-  filterType,
-  setModalClose,
-}: ModalContentListProps): ReactElement {
+export default function ModalContentList({ filterType }: ModalContentListProps): ReactElement {
   const selectedTab = useRecoilValue(selectedTabState);
   const tabInfo = useRecoilValue(getTabInfoState);
   const isSelectedTabItem = (type: string, id: number, selected?: boolean) => {
