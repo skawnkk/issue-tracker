@@ -21,7 +21,11 @@ function App() {
     try {
       (async () => {
         const userData = await getUserInfoUsingJWT();
-        const loginData = { avatarUrl: userData.avatarUrl, name: userData.name };
+        const loginData = {
+          avatarUrl: userData.avatarUrl,
+          userName: userData.userName,
+          name: userData.name,
+        };
         setLoginData({ isLogin: true, loginData });
       })();
     } catch (err) {
