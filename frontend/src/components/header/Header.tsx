@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Link } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
+import { getIssueTrigger, resetSelectedTab, issueTypeState } from 'store/issueInfoStore';
 import ProfileImg from 'components/atom/ProfileImg';
-import { getIssueTrigger, issueTypeState } from 'store/issueInfoStore';
-import { Link } from 'react-router-dom';
-import { resetSelectedTab } from 'store/issueInfoStore';
 
 const useStyle = makeStyles(() => ({
   typographyStyles: {
