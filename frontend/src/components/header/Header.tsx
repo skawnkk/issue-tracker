@@ -26,12 +26,8 @@ function Header() {
   const resetSelectTab = useSetRecoilState(resetSelectedTab);
   const setIssueOpen = useSetRecoilState(issueTypeState);
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
   const toolbarStyle = {
     padding: '0 80px',
   };
