@@ -1,5 +1,5 @@
 export default interface newAPItype {
-  ISSUE_MAIN: { GET: string; CREATE: string };
+  ISSUE_MAIN: { GET: string; SEARCH: string; CREATE: string };
   ISSUE_DETAIL: {
     GET: (id: number) => string;
     EDIT: {

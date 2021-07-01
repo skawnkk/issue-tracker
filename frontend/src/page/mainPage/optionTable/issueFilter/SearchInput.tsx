@@ -6,8 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 function SearchInput(): ReactElement {
   const searchInput = useRecoilValue(filterSearchInputState);
-  // const [searchWord, setSearchWord] = useRecoilState(searchWordState);
-  const [searchWord, setSearchWord] = useState('');
+  const [searchWord, setSearchWord] = useRecoilState(searchWordState);
   const resetSelectOption = useResetRecoilState(resetSelectedTab);
 
   const [inputState, setInputState] = useState(searchInput);
@@ -16,26 +15,18 @@ function SearchInput(): ReactElement {
   };
 
   useEffect(() => {
-    console.log('1');
     setInputState(searchInput + ' ' + searchWord);
-  }, [searchInput]);
-
-  useEffect(() => {
-    console.log('2');
-    setInputState(searchInput + ' ' + searchWord);
-  }, [searchWord]);
+  }, [searchInput, searchWord]);
 
   const handelSubmit = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
     setSearchWord(inputState);
     resetSelectOption();
     (e.target as HTMLInputElement)?.blur();
-    //issueType = inputState => 파싱
-    //setFilterIssueType(issueType)
   };
 
   const handleFocus = () => setInputState('');
-  const handleBlur = () => setInputState(searchInput);
+  const handleBlur = () => setInputState(searchInput + ' ' + searchWord);
 
   return (
     <SearchInputBlock>

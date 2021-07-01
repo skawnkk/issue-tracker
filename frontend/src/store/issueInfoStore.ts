@@ -92,16 +92,14 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
   get: async ({ get }) => {
     const token = localStorage.getItem('token');
     get(getIssueTrigger);
+    const searchWord = get(searchWordState);
+    const issueQuery = get(filterSearchInputState).replace(/:/g, '=').replace(/ /g, '&');
 
-    let issueType = get(filterSearchInputState).replace(/:/g, '=').replace(/ /g, '&');
-    // let issueType = get(filterIssueType)
-
-    //inputData가 필요
-    //공백으로 스플릿
-    //:앞뒤로 키값
+    const URL = searchWord ? API.ISSUE_MAIN.SEARCH : API.ISSUE_MAIN.GET;
+    const query = searchWord ? issueQuery + `&query=${searchWord}` : issueQuery;
 
     try {
-      const response = await fetch(API.ISSUE_MAIN.GET + issueType, {
+      const response = await fetch(URL + query, {
         headers: authorizedHeaders(token),
       });
       const issuesData = await response.json();
@@ -191,7 +189,6 @@ export const selectedTabState = selector<selectedTabType>({
     const selectLabel = get(selectedLabelState);
     const selectMilestone = get(selectedMilestoneState);
     const selectAuthor = get(selectedAuthorState);
-    console.log(selectUser);
     return {
       assignee: selectUser,
       label: selectLabel,

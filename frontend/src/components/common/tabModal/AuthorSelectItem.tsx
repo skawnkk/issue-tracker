@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import ProfileImg from 'components/atom/ProfileImg';
 import { UserType } from 'components/common/tabModal/tapDataType';
 import { ReactComponent as RadioButton } from 'assets/icon/RadioButton.svg';
-import { selectedAuthorState, getIssueTrigger } from 'store/issueInfoStore';
+import { selectedAuthorState, getIssueTrigger, searchWordState } from 'store/issueInfoStore';
 
 interface AuthorProps {
   author: UserType;
@@ -19,6 +19,7 @@ export default function AuthorSelectItem({
 }: AuthorProps) {
   const setSelectAuthor = useSetRecoilState(selectedAuthorState);
   const setIssueListTrigger = useSetRecoilState(getIssueTrigger);
+  const setSearchWord = useSetRecoilState(searchWordState);
 
   const handeClick = () => {
     if (selected) {
@@ -26,6 +27,7 @@ export default function AuthorSelectItem({
     } else {
       setSelectAuthor(author);
     }
+    setSearchWord('');
     setIssueListTrigger((triggerCount) => triggerCount + 1);
   };
 
