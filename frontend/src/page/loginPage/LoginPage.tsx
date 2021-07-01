@@ -21,8 +21,8 @@ export default function LoginPage() {
 
   const getLoginUserData = async (loginCode: string) => {
     try {
-      const { avatarUrl, name, token } = await fetchLogin(loginCode);
-      const loginUserData = { avatarUrl, name };
+      const { avatarUrl, name, userName, token } = await fetchLogin(loginCode);
+      const loginUserData = { avatarUrl, name, userName };
       setLoginData({ isLogin: true, loginData: loginUserData });
       localStorage.setItem('token', token);
       history.push('/main');

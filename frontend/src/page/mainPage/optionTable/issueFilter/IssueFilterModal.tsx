@@ -33,28 +33,25 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
     { key: 'status', select: 'open', value: '열린 이슈' },
     { key: 'author', select: 'me', value: '내가 작성한 이슈' },
     { key: 'assignee', select: 'me', value: '나에게 할당된 이슈' },
-    // { key: 'comments', select: 'me', value: '내가 댓글을 남긴 이슈' },//!코멘트는 하지 않기로
     { key: 'status', select: 'close', value: '닫힌 이슈' },
   ];
 
-  const handleFilterClick = ({ key, select, value }: filterItmeType) => {
+  const handleFilterClick = ({ key, select }: filterItmeType) => {
+    setAuthorFilterSelect(null);
+    setAssigneeFilterSelect([]);
     if (key === 'status') {
       setIssueStatus(select);
       return;
     }
-    //내 정보 인식
+
     const myInfo: UserType = {
       id: 11,
-      userName: loginData?.name as string,
+      userName: loginData?.userName as string,
       assigned: false,
       image: loginData?.avatarUrl as string,
     };
-    if (key === 'author') setAuthorFilterSelect(myInfo); //?네이밍으로 변경해야할까?
+    if (key === 'author') setAuthorFilterSelect(myInfo);
     if (key === 'assignee') setAssigneeFilterSelect([myInfo]);
-    if (key === 'assignee') setAssigneeFilterSelect([myInfo]);
-
-    // setFilterType({ key, name: value });//?->왜필요한건지
-    // setFilterSelect(select);
   };
 
   const filterList = FILTER_LIST.map((list, idx) => (

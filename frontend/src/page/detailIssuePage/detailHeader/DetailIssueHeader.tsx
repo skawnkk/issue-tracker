@@ -14,10 +14,6 @@ interface Props {
 export default function DetailIssueHeader({
   issueData: { id, owner, status, title, createdDateTime, comments },
 }: Props) {
-  console.log(title);
-  const [pickedTitle, setPickedTitle] = useRecoilState(detailTitle);
-  useEffect(() => setPickedTitle(title), [title]);
-
   const isTitleEditMode = useRecoilValue(titleEditMode);
   const passedTime = timeChecker(createdDateTime);
   const author = owner.userName;
@@ -26,9 +22,9 @@ export default function DetailIssueHeader({
   return (
     <DetailIssueHeaderBlock>
       {isTitleEditMode ? (
-        <HeaderEditMode issueNumber={id} title={pickedTitle} />
+        <HeaderEditMode issueNumber={id} title={title} />
       ) : (
-        <HeaderViewMode issueNumber={id} status={status} title={pickedTitle} />
+        <HeaderViewMode issueNumber={id} status={status} title={title} />
       )}
       <div className='header__description'>
         <DetailIssueStatus status={status} />

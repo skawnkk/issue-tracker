@@ -23,8 +23,6 @@ function SearchInput(): ReactElement {
     setSearchWord(inputState);
     resetSelectOption();
     (e.target as HTMLInputElement)?.blur();
-    //issueType = inputState => 파싱
-    //setFilterIssueType(issueType)
   };
 
   const handleFocus = () => setInputState('');
@@ -38,8 +36,7 @@ function SearchInput(): ReactElement {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
-        onKeyPress={handelSubmit}
-      ></Input>
+        onKeyPress={handelSubmit}></Input>
     </SearchInputBlock>
   );
 }
