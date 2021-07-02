@@ -106,7 +106,7 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
       const issuesInfoState = { issues: issuesData.issues, count: issuesData.count };
       return issuesInfoState;
     } catch (err) {
-      throw err;
+      return null;
     }
   },
 });

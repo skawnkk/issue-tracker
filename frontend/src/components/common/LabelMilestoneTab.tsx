@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { Link, useHistory } from 'react-router-dom';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
 import { getIssuesInfoState } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 
@@ -12,21 +13,29 @@ interface Props {
   milestoneState?: boolean;
 }
 function LabelMilestoneTab(): ReactElement {
+  const history = useHistory();
+  const resetLoginState = useResetRecoilState(controlLoginState);
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
-  const IssuesInfoData = useRecoilValue(getIssuesInfoState);
+  const issuesInfoData = useRecoilValue(getIssuesInfoState);
+
+  if (!issuesInfoData) {
+    localStorage.clear();
+    resetLoginState();
+    history.push('/');
+  }
 
   return (
     <LabelMilestoneTabBlock>
       <Link to='/label'>
         <LabelBlock labelState={labelMilestoneClick.label}>
           <LoyaltyIcon fontSize='small' />
-          &nbsp;레이블 ({IssuesInfoData?.count?.label})
+          &nbsp;레이블 ({issuesInfoData?.count?.label})
         </LabelBlock>
       </Link>
       <Link to='/milestone'>
         <MilestoneBlock milestoneState={labelMilestoneClick.milestone}>
           <MilestoneIcon sizeType={14} />
-          마일스톤 ({IssuesInfoData?.count?.milestone})
+          마일스톤 ({issuesInfoData?.count?.milestone})
         </MilestoneBlock>
       </Link>
     </LabelMilestoneTabBlock>
