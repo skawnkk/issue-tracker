@@ -42,11 +42,11 @@ function App() {
             <Route path='/' exact>
               {isLogin() ? <Redirect to='/main' /> : <LoginPage />}
             </Route>
-            <Route path='/main' component={MainPage} />
-            <Route path='/create' component={CreateIssuePage} />
-            <Route path='/detail' component={DetailIssuePage} />
-            <Route path='/label' component={LabelPage} />
-            <Route path='/milestone' component={MilestonePage} />
+            <Route path='/main'>{isLogin() ? <MainPage /> : <Redirect to='/' />}</Route>
+            <Route path='/create'>{isLogin() ? <CreateIssuePage /> : <Redirect to='/' />}</Route>
+            <Route path='/detail'>{isLogin() ? <DetailIssuePage /> : <Redirect to='/' />}</Route>
+            <Route path='/label'>{isLogin() ? <LabelPage /> : <Redirect to='/' />}</Route>
+            <Route path='/milestone'>{isLogin() ? <MilestonePage /> : <Redirect to='/' />}</Route>
           </Switch>
         </Suspense>
       </Router>
