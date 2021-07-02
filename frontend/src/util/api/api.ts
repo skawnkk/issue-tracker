@@ -38,6 +38,7 @@ const API: APItype = {
   LOGIN: {
     ACCESS: (code: string) => basicURL + '/login?code=' + code,
     USER: basicURL + `/userInfo`,
+    LOGOUT: basicURL + `/logout`,
   },
   TAB: basicURL + `/issues/form`,
 };

@@ -26,3 +26,16 @@ export async function getUserInfoUsingJWT() {
     console.log(err);
   }
 }
+
+export async function fetchLogOut() {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch(API.LOGIN.LOGOUT, {
+      headers: authorizedHeaders(token),
+    });
+    if (response.status === 200) return true;
+    throw Error;
+  } catch (err) {
+    throw err;
+  }
+}
