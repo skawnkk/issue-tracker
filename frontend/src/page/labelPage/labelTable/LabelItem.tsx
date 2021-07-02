@@ -20,9 +20,9 @@ export default function LabelItem({ label: { id, name, color, description }, lab
   const handleEditClick = () => setIsEditLabel(true);
   const handelCancelClick = () => setIsEditLabel(false);
 
-  const handleDeleteClick = () => {
-    deleteLabel(id);
-    setLabelTrigger((triggerCount) => triggerCount + 1);
+  const handleDeleteClick = async () => {
+    const deleteLabelResult = await deleteLabel(id);
+    if (deleteLabelResult) setLabelTrigger((triggerCount) => triggerCount + 1);
   };
 
   return isEditLabel ? (
