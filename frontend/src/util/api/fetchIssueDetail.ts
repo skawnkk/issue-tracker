@@ -19,13 +19,17 @@ type IssueDetailType = {
   milestone: MilestoneType | null;
 };
 
-export async function fetchIssueDetail(id: number): Promise<IssueDetailType> {
+export async function fetchIssueDetail(id: number): Promise<IssueDetailType | null> {
   const token = localStorage.getItem('token');
-  const response = await fetch(API.ISSUE_DETAIL.GET(id), {
-    headers: authorizedHeaders(token),
-  });
-  const issueDetailData = await response.json();
-  return issueDetailData;
+  try {
+    const response = await fetch(API.ISSUE_DETAIL.GET(id), {
+      headers: authorizedHeaders(token),
+    });
+    const issueDetailData = await response.json();
+    return issueDetailData;
+  } catch (err) {
+    return null;
+  }
 }
 
 type patchAssigneeType = { id: number; isAssigned: boolean }[];
