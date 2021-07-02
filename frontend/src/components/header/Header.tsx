@@ -4,10 +4,11 @@ import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@materi
 import { makeStyles } from '@material-ui/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link, useHistory } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { getIssueTrigger, resetSelectedTab, issueTypeState } from 'store/issueInfoStore';
 import ProfileImg from 'components/atom/ProfileImg';
+import { fetchLogOut } from 'util/api/fetchLogin';
 
 const useStyle = makeStyles(() => ({
   typographyStyles: {
@@ -38,11 +39,14 @@ function Header() {
     setIssueOpen('open');
   };
 
-  const handelLogOutClick = () => {
-    setAnchorEl(null);
-    localStorage.clear();
-    setLoginState({ isLogin: false, loginData: null });
-    history.push('/');
+  const handelLogOutClick = async () => {
+    const logoutResult = await fetchLogOut();
+    if (logoutResult) {
+      setAnchorEl(null);
+      localStorage.clear();
+      setLoginState({ isLogin: false, loginData: null });
+      history.push('/');
+    }
   };
 
   return (

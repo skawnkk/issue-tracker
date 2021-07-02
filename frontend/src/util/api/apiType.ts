@@ -26,6 +26,7 @@ export default interface newAPItype {
   LOGIN: {
     ACCESS: (code: string) => string;
     USER: string;
+    LOGOUT: string;
   };
   TAB: string;
 }
