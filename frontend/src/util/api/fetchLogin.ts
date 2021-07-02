@@ -1,6 +1,6 @@
 import API, { authorizedHeaders } from 'util/api/api';
-const token = localStorage.getItem('token');
 export async function fetchLogin(code: string): Promise<any> {
+  const token = localStorage.getItem('token');
   try {
     const postLoginOption = {
       method: 'POST',
@@ -18,12 +18,13 @@ export async function fetchLogin(code: string): Promise<any> {
 }
 
 export async function getUserInfoUsingJWT() {
+  const token = localStorage.getItem('token');
   try {
     const response = await fetch(API.LOGIN.USER, { headers: authorizedHeaders(token) });
     const userData = await response.json();
     return userData;
   } catch (err) {
-    console.log(err);
+    return null;
   }
 }
 
