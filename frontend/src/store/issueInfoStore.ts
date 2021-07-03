@@ -36,6 +36,7 @@ interface IssuesType {
 interface IssuesInfoStateType {
   issues: IssuesType[];
   count: countType;
+  totalPages: number;
 }
 
 export const issueTypeState = atom<string>({
@@ -87,13 +88,19 @@ export const searchWordState = atom<string>({
   default: '',
 });
 
+export const searchPage = atom<number>({
+  key: 'searchPage',
+  default: 0,
+});
 export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
   key: 'GET/issues',
   get: async ({ get }) => {
     const token = localStorage.getItem('token');
     get(getIssueTrigger);
     const searchWord = get(searchWordState);
-    const issueQuery = get(filterSearchInputState).replace(/:/g, '=').replace(/ /g, '&');
+    const pageQuery = get(searchPage);
+    const issueQuery =
+      get(filterSearchInputState).replace(/:/g, '=').replace(/ /g, '&') + `&page=${pageQuery}`;
 
     const URL = searchWord ? API.ISSUE_MAIN.SEARCH : API.ISSUE_MAIN.GET;
     const query = searchWord ? issueQuery + `&query=${searchWord}` : issueQuery;
@@ -103,7 +110,12 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
         headers: authorizedHeaders(token),
       });
       const issuesData = await response.json();
-      const issuesInfoState = { issues: issuesData.issues, count: issuesData.count };
+
+      const issuesInfoState = {
+        issues: issuesData.issues,
+        count: issuesData.count,
+        totalPages: issuesData.totalPages,
+      };
       return issuesInfoState;
     } catch (err) {
       return null;
