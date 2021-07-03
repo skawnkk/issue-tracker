@@ -41,7 +41,7 @@ export default function DetailIssuePage() {
 
   const issueData = useRecoilValue(getDetailIssueData);
 
-  if (!issueData) {
+  if (issueData === null) {
     localStorage.clear();
     resetLoginState();
     history.push('/');

@@ -12,7 +12,8 @@ export default function IssueTable(): ReactElement {
   const resetLoginState = useResetRecoilState(controlLoginState);
   const issuesInfoData = useRecoilValue(getIssuesInfoState); //?구조분해타입어케~
   let issueList, totalPages;
-  if (!issuesInfoData) {
+
+  if (issuesInfoData === null) {
     localStorage.clear();
     resetLoginState();
     history.push('/');

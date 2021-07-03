@@ -18,7 +18,7 @@ function LabelMilestoneTab(): ReactElement {
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
   const issuesInfoData = useRecoilValue(getIssuesInfoState);
 
-  if (!issuesInfoData) {
+  if (issuesInfoData === null) {
     localStorage.clear();
     resetLoginState();
     history.push('/');
