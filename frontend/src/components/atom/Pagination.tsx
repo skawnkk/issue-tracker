@@ -9,12 +9,22 @@ function Pagination({ totalPages }: pageType) {
   const nextPage = useSetRecoilState(getIssueTrigger);
   const [page, setPage] = useRecoilState(searchPage);
   const getOtherPageIssues = useRecoilValue(getIssuesInfoState);
+
   const isCurrentPage = (pageIdx: number) => {
     if (pageIdx === 0) pageIdx = 1;
     return !!(pageIdx === page);
   };
+  const isPrevValid = () => (page === 0 || page === 1 ? false : true);
+  const isNextValid = () => (page === totalPages ? false : true);
+
   const handlePage = async (page: number) => {
     setPage(page);
+    const movePage = await getOtherPageIssues;
+    if (movePage) nextPage((page) => page + 1);
+  };
+  const handlePrevNext = async (move: number, valid: boolean) => {
+    if (!valid) return;
+    move ? setPage(page === 0 ? page + 2 : page + 1) : setPage(page - 1);
     const movePage = await getOtherPageIssues;
     if (movePage) nextPage((page) => page + 1);
   };
@@ -23,24 +33,27 @@ function Pagination({ totalPages }: pageType) {
       {idx + 1}
     </PageButton>
   ));
-  const pageRange = () => {
-    for (let i = 0; i < (totalPages as number); i++) {
-      pageButton(i);
-    }
-  };
-  const pageButton = (i: number) => <div>{i + 1}</div>;
-
   return (
     <PaginationBlock>
-      <div className='prevNextBtn'>{`<Previous`}</div>
+      <PrevNextButton
+        onClick={() => handlePrevNext(0, isPrevValid())}
+        isPrevValid={isPrevValid()}>{`<Previous`}</PrevNextButton>
       {pageArray}
-      <div className='prevNextBtn'>{`Next>`}</div>
+      <PrevNextButton
+        onClick={() => handlePrevNext(+1, isNextValid())}
+        isNextValid={isNextValid()}>{`Next>`}</PrevNextButton>
     </PaginationBlock>
   );
 }
 
 export default React.memo(Pagination);
-
+interface prevNextBtnProps {
+  isPrevValid?: boolean;
+  isNextValid?: boolean;
+}
+interface pageBtnProp {
+  isCurrentPage: boolean;
+}
 const PaginationBlock = styled.div`
   div {
     height: 30px;
@@ -55,13 +68,11 @@ const PaginationBlock = styled.div`
     padding: 5px;
   }
   display: flex;
-  .prevNextBtn {
-    color: ${({ theme }) => theme.color.blue};
-  }
 `;
-interface pageBtnProp {
-  isCurrentPage: boolean;
-}
+const PrevNextButton = styled.div<prevNextBtnProps>`
+  color: ${({ theme }) => theme.color.blue};
+`;
+
 const PageButton = styled.div<pageBtnProp>`
   width: 30px;
   color: ${({ theme, isCurrentPage }) => (isCurrentPage ? theme.color.white : theme.color.black)};
