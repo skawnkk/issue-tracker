@@ -6,7 +6,12 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link, useHistory } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
-import { getIssueTrigger, resetSelectedTab, issueTypeState } from 'store/issueInfoStore';
+import {
+  getIssueTrigger,
+  resetSelectedTab,
+  issueTypeState,
+  searchPage,
+} from 'store/issueInfoStore';
 import ProfileImg from 'components/atom/ProfileImg';
 import { fetchLogOut } from 'util/api/fetchLogin';
 
@@ -27,6 +32,7 @@ function Header() {
   const setIssueTrigger = useSetRecoilState(getIssueTrigger);
   const resetSelectTab = useSetRecoilState(resetSelectedTab);
   const setIssueOpen = useSetRecoilState(issueTypeState);
+  const setPage = useSetRecoilState(searchPage);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -37,6 +43,7 @@ function Header() {
     setIssueTrigger((triggerCount) => triggerCount + 1);
     resetSelectTab(null);
     setIssueOpen('open');
+    setPage(1);
   };
 
   const handelLogOutClick = async () => {
