@@ -7,7 +7,6 @@ import PrimaryButton from 'components/atom/PrimaryButton';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
 import { MilestoneType } from 'components/common/tabModal/tapDataType';
 import { fetchCreateMilestone, editMilestone } from 'util/api/fetchHandleMilestone';
-
 import useInput from 'hooks/useInput';
 import InputField from 'components/atom/InputField';
 interface EditType {
@@ -26,12 +25,11 @@ function MilestoneEditForm({ type = 'create', setEditMode, milestone }: EditType
   const handleSubmit = async () => {
     const newMilestone = {
       title: title.value,
-      date: date.value,
-      dscription: description.value,
+      dueDate: date.value,
+      description: description.value,
     };
 
     let statusCode;
-
     if (type === 'create') statusCode = await fetchCreateMilestone(newMilestone);
     else statusCode = await editMilestone(milestoneID, newMilestone);
 
