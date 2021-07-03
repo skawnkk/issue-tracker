@@ -5,11 +5,12 @@ interface Props {
   className?: string;
   label?: string;
   value?: string;
+  placeholder?: string;
   onChange?: ({ target }: { target: HTMLInputElement }) => void;
   [key: string]: any;
 }
 
-function InputField({ label, className, value = '', onChange, ...props }: Props) {
+function InputField({ label, className, value = '', onChange, placeholder, ...props }: Props) {
   const [isFocus, setIsFocus] = useState(false);
   const handleOnFocus = () => setIsFocus(true);
   const handleOnBlur = () => setIsFocus(false);
@@ -22,6 +23,7 @@ function InputField({ label, className, value = '', onChange, ...props }: Props)
         onChange={onChange}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
+        placeholder={placeholder}
         {...props}
       />
     </InputFieldBlock>
