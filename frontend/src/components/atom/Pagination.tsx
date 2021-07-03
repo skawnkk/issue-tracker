@@ -9,15 +9,19 @@ function Pagination({ totalPages }: pageType) {
   const nextPage = useSetRecoilState(getIssueTrigger);
   const [page, setPage] = useRecoilState(searchPage);
   const getOtherPageIssues = useRecoilValue(getIssuesInfoState);
+  const isCurrentPage = (pageIdx: number) => {
+    if (pageIdx === 0) pageIdx = 1;
+    return !!(pageIdx === page);
+  };
   const handlePage = async (page: number) => {
     setPage(page);
     const movePage = await getOtherPageIssues;
     if (movePage) nextPage((page) => page + 1);
   };
   const pageArray = new Array(totalPages).fill(0).map((_, idx) => (
-    <div className='page' onClick={() => handlePage(idx + 1)}>
+    <PageButton onClick={() => handlePage(idx + 1)} isCurrentPage={isCurrentPage(idx + 1)}>
       {idx + 1}
-    </div>
+    </PageButton>
   ));
   const pageRange = () => {
     for (let i = 0; i < (totalPages as number); i++) {
@@ -43,13 +47,10 @@ const PaginationBlock = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 10px;
     &:hover {
-      border-radius: 10px;
       border: 1px solid ${({ theme }) => theme.color.lineGrey};
     }
-    // &:active {
-    //   background-color: ${({ theme }) => theme.color.blue};
-    // }
     margin: 5px;
     padding: 5px;
   }
@@ -57,7 +58,16 @@ const PaginationBlock = styled.div`
   .prevNextBtn {
     color: ${({ theme }) => theme.color.blue};
   }
-  .page {
-    width: 30px;
+`;
+interface pageBtnProp {
+  isCurrentPage: boolean;
+}
+const PageButton = styled.div<pageBtnProp>`
+  width: 30px;
+  color: ${({ theme, isCurrentPage }) => (isCurrentPage ? theme.color.white : theme.color.black)};
+  background-color: ${({ theme, isCurrentPage }) =>
+    isCurrentPage ? theme.color.blue : theme.color.white};
+  &:active {
+    background-color: ${({ theme }) => theme.color.blue};
   }
 `;
