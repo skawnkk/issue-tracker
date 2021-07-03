@@ -23,7 +23,7 @@ function LabelEditForm({ className, title, label = DEFAULT_LABEL, handelCancelCl
 
   const [labelTextColor, setLabelTextColor] = useState(label.color.textColorCode);
 
-  const handleSubmitClick = () => {
+  const handleSubmitClick = async () => {
     const newLabelData = {
       name: titleInput.value,
       description: descriptionInput.value,
@@ -32,13 +32,16 @@ function LabelEditForm({ className, title, label = DEFAULT_LABEL, handelCancelCl
         textColorCode: labelTextColor,
       },
     };
-    //create인 경우
-    if (label.id === 0) createLabel(newLabelData);
-    else editLabel(label.id, newLabelData);
 
-    setLabelTrigger((triggerCount) => triggerCount + 1);
+    let postLabelResult = false;
+    //POST - id===0 : create / id !== 0 : edit
+    if (label.id === 0) postLabelResult = await createLabel(newLabelData);
+    else postLabelResult = await editLabel(label.id, newLabelData);
 
-    handelCancelClick();
+    if (postLabelResult) {
+      setLabelTrigger((triggerCount) => triggerCount + 1);
+      handelCancelClick();
+    }
   };
 
   return (

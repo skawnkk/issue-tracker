@@ -23,18 +23,22 @@ function MilestoneEditForm({ type = 'create', setEditMode, milestone }: EditType
   const description = useInput(milestone?.description || '');
   const milestoneID = milestone?.id || 0;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newMilestone = {
       title: title.value,
       date: date.value,
       dscription: description.value,
     };
 
-    if (type === 'create') fetchCreateMilestone(newMilestone);
-    else editMilestone(milestoneID, newMilestone);
+    let statusCode;
 
-    if (setEditMode) setEditMode(false);
-    setMilestoneTrigger((trigger) => trigger + 1);
+    if (type === 'create') statusCode = await fetchCreateMilestone(newMilestone);
+    else statusCode = await editMilestone(milestoneID, newMilestone);
+
+    if (statusCode === 200) {
+      if (setEditMode) setEditMode(false);
+      setMilestoneTrigger((trigger) => trigger + 1);
+    }
   };
 
   const handleClick = () => setEditMode && setEditMode(false);

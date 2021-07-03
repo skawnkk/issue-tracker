@@ -7,13 +7,15 @@ import {
   MilestoneType,
   UserType,
 } from 'components/common/tabModal/tapDataType';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { detailIdState, getDetailIssueData } from 'store/detailStore';
 import { selectedTabState } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
 import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
 import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHeader';
 import DetailIssueOption from 'page/detailIssuePage/detailIssueOption/DetailIssueOption';
 import CommentList from './commentList/CommentList';
+import { useHistory } from 'react-router-dom';
 
 //api에 작성자가 누구인지 있어야될 것 같다.
 export interface DetailIssueType {
@@ -29,6 +31,8 @@ export interface DetailIssueType {
 }
 
 export default function DetailIssuePage() {
+  const history = useHistory();
+  const resetLoginState = useResetRecoilState(controlLoginState);
   const setDetailIssueId = useSetRecoilState(detailIdState);
   const setSelectdedOption = useSetRecoilState(selectedTabState);
   const pagePaths = window.location.pathname.split('/');
@@ -36,6 +40,12 @@ export default function DetailIssuePage() {
   useEffect(() => setDetailIssueId(issueNum), []);
 
   const issueData = useRecoilValue(getDetailIssueData);
+
+  if (!issueData) {
+    localStorage.clear();
+    resetLoginState();
+    history.push('/');
+  }
 
   useEffect(() => {
     if (!issueData) return;

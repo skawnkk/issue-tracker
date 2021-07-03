@@ -18,12 +18,17 @@ export default function CommentList({ issueId, comments }: Props) {
   const [comment, setComment] = useState('');
   const setDetailIssueTrigger = useSetRecoilState(detailIssueTrigger);
 
-  const handleCreateCommentClick = () => {
+  const handleCreateCommentClick = async () => {
     if (!comment) return;
-    editComments(issueId, comment);
-    setComment('');
-    setDetailIssueTrigger((triggerCount) => triggerCount + 1);
+
+    //CREATE POST 요청 후 요청이 성고하면 trigger 실행
+    const createCommentResult = await editComments(issueId, comment);
+    if (createCommentResult) {
+      setDetailIssueTrigger((triggerCount) => triggerCount + 1);
+      setComment('');
+    }
   };
+
   const commentList = comments.map((comment) => (
     <Comment key={comment.id} {...{ issueId, comment }} />
   ));

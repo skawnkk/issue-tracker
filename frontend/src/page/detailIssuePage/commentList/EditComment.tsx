@@ -20,14 +20,18 @@ export default function EditComment({ issueId, commentId, comment, setIsEdit }: 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
     setEditComment(e.target.value);
   const handelCancelClick = () => setIsEdit(false);
-  const handleSubmitClick = () => {
+  const handleSubmitClick = async () => {
     if (editComment === comment) {
       setIsEdit(false);
       return;
     }
-    editComments(issueId, editComment, commentId);
-    setDetailIssueTrigger((triggerCount) => triggerCount + 1);
-    setIsEdit(false);
+
+    //POST보낸 후에 요청이 성공했으면 trigger 실행
+    const editCommentResult = await editComments(issueId, editComment, commentId);
+    if (editCommentResult) {
+      setDetailIssueTrigger((triggerCount) => triggerCount + 1);
+      setIsEdit(false);
+    }
   };
 
   return (
