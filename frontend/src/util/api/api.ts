@@ -35,11 +35,12 @@ const API: APItype = {
     CREATE: basicURL + '/labels',
     GET: basicURL + '/labels',
   },
-  LOGIN: {
-    ACCESS: (code: string) => basicURL + '/login?code=' + code,
+  SIGN: {
+    LOGIN: (code: string) => basicURL + '/login?code=' + code,
+    LOGOUT: basicURL + '/logout',
     USER: basicURL + `/userInfo`,
-    LOGOUT: basicURL + `/logout`,
   },
+
   TAB: basicURL + `/issues/form`,
 };
 

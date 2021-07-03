@@ -3,14 +3,7 @@ import styled from 'styled-components';
 import { UserType } from 'components/common/tabModal/tapDataType';
 import RadioBtn from 'components/atom/RadioBtn';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
-import {
-  selectedTabState,
-  selectedUserState,
-  issueFilterSelectState,
-  issueFilterTypeState,
-  issueTypeState,
-  selectedAuthorState,
-} from 'store/issueInfoStore';
+import { selectedUserState, issueTypeState, selectedAuthorState } from 'store/issueInfoStore';
 import { controlLoginState } from 'store/loginStore';
 
 interface ModalProps {
@@ -23,8 +16,6 @@ interface filterItmeType {
 }
 export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement {
   const setIssueStatus = useSetRecoilState(issueTypeState);
-  const setFilterType = useSetRecoilState(issueFilterTypeState);
-  const setFilterSelect = useSetRecoilState(issueFilterSelectState);
   const setAuthorFilterSelect = useSetRecoilState(selectedAuthorState);
   const setAssigneeFilterSelect = useSetRecoilState(selectedUserState);
   const { loginData } = useRecoilValue(controlLoginState);
@@ -71,7 +62,7 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
 
 const IssueFilterModalBlock = styled.div`
   position: absolute;
-  top: 190px;
+  top: 15%;
   z-index: 9999;
   background-color: ${({ theme }) => theme.color.white};
   width: 240px;

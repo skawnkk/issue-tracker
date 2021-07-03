@@ -7,9 +7,6 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { getIssuesInfoState, issueTypeState } from 'store/issueInfoStore';
 export default function IssueListHeaderLeft(): ReactElement {
   const setIssueType = useSetRecoilState(issueTypeState);
-  // const {
-  //   count: { openedIssue, closedIssue },
-  // } = useRecoilValue(getIssuesInfoState);
   const IssuesInfoData = useRecoilValue(getIssuesInfoState);
 
   const handleOpenClick = () => setIssueType('open');
@@ -37,6 +34,7 @@ const IssueListHeaderLeftBlock = styled.div`
       display: flex;
       align-items: center;
       margin-right: 10px;
+      cursor: pointer;
     }
   }
 `;

@@ -64,8 +64,7 @@ function Header() {
               aria-controls='menu-appbar'
               aria-haspopup='true'
               onClick={handleMenu}
-              color='inherit'
-            >
+              color='inherit'>
               {loginData ? (
                 <ProfileImg avatarURL={loginData?.avatarUrl} className='login__profile-img' />
               ) : (

@@ -1,15 +1,13 @@
 import API, { authorizedHeaders } from 'util/api/api';
 export async function fetchLogin(code: string): Promise<any> {
-  const token = localStorage.getItem('token');
   try {
     const postLoginOption = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...authorizedHeaders(token),
       },
     };
-    const response = await fetch(API.LOGIN.ACCESS(code), postLoginOption);
+    const response = await fetch(API.SIGN.LOGIN(code), postLoginOption);
     const data = await response.json();
     return data;
   } catch (err) {
@@ -20,7 +18,7 @@ export async function fetchLogin(code: string): Promise<any> {
 export async function getUserInfoUsingJWT() {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch(API.LOGIN.USER, { headers: authorizedHeaders(token) });
+    const response = await fetch(API.SIGN.USER, { headers: authorizedHeaders(token) });
     const userData = await response.json();
     return userData;
   } catch (err) {
@@ -31,7 +29,7 @@ export async function getUserInfoUsingJWT() {
 export async function fetchLogOut() {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch(API.LOGIN.LOGOUT, {
+    const response = await fetch(API.SIGN.LOGOUT, {
       headers: authorizedHeaders(token),
     });
     if (response.status === 200) return true;
