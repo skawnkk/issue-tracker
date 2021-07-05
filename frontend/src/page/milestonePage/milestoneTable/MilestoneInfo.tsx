@@ -22,7 +22,6 @@ export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemT
     if (!(openedIssueCount + closedIssueCount)) return 0;
     return Math.ceil((closedIssueCount / (openedIssueCount + closedIssueCount)) * 100);
   };
-  console.log(progress());
   const handleClose = () => fetchHandleMilestone(id);
   const handleEdit = () => setEditMode(true);
   const handleDelete = async () => {
