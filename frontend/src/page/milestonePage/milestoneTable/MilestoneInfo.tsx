@@ -20,15 +20,15 @@ export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemT
     milestone;
   const progress = () => {
     if (!(openedIssueCount + closedIssueCount)) return 0;
-    return closedIssueCount / (openedIssueCount + closedIssueCount);
+    return Math.ceil((closedIssueCount / (openedIssueCount + closedIssueCount)) * 100);
   };
+  console.log(progress());
   const handleClose = () => fetchHandleMilestone(id);
   const handleEdit = () => setEditMode(true);
   const handleDelete = async () => {
     const statusCode = await fetchDeleteMilestone(id);
     if (statusCode === 200) setMilestoneTrigger((trigger) => trigger + 1);
   };
-
   return (
     <MilestoneItemBlock>
       <div className='milestone__list__left'>
