@@ -6,7 +6,7 @@ import LoginPage from 'page/loginPage/LoginPage';
 import { useRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { getUserInfoUsingJWT } from 'util/api/fetchLogin';
-
+import LoadingProgress from 'components/atom/LoadingProgress';
 function App() {
   const MainPage = lazy(() => import('./page/mainPage/MainPage'));
   const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
@@ -46,7 +46,7 @@ function App() {
     <div className='App'>
       <Router>
         <Header />
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<LoadingProgress />}>
           <Switch>
             <Route path='/' exact>
               {isLogin ? <Redirect to='/main' /> : <LoginPage />}

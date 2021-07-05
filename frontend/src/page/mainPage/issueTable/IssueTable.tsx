@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, Suspense } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { getIssuesInfoState } from 'store/issueInfoStore';
@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import IssueListHeader from 'page/mainPage/issueTable/issueTableHeader/IssueTableHeader';
 import IssueItem from 'page/mainPage/issueTable/IssueItem';
 import Pagination from 'components/atom/Pagination';
+import LoadingProgress from 'components/atom/LoadingProgress';
 export default function IssueTable(): ReactElement {
   const history = useHistory();
   const resetLoginState = useResetRecoilState(controlLoginState);
@@ -26,7 +27,7 @@ export default function IssueTable(): ReactElement {
     <IssueTableBlock>
       <div className='issue-table'>
         <IssueListHeader />
-        {issueList}
+        <Suspense fallback={<LoadingProgress />}>{issueList}</Suspense>
       </div>
       <div className='pagenation'>
         <Pagination totalPages={totalPages} />
