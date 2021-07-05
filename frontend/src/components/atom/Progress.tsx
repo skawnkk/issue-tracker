@@ -15,7 +15,7 @@ const BorderLinearProgress = withStyles((theme: Theme) =>
       borderRadius: 5,
       backgroundColor: '#1a90ff',
     },
-  }),
+  })
 )(LinearProgress);
 
 const useStyles = makeStyles({
@@ -25,15 +25,15 @@ const useStyles = makeStyles({
     paddingBottom: 14,
   },
 });
-interface Props{
-  progress:number
+interface Props {
+  progress: number;
 }
-export default function CustomizedProgressBars({progress}:Props) {
+export default function CustomizedProgressBars({ progress }: Props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <BorderLinearProgress variant="determinate" value={50} />
+      <BorderLinearProgress variant="determinate" value={progress} />
     </div>
   );
 }

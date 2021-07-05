@@ -1,43 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CommentType } from 'components/common/tabModal/tapDataType';
-import { timeChecker } from '../../../util/util';
+import { timeChecker } from 'util/timeUtil';
 import { ReactComponent as EditBtn } from 'assets/icon/EditIcons.svg';
 import { ReactComponent as Emoji } from 'assets/icon/Emoji.svg';
 import ProfileImg from 'components/atom/ProfileImg';
+import EditComment from './EditComment';
 
 interface Props {
+  issueId: number;
   comment: CommentType;
 }
 
 export default function Comment({
-  comment: { userName, comment, createdDateTime, author, owner },
+  issueId,
+  comment: { id, avatarUrl, userName, comment, createdDateTime, author, owner },
 }: Props) {
   const passedTime = timeChecker(createdDateTime);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleEditClick = () => setIsEdit(true);
+
   return (
     <CommentBlock>
       <div className='comment__avatar'>
-        <ProfileImg className='comment__avatar-img' />
+        <ProfileImg className='comment__avatar-img' avatarURL={avatarUrl} />
       </div>
-      <div className='comment'>
-        <div className='comment__header'>
-          <div className='header__section'>
-            <div>{userName}</div>
-            <div className='comment__passed-time'>{passedTime}</div>
+      {isEdit ? (
+        <EditComment {...{ issueId, comment, setIsEdit }} commentId={id} />
+      ) : (
+        <div className='comment'>
+          <div className='comment__header'>
+            <div className='header__section'>
+              <div>{userName}</div>
+              <div className='comment__passed-time'>{passedTime}</div>
+            </div>
+            <div className='header__section'>
+              {owner && <div className='comment__author-label'>작성자</div>}
+              {author && (
+                <div className='comment__edit-btn' onClick={handleEditClick}>
+                  <EditBtn />
+                  <div>편집</div>
+                </div>
+              )}
+              <Emoji />
+            </div>
           </div>
-          <div className='header__section'>
-            {author && <div className='comment__author-label'>작성자</div>}
-            {owner && (
-              <div className='comment__edit-btn'>
-                <EditBtn />
-                <div>편집</div>
-              </div>
-            )}
-            <Emoji />
-          </div>
+          <div className='comment__content'>{comment}</div>
         </div>
-        <div className='comment__content'>{comment}</div>
-      </div>
+      )}
     </CommentBlock>
   );
 }
@@ -47,6 +58,11 @@ const CommentBlock = styled.div`
   margin-bottom: 1.5rem;
   .comment__avatar {
     margin-right: 1rem;
+    .comment__avatar-img {
+      margin-top: 0.7rem;
+      width: 44px;
+      height: 44px;
+    }
   }
   .comment {
     display: flex;
@@ -80,6 +96,10 @@ const CommentBlock = styled.div`
     }
   }
   .header__section:last-child {
+    & > div,
+    & > svg {
+      cursor: pointer;
+    }
     & > div {
       margin-right: 1rem;
     }

@@ -1,47 +1,58 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { Link, useHistory } from 'react-router-dom';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
+import { getIssuesInfoState } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
-import { getIssuesInfoState } from 'store/issueInfoStore';
-import { Link } from 'react-router-dom';
-import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
 
 interface Props {
-  lableState?: boolean;
+  labelState?: boolean;
   milestoneState?: boolean;
 }
-export default function LabelMilestoneTab(): ReactElement {
+function LabelMilestoneTab(): ReactElement {
+  const history = useHistory();
+  const resetLoginState = useResetRecoilState(controlLoginState);
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
+  const issuesInfoData = useRecoilValue(getIssuesInfoState);
 
-  const IssuesInfoData = useRecoilValue(getIssuesInfoState);
+  if (issuesInfoData === null) {
+    localStorage.clear();
+    resetLoginState();
+    history.push('/');
+  }
 
   return (
     <LabelMilestoneTabBlock>
       <Link to='/label'>
-        <LableBlock lableState={labelMilestoneClick.label}>
+        <LabelBlock labelState={labelMilestoneClick.label}>
           <LoyaltyIcon fontSize='small' />
-          &nbsp;레이블 ({IssuesInfoData?.count?.label})
-        </LableBlock>
+          &nbsp;레이블 ({issuesInfoData?.count?.label})
+        </LabelBlock>
       </Link>
       <Link to='/milestone'>
         <MilestoneBlock milestoneState={labelMilestoneClick.milestone}>
           <MilestoneIcon sizeType={14} />
-          마일스톤 ({IssuesInfoData?.count?.milestone})
+          마일스톤 ({issuesInfoData?.count?.milestone})
         </MilestoneBlock>
       </Link>
     </LabelMilestoneTabBlock>
   );
 }
+
+export default React.memo(LabelMilestoneTab);
+
 const MilestoneBlock = styled.div<Props>`
   border-radius: 0 11px 11px 0;
   background-color: ${({ milestoneState, theme }) =>
     milestoneState ? theme.color.bgGrey : theme.color.white};
 `;
-const LableBlock = styled.div<Props>`
+const LabelBlock = styled.div<Props>`
   border-radius: 11px 0 0 11px;
-  background-color: ${({ lableState, theme }) =>
-    lableState ? theme.color.bgGrey : theme.color.white};
+  background-color: ${({ labelState, theme }) =>
+    labelState ? theme.color.bgGrey : theme.color.white};
 `;
 const LabelMilestoneTabBlock = styled.div`
   display: flex;

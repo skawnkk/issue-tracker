@@ -1,45 +1,44 @@
-import React, { ReactElement, ChangeEvent, useState, RefObject } from 'react';
+import React, {
+  ReactElement,
+  ChangeEvent,
+  useState,
+  RefObject,
+  SetStateAction,
+  Dispatch,
+} from 'react';
 import styled from 'styled-components';
 import { GiPaperClip } from 'react-icons/gi';
-import API from 'util/api/api'
+import { getFileURL } from 'util/api/fetchIssueDetail';
 interface inputProps {
   titleRef: RefObject<HTMLInputElement>;
   comment: string;
-  setComment:(comment:string)=>void
+  setComment: Dispatch<SetStateAction<string>>;
 }
-export default function IssueInput({ titleRef, comment, setComment }: inputProps): ReactElement {
-  const [length, setLength] = useState(0)
+function IssueInput({ titleRef, comment, setComment }: inputProps): ReactElement {
+  const [commentLength, setCommentLength] = useState(0);
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
-    setLength(e.target.value.length);
+    setCommentLength(e.target.value.length);
   };
 
-  const handleChange = async (e:ChangeEvent<HTMLInputElement>):Promise<void> =>{
-    e.preventDefault()
-    const uploadImage = e.target.files as FileList
-    const imageBlob = Object.values(uploadImage)[0]
-    const imageName = imageBlob['name']
-    const formData = new FormData()
-    formData.append('IMG_File', imageBlob, imageName)
-
-
-    try{
-      const postFileURL = await fetch(API.getFileURL,
-        { 
-          method: 'POST', 
-          headers:{ 
-            'content-type': 'multipart/form-data'
-          },
-          body: formData
-        }
-      )
-      let fileURL = await postFileURL.json()
-      console.log(fileURL)
-
-    } catch(err){
-      console.log(err) //TypeError: Failed to fetch
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    e.preventDefault();
+    const uploadImage = e.target.files as FileList;
+    const imageBlob = Object.values(uploadImage)[0];
+    const imageName = imageBlob['name'];
+    const formData = new FormData();
+    formData.append('image', imageBlob, imageName);
+    try {
+      const fileURL = await getFileURL(formData);
+      const markDownImg = `![${imageName}](${fileURL.image})`;
+      setComment((comment) =>
+        comment.length ? comment + '\n' + markDownImg : comment + markDownImg
+      );
+      setCommentLength(comment.length);
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
   return (
     <IssueInputBlock>
       <input type='text' className='input__title' placeholder='제목' ref={titleRef} />
@@ -56,15 +55,21 @@ export default function IssueInput({ titleRef, comment, setComment }: inputProps
               <GiPaperClip />
               &nbsp;파일 첨부하기
             </label>
-            <input type='file' id='add_file' className='input__file' accept='.png, .jpg, .jpeg' onChange={handleChange} />
+            <input
+              type='file'
+              id='add_file'
+              className='input__file'
+              accept='.png, .jpg, .jpeg'
+              onChange={handleFileChange}
+            />
           </form>
         </div>
-        <div className='input__lengthCheck'>공백포함 {length}자</div>
+        <div className='input__lengthCheck'>공백포함 {commentLength}자</div>
       </div>
     </IssueInputBlock>
   );
 }
-
+export default React.memo(IssueInput);
 const IssueInputBlock = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,6 +78,7 @@ const IssueInputBlock = styled.div`
     border: none;
     background-color: ${({ theme }) => theme.color.inputBg};
     font-size: ${({ theme }) => theme.size.md}px;
+    width: 100%;
     height: 56px;
     &:focus {
       text-decoration: none;
@@ -87,12 +93,12 @@ const IssueInputBlock = styled.div`
     border-radius: 14px 14px 0 0;
     padding: 24px;
     resize: none;
-    width: -webkit-fill-available;
+    width: -webkit-fill-availabel;
     height: 343px;
-    border-bottom: 1px dashed ${({ theme }) => theme.color.fontGrey};
+
     &:focus {
       .input__addFile {
-        background-color: ${({ theme }) => theme.color.white}; //?이거 어케해야함?
+        background-color: ${({ theme }) => theme.color.white};
       }
     }
   }
@@ -107,7 +113,7 @@ const IssueInputBlock = styled.div`
   .input__file {
     height: 0px;
   }
-  .input__lengthCheck{
+  .input__lengthCheck {
     position: absolute;
     right: 21%;
     bottom: 20%;

@@ -1,15 +1,13 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
+import { useResetRecoilState } from 'recoil';
+import { resetTabClickedState } from 'store/labelMilestoneStore';
 import IssueTable from 'page/mainPage/issueTable/IssueTable';
 import OptionTable from 'page/mainPage/optionTable/OptionTable';
-import { useResetRecoilState } from 'recoil';
-
-import { resetTabClickedState } from 'store/labelMilestoneStore';
 
 export default function MainPage() {
   const resetTabClicked = useResetRecoilState(resetTabClickedState);
   resetTabClicked();
-
   return (
     <MainPageBlock>
       <Suspense fallback='loading...'>
