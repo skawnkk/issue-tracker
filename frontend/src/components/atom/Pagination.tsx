@@ -64,6 +64,7 @@ const PaginationBlock = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    border: 1px solid ${({ theme }) => theme.color.transparent};
     &:hover {
       border: 1px solid ${({ theme }) => theme.color.lineGrey};
     }

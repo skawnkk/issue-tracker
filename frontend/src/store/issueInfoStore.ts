@@ -1,7 +1,6 @@
 import { atom, selector } from 'recoil';
 import { LabelType, MilestoneType, UserType } from 'components/common/tabModal/tapDataType';
 import API, { authorizedHeaders } from 'util/api/api';
-import renderError from 'page/errorPage/renderError';
 interface countType {
   label: number;
   milestone: number;

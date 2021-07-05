@@ -1,5 +1,6 @@
 .App {
   font-family: 'Noto Sans KR', sans-serif;
+  box-sizing: border-box;
 }
 a {
   color: '#14142B';

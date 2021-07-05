@@ -1,4 +1,3 @@
-import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { CommentType } from 'components/common/tabModal/tapDataType';
 import Comment from 'page/detailIssuePage/commentList/Comment';
