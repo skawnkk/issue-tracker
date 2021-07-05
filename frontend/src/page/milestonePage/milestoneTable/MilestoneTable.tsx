@@ -1,36 +1,39 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import { getMilestones } from 'store/labelMilestoneStore';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { getMilestones, MilstoneStatus, milestoneTrigger } from 'store/labelMilestoneStore';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import { ReactComponent as CloseIcon } from 'assets/icon/CloseIcon.svg';
 import MilestoneItem from 'page/milestonePage/milestoneTable/MilestoneItem';
 import { MilestoneType } from 'components/common/tabModal/tapDataType';
-
+import LoadingProgress from 'components/atom/LoadingProgress';
 function MilestoneTable() {
-  const status = 'open';
-  const { closedMilestonesCount, openedMilestonesCount, milestones } = useRecoilValue(
-    getMilestones(status)
-  );
+  const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
+  const setMilestoneStatus = useSetRecoilState(MilstoneStatus);
+  const { closedMilestonesCount, openedMilestonesCount, milestones } =
+    useRecoilValue(getMilestones);
   const milestoneList = milestones.map((milestone: MilestoneType) => (
     <MilestoneItem key={milestone.id} milestone={milestone} />
   ));
-
+  const handleClick = (n: number) => {
+    setMilestoneStatus(Boolean(n));
+    setMilestoneTrigger((trigger) => trigger + 1);
+  };
   return (
     <MilestoneTableBlock>
       <div className='tab__table__header'>
         <div>
-          <div>
+          <MilestonTab onClick={() => handleClick(1)}>
             <MilestoneIcon />
             열린 마일스톤({openedMilestonesCount})
-          </div>
-          <div>
+          </MilestonTab>
+          <MilestonTab onClick={() => handleClick(0)}>
             <CloseIcon />
             &nbsp;&nbsp;닫힌 마일스톤({closedMilestonesCount})
-          </div>
+          </MilestonTab>
         </div>
       </div>
-      {milestoneList}
+      <Suspense fallback={<LoadingProgress />}>{milestoneList}</Suspense>
     </MilestoneTableBlock>
   );
 }
@@ -49,10 +52,12 @@ const MilestoneTableBlock = styled.div`
     div {
       display: flex;
       width: 300px;
-      div {
-        display: flex;
-        align-items: center;
-      }
     }
   }
+`;
+
+const MilestonTab = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;

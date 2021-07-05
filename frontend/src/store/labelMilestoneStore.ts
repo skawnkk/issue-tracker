@@ -28,21 +28,27 @@ export const milestoneTrigger = atom<number>({
   key: 'milestoneTrigger',
   default: 0,
 });
-export const getMilestones = selectorFamily({
+
+export const MilstoneStatus = atom<boolean>({
+  key: 'isOpenMilestone',
+  default: true,
+});
+
+export const getMilestones = selector({
   key: 'GET/milestones',
-  get:
-    (status: string) =>
-    async ({ get }) => {
-      const token = localStorage.getItem('token');
-      try {
-        get(milestoneTrigger);
-        const response = await fetch(API.MILESTONE.GET(status), {
-          headers: authorizedHeaders(token),
-        });
-        const milestoneData = await response.json();
-        return milestoneData;
-      } catch (error) {
-        console.log('마일스톤조회 에러:', error);
-      }
-    },
+  get: async ({ get }) => {
+    const token = localStorage.getItem('token');
+    const isOpenMilestone = get(MilstoneStatus);
+    let status = isOpenMilestone ? 'open' : 'close';
+    try {
+      get(milestoneTrigger);
+      const response = await fetch(API.MILESTONE.GET(status), {
+        headers: authorizedHeaders(token),
+      });
+      const milestoneData = await response.json();
+      return milestoneData;
+    } catch (error) {
+      console.log('마일스톤조회 에러:', error);
+    }
+  },
 });

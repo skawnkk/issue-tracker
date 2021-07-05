@@ -53,17 +53,16 @@ export async function fetchDeleteMilestone(milesetoneID: number) {
     console.error(error);
   }
 }
-
-export async function fetchHandleMilestone(milestoneID?: number, status: string = 'open') {
+export async function fetchHandleMilestone(status: string, milestoneID: number) {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch(API.MILESTONE.GET(status), {
+    const response = await fetch(API.MILESTONE.OPEN_CLOSE(status), {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         ...authorizedHeaders(token),
       },
-      body: JSON.stringify({ issueNumbers: [milestoneID] }),
+      body: JSON.stringify({ milestoneNumber: [milestoneID] }),
     });
     if (response.status !== 200) throw new Error('잘못된 요청입니다.');
     return response.status;

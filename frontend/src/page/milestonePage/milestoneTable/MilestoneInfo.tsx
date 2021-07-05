@@ -1,7 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { milestoneTrigger } from 'store/labelMilestoneStore';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { fetchHandleMilestone, fetchDeleteMilestone } from 'util/api/fetchHandleMilestone';
+import { milestoneTrigger, MilstoneStatus } from 'store/labelMilestoneStore';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import { ReactComponent as DeleteIcon } from 'assets/icon/DeleteIcon.svg';
 import { ReactComponent as EditIcon } from 'assets/icon/EditIcon.svg';
@@ -9,12 +10,12 @@ import { ReactComponent as CloseIcon } from 'assets/icon/CloseIcon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/icon/CalendarIcon.svg';
 import CustomizedProgressBars from 'components/atom/Progress';
 import { MilestoneType } from 'components/common/tabModal/tapDataType';
-import { fetchHandleMilestone, fetchDeleteMilestone } from 'util/api/fetchHandleMilestone';
 interface MilestoneItemType {
   milestone: MilestoneType;
   setEditMode: Dispatch<SetStateAction<boolean>>;
 }
 export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemType) {
+  const isOpenMilestone = useRecoilValue(MilstoneStatus);
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
   const { id, title, description, dueDate, openedIssueCount, closedIssueCount }: MilestoneType =
     milestone;
@@ -22,7 +23,12 @@ export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemT
     if (!(openedIssueCount + closedIssueCount)) return 0;
     return Math.ceil((closedIssueCount / (openedIssueCount + closedIssueCount)) * 100);
   };
-  const handleClose = () => fetchHandleMilestone(id);
+  const handleOpenClose = async () => {
+    let milestoneStatus = isOpenMilestone ? 'close' : 'open';
+    const statusCode = await fetchHandleMilestone(milestoneStatus, id);
+    if (statusCode === 200) setMilestoneTrigger((trigger) => trigger + 1);
+  };
+
   const handleEdit = () => setEditMode(true);
   const handleDelete = async () => {
     const statusCode = await fetchDeleteMilestone(id);
@@ -46,9 +52,9 @@ export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemT
 
       <div className='milestone__list__right'>
         <div className='milestone__list__edit'>
-          <div onClick={handleClose}>
+          <div onClick={handleOpenClose}>
             <CloseIcon />
-            <div>닫기</div>
+            {isOpenMilestone ? <div>닫기</div> : <div>열기</div>}
           </div>
           <div onClick={handleEdit}>
             <EditIcon />

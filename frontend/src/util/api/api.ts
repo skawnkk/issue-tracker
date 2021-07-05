@@ -24,10 +24,11 @@ const API: APItype = {
     CLOSE: basicURL + `/issues?status=open`,
   },
   MILESTONE: {
-    GET: (status = 'open') => basicURL + `/milestones?status=${status}`,
+    GET: (status) => basicURL + `/milestones?status=${status}`,
     CREATE: basicURL + `/milestones`,
     EDIT: (milestoneID) => basicURL + `/milestones/${milestoneID}`,
     DELETE: (milestoneID) => basicURL + `/milestones/${milestoneID}`,
+    OPEN_CLOSE: (status) => basicURL + `/milestones?status=${status}`,
   },
   LABEL: {
     EDIT: (id) => basicURL + '/labels/' + id,
@@ -40,7 +41,6 @@ const API: APItype = {
     LOGOUT: basicURL + '/logout',
     USER: basicURL + `/userInfo`,
   },
-
   TAB: basicURL + `/issues/form`,
 };
 
