@@ -29,7 +29,10 @@ function Pagination({ totalPages }: pageType) {
     if (movePage) nextPage((page) => page + 1);
   };
   const pageArray = new Array(totalPages).fill(0).map((_, idx) => (
-    <PageButton onClick={() => handlePage(idx + 1)} isCurrentPage={isCurrentPage(idx + 1)}>
+    <PageButton
+      key={`page+${idx}`}
+      onClick={() => handlePage(idx + 1)}
+      isCurrentPage={isCurrentPage(idx + 1)}>
       {idx + 1}
     </PageButton>
   ));
