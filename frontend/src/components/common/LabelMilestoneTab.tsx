@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
+import { labelMilestoneClickedState } from 'store/labelMilestoneTabStore';
 import { getIssuesInfoState } from 'store/issueInfoStore';
 import { controlLoginState } from 'store/loginStore';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';

@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { fetchHandleMilestone, fetchDeleteMilestone } from 'util/api/fetchHandleMilestone';
-import { milestoneTrigger, MilstoneStatus } from 'store/labelMilestoneStore';
+import { milestoneTrigger, MilestoneStatus } from 'store/milestoneStore';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import { ReactComponent as DeleteIcon } from 'assets/icon/DeleteIcon.svg';
 import { ReactComponent as EditIcon } from 'assets/icon/EditIcon.svg';
@@ -15,7 +15,7 @@ interface MilestoneItemType {
   setEditMode: Dispatch<SetStateAction<boolean>>;
 }
 export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemType) {
-  const isOpenMilestone = useRecoilValue(MilstoneStatus);
+  const isOpenMilestone = useRecoilValue(MilestoneStatus);
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
   const { id, title, description, dueDate, openedIssueCount, closedIssueCount }: MilestoneType =
     milestone;
@@ -24,7 +24,7 @@ export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemT
     return Math.ceil((closedIssueCount / (openedIssueCount + closedIssueCount)) * 100);
   };
   const handleOpenClose = async () => {
-    let milestoneStatus = isOpenMilestone ? 'close' : 'open';
+    let milestoneStatus = isOpenMilestone ? 'open' : 'close';
     const statusCode = await fetchHandleMilestone(milestoneStatus, id);
     if (statusCode === 200) setMilestoneTrigger((trigger) => trigger + 1);
   };

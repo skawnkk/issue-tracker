@@ -1,7 +1,7 @@
 import React, { useMemo, Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import { milestoneTrigger } from 'store/labelMilestoneStore';
+import { milestoneTrigger } from 'store/milestoneStore';
 import Title from 'components/atom/Title';
 import PrimaryButton from 'components/atom/PrimaryButton';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';

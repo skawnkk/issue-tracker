@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { getMilestones, MilstoneStatus, milestoneTrigger } from 'store/labelMilestoneStore';
+import { getMilestones, MilestoneStatus, milestoneTrigger } from 'store/milestoneStore';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import { ReactComponent as CloseIcon } from 'assets/icon/CloseIcon.svg';
 import MilestoneItem from 'page/milestonePage/milestoneTable/MilestoneItem';
@@ -9,7 +9,7 @@ import { MilestoneType } from 'components/common/tabModal/tapDataType';
 import LoadingProgress from 'components/atom/LoadingProgress';
 function MilestoneTable() {
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
-  const setMilestoneStatus = useSetRecoilState(MilstoneStatus);
+  const setMilestoneStatus = useSetRecoilState(MilestoneStatus);
   const { closedMilestonesCount, openedMilestonesCount, milestones } =
     useRecoilValue(getMilestones);
   const milestoneList = milestones.map((milestone: MilestoneType) => (
