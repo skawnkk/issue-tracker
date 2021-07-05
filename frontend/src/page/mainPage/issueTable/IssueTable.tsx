@@ -1,27 +1,20 @@
-import React, { ReactElement, Suspense } from 'react';
+import { ReactElement, Suspense } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { getIssuesInfoState } from 'store/issueInfoStore';
-import { controlLoginState } from 'store/loginStore';
-import { useHistory } from 'react-router-dom';
 import IssueListHeader from 'page/mainPage/issueTable/issueTableHeader/IssueTableHeader';
 import IssueItem from 'page/mainPage/issueTable/IssueItem';
 import Pagination from 'components/atom/Pagination';
 import LoadingProgress from 'components/atom/LoadingProgress';
+import RenderError from 'page/errorPage/renderError';
 export default function IssueTable(): ReactElement {
-  const history = useHistory();
-  const resetLoginState = useResetRecoilState(controlLoginState);
   const issuesInfoData = useRecoilValue(getIssuesInfoState); //?구조분해타입어케~
   let issueList, totalPages;
 
-  if (issuesInfoData === null) {
-    localStorage.clear();
-    resetLoginState();
-    history.push('/');
-  } else {
+  if (typeof issuesInfoData !== 'number') {
     issueList = issuesInfoData.issues.map((issue) => <IssueItem key={issue.id} issue={issue} />);
     totalPages = issuesInfoData.totalPages;
-  }
+  } else RenderError(issuesInfoData);
 
   return (
     <IssueTableBlock>

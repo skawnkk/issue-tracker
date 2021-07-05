@@ -1,6 +1,7 @@
 import { atom, selector } from 'recoil';
 import { LabelType, MilestoneType, UserType } from 'components/common/tabModal/tapDataType';
 import API, { authorizedHeaders } from 'util/api/api';
+import renderError from 'page/errorPage/renderError';
 interface countType {
   label: number;
   milestone: number;
@@ -33,7 +34,7 @@ interface IssuesType {
   title: string;
 }
 
-interface IssuesInfoStateType {
+export interface IssuesInfoStateType {
   issues: IssuesType[];
   count: countType;
   totalPages: number;
@@ -92,7 +93,16 @@ export const searchPage = atom<number>({
   key: 'searchPage',
   default: 0,
 });
-export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
+
+interface ErrorType {
+  isError: boolean;
+  errorCode: number | null;
+}
+export const errorStatae = atom<ErrorType>({
+  key: 'isError',
+  default: { isError: false, errorCode: null },
+});
+export const getIssuesInfoState = selector<IssuesInfoStateType | number>({
   key: 'GET/issues',
   get: async ({ get }) => {
     const token = localStorage.getItem('token');
@@ -109,16 +119,18 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | null>({
       const response = await fetch(URL + query, {
         headers: authorizedHeaders(token),
       });
-      const issuesData = await response.json();
+      if (response.status > 400) throw new Error(`${response.status}`);
 
-      const issuesInfoState = {
+      const issuesData = await response.json();
+      let issuesInfoState = {
         issues: issuesData.issues,
         count: issuesData.count,
         totalPages: issuesData.totalPages,
       };
       return issuesInfoState;
     } catch (err) {
-      return null;
+      const errorCode = String(err).split(' ')[1];
+      return +errorCode;
     }
   },
 });
