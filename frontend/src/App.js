@@ -49,15 +49,17 @@ function App() {
         <Header />
         <Suspense fallback={<LoadingProgress />}>
           <Switch>
-            <Route path='/login'>{isLogin ? <Redirect to='/main' /> : <LoginPage />}</Route>
-            <Route path='/main'>{isLogin ? <MainPage /> : <Redirect to='/login' />}</Route>
-            <Route path='/create'>{isLogin ? <CreateIssuePage /> : <Redirect to='/login' />}</Route>
-            <Route path='/detail'>{isLogin ? <DetailIssuePage /> : <Redirect to='/login' />}</Route>
-            <Route path='/label'>{isLogin ? <LabelPage /> : <Redirect to='/login' />}</Route>
-            <Route path='/milestone'>
-              {isLogin ? <MilestonePage /> : <Redirect to='/login' />}
+            <Route path='/' exact={true}>
+              {isLogin ? <Redirect to='/main' /> : <LoginPage />}
             </Route>
-            <Route render={() => <ErrorPage />} />
+            <Route path='/main'>{isLogin ? <MainPage /> : <Redirect to='/' />}</Route>
+            <Route path='/create'>{isLogin ? <CreateIssuePage /> : <Redirect to='/' />}</Route>
+            <Route path='/detail'>{isLogin ? <DetailIssuePage /> : <Redirect to='/' />}</Route>
+            <Route path='/label'>{isLogin ? <LabelPage /> : <Redirect to='/' />}</Route>
+            <Route path='/milestone'>{isLogin ? <MilestonePage /> : <Redirect to='/' />}</Route>
+            <Route>
+              <ErrorPage />
+            </Route>
           </Switch>
         </Suspense>
       </Router>
