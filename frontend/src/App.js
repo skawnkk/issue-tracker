@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { getUserInfoUsingJWT } from 'util/api/fetchLogin';
 import LoadingProgress from 'components/atom/LoadingProgress';
+import ErrorPage from 'page/errorPage/ErrorPage';
 function App() {
   const MainPage = lazy(() => import('./page/mainPage/MainPage'));
   const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
@@ -48,14 +49,15 @@ function App() {
         <Header />
         <Suspense fallback={<LoadingProgress />}>
           <Switch>
-            <Route path='/' exact>
-              {isLogin ? <Redirect to='/main' /> : <LoginPage />}
+            <Route path='/login'>{isLogin ? <Redirect to='/main' /> : <LoginPage />}</Route>
+            <Route path='/main'>{isLogin ? <MainPage /> : <Redirect to='/login' />}</Route>
+            <Route path='/create'>{isLogin ? <CreateIssuePage /> : <Redirect to='/login' />}</Route>
+            <Route path='/detail'>{isLogin ? <DetailIssuePage /> : <Redirect to='/login' />}</Route>
+            <Route path='/label'>{isLogin ? <LabelPage /> : <Redirect to='/login' />}</Route>
+            <Route path='/milestone'>
+              {isLogin ? <MilestonePage /> : <Redirect to='/login' />}
             </Route>
-            <Route path='/main'>{isLogin ? <MainPage /> : <Redirect to='/' />}</Route>
-            <Route path='/create'>{isLogin ? <CreateIssuePage /> : <Redirect to='/' />}</Route>
-            <Route path='/detail'>{isLogin ? <DetailIssuePage /> : <Redirect to='/' />}</Route>
-            <Route path='/label'>{isLogin ? <LabelPage /> : <Redirect to='/' />}</Route>
-            <Route path='/milestone'>{isLogin ? <MilestonePage /> : <Redirect to='/' />}</Route>
+            <Route render={() => <ErrorPage />} />
           </Switch>
         </Suspense>
       </Router>
