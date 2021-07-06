@@ -6,7 +6,6 @@ import {
   LoginUserType,
 } from 'components/common/tabModal/tapDataType';
 import API, { authorizedHeaders } from './api';
-
 type IssueDetailType = {
   id: number;
   title: string;
@@ -19,15 +18,18 @@ type IssueDetailType = {
   milestone: MilestoneType | null;
 };
 
-export async function fetchIssueDetail(id: number): Promise<IssueDetailType | null> {
+export async function fetchIssueDetail(id: number) {
   const token = localStorage.getItem('token');
   try {
     const response = await fetch(API.ISSUE_DETAIL.GET(id), {
       headers: authorizedHeaders(token),
     });
+    if (response.status >= 400) throw new Error(`${response.status}`);
     const issueDetailData = await response.json();
     return issueDetailData;
   } catch (err) {
+    const errorCode = +String(err).split(' ')[1];
+    if (errorCode === 401) return errorCode;
     return null;
   }
 }

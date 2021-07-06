@@ -118,7 +118,7 @@ export const getIssuesInfoState = selector<IssuesInfoStateType | number>({
       const response = await fetch(URL + query, {
         headers: authorizedHeaders(token),
       });
-      if (response.status > 400) throw new Error(`${response.status}`);
+      if (response.status >= 400) throw new Error(`${response.status}`);
 
       const issuesData = await response.json();
       let issuesInfoState = {

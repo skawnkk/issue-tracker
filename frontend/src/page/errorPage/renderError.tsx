@@ -6,7 +6,7 @@ function RenderError(errorCode: number) {
   console.log(errorCode);
   const [isError, setError] = useState(false);
   if (errorCode === 401) Logout();
-  if (errorCode === 404) setError(true);
+  else setError(true);
   return isError && <ErrorPage errorCode={errorCode} />;
 }
 

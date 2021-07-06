@@ -1,7 +1,14 @@
+import styled from 'styled-components';
 interface ErrorType {
-  errorCode: number;
+  errorCode?: number;
 }
 export default function ErrorPage({ errorCode }: ErrorType) {
-  console.log(errorCode);
-  return <div>에러에요!!</div>;
+  return (
+    <ErrorPageBlock>
+      <h1>This page isn't working🛠</h1>
+    </ErrorPageBlock>
+  );
 }
+const ErrorPageBlock = styled.div`
+  padding: 0 80px;
+`;
