@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   CommentType,
@@ -7,17 +7,15 @@ import {
   MilestoneType,
   UserType,
 } from 'components/common/tabModal/tapDataType';
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { detailIdState, getDetailIssueData } from 'store/detailStore';
 import { selectedTabState } from 'store/issueInfoStore';
-import { controlLoginState } from 'store/loginStore';
 import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
 import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHeader';
 import DetailIssueOption from 'page/detailIssuePage/detailIssueOption/DetailIssueOption';
 import CommentList from './commentList/CommentList';
-import { useHistory } from 'react-router-dom';
-
-//api에 작성자가 누구인지 있어야될 것 같다.
+import Logout from 'util/Logout';
+import ErrorPage from 'page/errorPage/ErrorPage';
 export interface DetailIssueType {
   id: number;
   title: string;
@@ -31,8 +29,6 @@ export interface DetailIssueType {
 }
 
 export default function DetailIssuePage() {
-  const history = useHistory();
-  const resetLoginState = useResetRecoilState(controlLoginState);
   const setDetailIssueId = useSetRecoilState(detailIdState);
   const setSelectdedOption = useSetRecoilState(selectedTabState);
   const pagePaths = window.location.pathname.split('/');
@@ -41,20 +37,14 @@ export default function DetailIssuePage() {
 
   const issueData = useRecoilValue(getDetailIssueData);
 
-  if (issueData === null) {
-    localStorage.clear();
-    resetLoginState();
-    history.push('/');
-  }
-
   useEffect(() => {
-    if (!issueData) return;
+    if (!issueData || typeof issueData === 'number') return;
     const { assignees: assignee, labels: label, milestone } = issueData;
     const newSelectedOption = { assignee, label, milestone };
     setSelectdedOption(newSelectedOption);
   }, [issueData]);
-
-  if (!issueData) return null;
+  if (typeof issueData === 'number') Logout();
+  if (!issueData) return <ErrorPage />;
   return (
     <DetailIssuePageBlock>
       <DetailIssueHeader issueData={issueData} />
