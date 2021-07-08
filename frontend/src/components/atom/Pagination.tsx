@@ -38,13 +38,13 @@ function Pagination({ totalPages }: pageType) {
   ));
   return (
     <PaginationBlock>
-      <PrevNextButton
+      <PrevButton
         onClick={() => handlePrevNext(0, isPrevValid())}
-        isPrevValid={isPrevValid()}>{`<Previous`}</PrevNextButton>
+        isPrevValid={isPrevValid()}>{`<Previous`}</PrevButton>
       {pageArray}
-      <PrevNextButton
+      <NextButton
         onClick={() => handlePrevNext(+1, isNextValid())}
-        isNextValid={isNextValid()}>{`Next>`}</PrevNextButton>
+        isNextValid={isNextValid()}>{`Next>`}</NextButton>
     </PaginationBlock>
   );
 }
@@ -58,23 +58,27 @@ interface pageBtnProp {
   isCurrentPage: boolean;
 }
 const PaginationBlock = styled.div`
+  display: flex;
   div {
+    cursor: pointer;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 5px;
+    padding: 5px;
     border-radius: 10px;
     border: 1px solid ${({ theme }) => theme.color.transparent};
     &:hover {
       border: 1px solid ${({ theme }) => theme.color.lineGrey};
     }
-    margin: 5px;
-    padding: 5px;
   }
-  display: flex;
 `;
-const PrevNextButton = styled.div<prevNextBtnProps>`
-  color: ${({ theme }) => theme.color.blue};
+const PrevButton = styled.div<prevNextBtnProps>`
+  color: ${({ theme, isPrevValid }) => (isPrevValid ? theme.color.blue : theme.color.fontGrey)};
+`;
+const NextButton = styled.div<prevNextBtnProps>`
+  color: ${({ theme, isNextValid }) => (isNextValid ? theme.color.blue : theme.color.fontGrey)};
 `;
 
 const PageButton = styled.div<pageBtnProp>`
