@@ -1,7 +1,6 @@
 export default function ImgParser(comment: string) {
   const matchedLink = /\!\[([^\]]+)\]\(([^\)]+)\)/g;
   let stringComment = comment.replace(matchedLink, '');
-  debugger;
   let imgURL1 = comment.match(matchedLink) as Array<string>;
 
   if (!imgURL1) return null;

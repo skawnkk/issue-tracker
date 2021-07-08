@@ -54,7 +54,7 @@ function MilestoneEditForm({ type = 'create', setEditMode, milestone }: EditType
 
   const pageTitle = useMemo(
     () => (type === 'create' ? '새로운 마일스톤 추가' : '마일스톤 편집'),
-    []
+    [type]
   );
 
   return (
@@ -66,7 +66,9 @@ function MilestoneEditForm({ type = 'create', setEditMode, milestone }: EditType
           <InputField label={'완료일(선택)'} {...date} placeholder='YYYY - MM - DD' />
         </div>
 
-        {dateInputError && <ErrorMessage>▮날짜 입력 양식이 잘못되었습니다</ErrorMessage>}
+        {dateInputError && (
+          <ErrorMessage>▮날짜 입력 양식이 잘못되었습니다 'YYYY - MM - DD' </ErrorMessage>
+        )}
         <InputField label={'설명(선택)'} {...description} />
       </MilestoneInputBlock>
       <div className='milestone__add__submit'>
