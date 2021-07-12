@@ -1,20 +1,30 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { controlLoginState } from 'store/loginStore';
 import { fetchHandleMilestone, fetchDeleteMilestone } from 'util/api/fetchHandleMilestone';
 import { milestoneTrigger, MilestoneStatus } from 'store/milestoneStore';
+import { MilestoneType } from 'components/common/tabModal/tapDataType';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import { ReactComponent as DeleteIcon } from 'assets/icon/DeleteIcon.svg';
 import { ReactComponent as EditIcon } from 'assets/icon/EditIcon.svg';
 import { ReactComponent as CloseIcon } from 'assets/icon/CloseIcon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/icon/CalendarIcon.svg';
 import CustomizedProgressBars from 'components/atom/Progress';
-import { MilestoneType } from 'components/common/tabModal/tapDataType';
+import { useHistory } from 'react-router-dom';
+import ErrorPage from 'page/errorPage/ErrorPage';
+import MyPortal from 'Portal';
+import { fetchLogOut } from 'util/api/fetchLogin';
 interface MilestoneItemType {
   milestone: MilestoneType;
   setEditMode: Dispatch<SetStateAction<boolean>>;
 }
 export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemType) {
+  const history = useHistory();
+  const resetLoginState = useResetRecoilState(controlLoginState);
+  const [isError, setError] = useState(false);
+  useEffect(() => setError(false), []);
+
   const isOpenMilestone = useRecoilValue(MilestoneStatus);
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
   const { id, title, description, dueDate, openedIssueCount, closedIssueCount }: MilestoneType =
@@ -23,18 +33,33 @@ export default function MilestoneInfo({ milestone, setEditMode }: MilestoneItemT
     if (!(openedIssueCount + closedIssueCount)) return 0;
     return Math.ceil((closedIssueCount / (openedIssueCount + closedIssueCount)) * 100);
   };
+  const logout = async () => {
+    const logoutStatus = await fetchLogOut();
+    if (logoutStatus) {
+      localStorage.clear();
+      resetLoginState();
+      history.push('/');
+    }
+  };
   const handleOpenClose = async () => {
     let milestoneStatus = isOpenMilestone ? 'open' : 'close';
     const statusCode = await fetchHandleMilestone(milestoneStatus, id);
     if (statusCode === 200) setMilestoneTrigger((trigger) => trigger + 1);
+    else if (statusCode === 400) logout();
+    else setError(true);
   };
 
   const handleEdit = () => setEditMode(true);
   const handleDelete = async () => {
     const statusCode = await fetchDeleteMilestone(id);
     if (statusCode === 200) setMilestoneTrigger((trigger) => trigger + 1);
+    else logout();
   };
-  return (
+  return isError ? (
+    <MyPortal>
+      <ErrorPage />
+    </MyPortal>
+  ) : (
     <MilestoneItemBlock>
       <div className='milestone__list__left'>
         <Title>

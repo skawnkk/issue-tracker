@@ -62,8 +62,8 @@ function MilestoneEditForm({ type = 'create', setEditMode, milestone }: EditType
       <Title className='milestone__add'>{pageTitle}</Title>
       <MilestoneInputBlock>
         <div>
-          <InputField label={'제목'} {...title} />
-          <InputField label={'완료일(선택)'} {...date} placeholder='YYYY - MM - DD' />
+          <InputField label={'제목*'} {...title} />
+          <InputField label={'완료일*'} {...date} placeholder='YYYY - MM - DD' />
         </div>
 
         {dateInputError && (

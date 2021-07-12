@@ -10,5 +10,12 @@ export default function ErrorPage({ errorCode }: ErrorType) {
   );
 }
 const ErrorPageBlock = styled.div`
-  padding: 0 80px;
+  background: white;
+  z-index: 9999;
+  width: 110%;
+  height: 110%;
+  positoin: absolute;
+  top: 55px;
+  padding: 83px;
+  left: 0;
 `;

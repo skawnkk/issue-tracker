@@ -1,22 +1,4 @@
-import {
-  CommentType,
-  UserType,
-  LabelType,
-  MilestoneType,
-  LoginUserType,
-} from 'components/common/tabModal/tapDataType';
 import API, { authorizedHeaders } from './api';
-type IssueDetailType = {
-  id: number;
-  title: string;
-  status: boolean;
-  createdDateTime: string;
-  owner: LoginUserType;
-  comments: Array<CommentType> | [];
-  assignees: Array<UserType> | [];
-  labels: Array<LabelType> | [];
-  milestone: MilestoneType | null;
-};
 
 export async function fetchIssueDetail(id: number) {
   const token = localStorage.getItem('token');
@@ -28,9 +10,9 @@ export async function fetchIssueDetail(id: number) {
     const issueDetailData = await response.json();
     return issueDetailData;
   } catch (err) {
-    const errorCode = +String(err).split(' ')[1];
-    if (errorCode === 401) return errorCode;
     return null;
+    // const errorCode = +String(err).split(' ')[1];
+    // return errorCode;
   }
 }
 

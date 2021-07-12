@@ -47,10 +47,10 @@ export async function fetchDeleteMilestone(milesetoneID: number) {
       method: 'DELETE',
       headers: authorizedHeaders(token),
     });
-    if (response.status !== 200) throw new Error('잘못된 요청');
-    return response.status;
+    if (response.status === 200) return response.status;
+    else if (response.status >= 400) throw Error;
   } catch (error) {
-    console.error(error);
+    return null;
   }
 }
 export async function fetchHandleMilestone(status: string, milestoneID: number) {
@@ -62,11 +62,13 @@ export async function fetchHandleMilestone(status: string, milestoneID: number) 
         'Content-Type': 'application/json',
         ...authorizedHeaders(token),
       },
-      body: JSON.stringify({ milestoneNumber: [milestoneID] }),
+      body: JSON.stringify({ milestoneNumbers: [milestoneID] }),
     });
-    if (response.status !== 200) throw new Error('잘못된 요청입니다.');
+    if (response.status >= 400) throw new Error(`${response.status}`);
     return response.status;
   } catch (error) {
     console.error('마일스톤 닫기 에러:', error);
+    const errorCode = String(error).split(' ')[1];
+    return +errorCode;
   }
 }

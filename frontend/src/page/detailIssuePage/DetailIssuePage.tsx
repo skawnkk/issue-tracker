@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   CommentType,
@@ -7,15 +7,18 @@ import {
   MilestoneType,
   UserType,
 } from 'components/common/tabModal/tapDataType';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import { detailIdState, getDetailIssueData } from 'store/detailStore';
 import { selectedTabState } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
 import { ReactComponent as IssueDeleteBtn } from 'assets/icon/IssueDeleteBtn.svg';
 import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHeader';
 import DetailIssueOption from 'page/detailIssuePage/detailIssueOption/DetailIssueOption';
 import CommentList from './commentList/CommentList';
-import Logout from 'util/Logout';
+import { useHistory } from 'react-router-dom';
 import ErrorPage from 'page/errorPage/ErrorPage';
+import MyPortal from 'Portal';
+import { fetchLogOut } from 'util/api/fetchLogin';
 export interface DetailIssueType {
   id: number;
   title: string;
@@ -37,15 +40,37 @@ export default function DetailIssuePage() {
 
   const issueData = useRecoilValue(getDetailIssueData);
 
+  const resetLoginState = useResetRecoilState(controlLoginState);
+  const history = useHistory();
+  const [isError, setError] = useState(false);
+  useEffect(() => setError(false), []);
+
+  const logout = async () => {
+    const logoutStatus = await fetchLogOut();
+    if (logoutStatus) {
+      console.log('?');
+      localStorage.clear();
+      resetLoginState();
+      history.push('/');
+    }
+  };
   useEffect(() => {
-    if (!issueData || typeof issueData === 'number') return;
+    if (!issueData) return;
     const { assignees: assignee, labels: label, milestone } = issueData;
     const newSelectedOption = { assignee, label, milestone };
     setSelectdedOption(newSelectedOption);
   }, [issueData]);
-  if (typeof issueData === 'number') Logout();
-  if (!issueData) return <ErrorPage />;
-  return (
+
+  if (!issueData) {
+    // logout();
+    return null;
+  }
+
+  return isError ? (
+    <MyPortal>
+      <ErrorPage />
+    </MyPortal>
+  ) : (
     <DetailIssuePageBlock>
       <DetailIssueHeader issueData={issueData} />
       <div className='detail__main'>
