@@ -5,11 +5,9 @@ import Button from '@material-ui/core/Button';
 interface PrimaryButtonType {
   value: string;
   className?: string;
-  // onClick?: () => Promise<JSX.Element | void>;
   onClick?: () => void;
 }
-
-export default function PrimaryButton({ value, className, onClick }: PrimaryButtonType) {
+function PrimaryButton({ value, className, onClick }: PrimaryButtonType) {
   return (
     <PrimaryButtonBlock onClick={onClick}>
       <Button variant='contained' size='medium' color='primary' className={className}>
@@ -18,6 +16,7 @@ export default function PrimaryButton({ value, className, onClick }: PrimaryButt
     </PrimaryButtonBlock>
   );
 }
+export default React.memo(PrimaryButton);
 
 const PrimaryButtonBlock = styled.div`
   padding-top: 1px;

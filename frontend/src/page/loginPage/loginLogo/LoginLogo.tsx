@@ -4,9 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 
-interface Props {}
-
-export default function LoginLogo({}: Props): ReactElement {
+export default function LoginLogo(): ReactElement {
   return (
     <LoginLogoBlock>
       <Avatar className='logo__avatar'>

@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { hoverGrey } from 'style/Theme';
 import { useSetRecoilState } from 'recoil';
 import { LabelType } from 'components/common/tabModal/tapDataType';
 import { ReactComponent as RadioButton } from 'assets/icon/RadioButton.svg';
-import { selectedLabelState } from 'store/issueInfoStore';
+import { selectedLabelState, getIssueTrigger, searchWordState } from 'store/issueInfoStore';
 
 interface LabelSelectItemProps {
   label: LabelType;
@@ -17,6 +17,8 @@ export default function LabelSelectItem({
   selected,
 }: LabelSelectItemProps) {
   const setSelectLabel = useSetRecoilState(selectedLabelState);
+  const setIssueListTrigger = useSetRecoilState(getIssueTrigger);
+  const setSearchWord = useSetRecoilState(searchWordState);
 
   const handeClick = () => {
     if (selected) {
@@ -24,6 +26,8 @@ export default function LabelSelectItem({
     } else {
       setSelectLabel((selectedLabel) => [...selectedLabel, label]);
     }
+    setSearchWord('');
+    setIssueListTrigger((triggerCount) => triggerCount + 1);
   };
 
   return (
