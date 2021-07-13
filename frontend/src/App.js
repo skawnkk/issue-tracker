@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Header from './components/header/Header';
@@ -6,7 +6,8 @@ import LoginPage from 'page/loginPage/LoginPage';
 import { useRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { getUserInfoUsingJWT } from 'util/api/fetchLogin';
-
+import LoadingProgress from 'components/atom/LoadingProgress';
+import ErrorPage from 'page/errorPage/ErrorPage';
 function App() {
   const MainPage = lazy(() => import('./page/mainPage/MainPage'));
   const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
@@ -46,9 +47,9 @@ function App() {
     <div className='App'>
       <Router>
         <Header />
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<LoadingProgress />}>
           <Switch>
-            <Route path='/' exact>
+            <Route path='/' exact={true}>
               {isLogin ? <Redirect to='/main' /> : <LoginPage />}
             </Route>
             <Route path='/main'>{isLogin ? <MainPage /> : <Redirect to='/' />}</Route>
@@ -56,6 +57,9 @@ function App() {
             <Route path='/detail'>{isLogin ? <DetailIssuePage /> : <Redirect to='/' />}</Route>
             <Route path='/label'>{isLogin ? <LabelPage /> : <Redirect to='/' />}</Route>
             <Route path='/milestone'>{isLogin ? <MilestonePage /> : <Redirect to='/' />}</Route>
+            <Route>
+              <ErrorPage />
+            </Route>
           </Switch>
         </Suspense>
       </Router>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   CommentType,
@@ -7,7 +7,7 @@ import {
   MilestoneType,
   UserType,
 } from 'components/common/tabModal/tapDataType';
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import { detailIdState, getDetailIssueData } from 'store/detailStore';
 import { selectedTabState } from 'store/issueInfoStore';
 import { controlLoginState } from 'store/loginStore';
@@ -16,8 +16,9 @@ import DetailIssueHeader from 'page/detailIssuePage/detailHeader/DetailIssueHead
 import DetailIssueOption from 'page/detailIssuePage/detailIssueOption/DetailIssueOption';
 import CommentList from './commentList/CommentList';
 import { useHistory } from 'react-router-dom';
-
-//api에 작성자가 누구인지 있어야될 것 같다.
+import ErrorPage from 'page/errorPage/ErrorPage';
+import MyPortal from 'Portal';
+import { fetchLogOut } from 'util/api/fetchLogin';
 export interface DetailIssueType {
   id: number;
   title: string;
@@ -31,8 +32,6 @@ export interface DetailIssueType {
 }
 
 export default function DetailIssuePage() {
-  const history = useHistory();
-  const resetLoginState = useResetRecoilState(controlLoginState);
   const setDetailIssueId = useSetRecoilState(detailIdState);
   const setSelectdedOption = useSetRecoilState(selectedTabState);
   const pagePaths = window.location.pathname.split('/');
@@ -41,12 +40,20 @@ export default function DetailIssuePage() {
 
   const issueData = useRecoilValue(getDetailIssueData);
 
-  if (issueData === null) {
-    localStorage.clear();
-    resetLoginState();
-    history.push('/');
-  }
+  const resetLoginState = useResetRecoilState(controlLoginState);
+  const history = useHistory();
+  const [isError, setError] = useState(false);
+  useEffect(() => setError(false), []);
 
+  const logout = async () => {
+    const logoutStatus = await fetchLogOut();
+    if (logoutStatus) {
+      console.log('?');
+      localStorage.clear();
+      resetLoginState();
+      history.push('/');
+    }
+  };
   useEffect(() => {
     if (!issueData) return;
     const { assignees: assignee, labels: label, milestone } = issueData;
@@ -54,8 +61,16 @@ export default function DetailIssuePage() {
     setSelectdedOption(newSelectedOption);
   }, [issueData]);
 
-  if (!issueData) return null;
-  return (
+  if (!issueData) {
+    // logout();
+    return null;
+  }
+
+  return isError ? (
+    <MyPortal>
+      <ErrorPage />
+    </MyPortal>
+  ) : (
     <DetailIssuePageBlock>
       <DetailIssueHeader issueData={issueData} />
       <div className='detail__main'>

@@ -1,7 +1,7 @@
 import React, { useMemo, Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import { milestoneTrigger } from 'store/labelMilestoneStore';
+import { milestoneTrigger } from 'store/milestoneStore';
 import Title from 'components/atom/Title';
 import PrimaryButton from 'components/atom/PrimaryButton';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
@@ -54,7 +54,7 @@ function MilestoneEditForm({ type = 'create', setEditMode, milestone }: EditType
 
   const pageTitle = useMemo(
     () => (type === 'create' ? '새로운 마일스톤 추가' : '마일스톤 편집'),
-    []
+    [type]
   );
 
   return (
@@ -62,11 +62,13 @@ function MilestoneEditForm({ type = 'create', setEditMode, milestone }: EditType
       <Title className='milestone__add'>{pageTitle}</Title>
       <MilestoneInputBlock>
         <div>
-          <InputField label={'제목'} {...title} />
-          <InputField label={'완료일(선택)'} {...date} placeholder='YYYY - MM - DD' />
+          <InputField label={'제목*'} {...title} />
+          <InputField label={'완료일*'} {...date} placeholder='YYYY - MM - DD' />
         </div>
 
-        {dateInputError && <ErrorMessage>▮날짜 입력 양식이 잘못되었습니다</ErrorMessage>}
+        {dateInputError && (
+          <ErrorMessage>▮날짜 입력 양식이 잘못되었습니다 'YYYY - MM - DD' </ErrorMessage>
+        )}
         <InputField label={'설명(선택)'} {...description} />
       </MilestoneInputBlock>
       <div className='milestone__add__submit'>

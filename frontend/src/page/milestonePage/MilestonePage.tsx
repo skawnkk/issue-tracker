@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
+import { labelMilestoneClickedState } from 'store/labelMilestoneTabStore';
 import { useSetRecoilState } from 'recoil';
 import LabelMilestoneTab from 'components/common/LabelMilestoneTab';
 import PrimaryButton from 'components/atom/PrimaryButton';

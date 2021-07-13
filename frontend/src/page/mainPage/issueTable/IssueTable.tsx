@@ -1,32 +1,49 @@
-import React, { ReactElement } from 'react';
+import { useEffect, Suspense, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { getIssuesInfoState } from 'store/issueInfoStore';
+import { getIssuesInfoState, IssuesInfoStateType } from 'store/issueInfoStore';
 import { controlLoginState } from 'store/loginStore';
-import { useHistory } from 'react-router-dom';
 import IssueListHeader from 'page/mainPage/issueTable/issueTableHeader/IssueTableHeader';
 import IssueItem from 'page/mainPage/issueTable/IssueItem';
 import Pagination from 'components/atom/Pagination';
-export default function IssueTable(): ReactElement {
+import LoadingProgress from 'components/atom/LoadingProgress';
+import { useHistory } from 'react-router-dom';
+import ErrorPage from 'page/errorPage/ErrorPage';
+import MyPortal from 'Portal';
+import { fetchLogOut } from 'util/api/fetchLogin';
+export default function IssueTable() {
   const history = useHistory();
   const resetLoginState = useResetRecoilState(controlLoginState);
-  const issuesInfoData = useRecoilValue(getIssuesInfoState); //?구조분해타입어케~
+  const [isError, setError] = useState(false);
+  useEffect(() => setError(false), []);
+  const logout = async () => {
+    const logoutStatus = await fetchLogOut();
+    if (logoutStatus) {
+      localStorage.clear();
+      resetLoginState();
+      history.push('/');
+    }
+  };
+
+  const issueDataStatus = useRecoilValue(getIssuesInfoState); //?구조분해타입어케~
   let issueList, totalPages;
-
-  if (issuesInfoData === null) {
-    localStorage.clear();
-    resetLoginState();
-    history.push('/');
-  } else {
-    issueList = issuesInfoData.issues.map((issue) => <IssueItem key={issue.id} issue={issue} />);
-    totalPages = issuesInfoData.totalPages;
+  if (typeof issueDataStatus === 'number') {
+    if (issueDataStatus === 400) logout();
+    else setError(true);
   }
+  let issuesInfoData = issueDataStatus as IssuesInfoStateType;
+  issueList = issuesInfoData.issues.map((issue) => <IssueItem key={issue.id} issue={issue} />);
+  totalPages = issuesInfoData.totalPages;
 
-  return (
+  return isError ? (
+    <MyPortal>
+      <ErrorPage />
+    </MyPortal>
+  ) : (
     <IssueTableBlock>
       <div className='issue-table'>
         <IssueListHeader />
-        {issueList}
+        <Suspense fallback={<LoadingProgress />}>{issueList}</Suspense>
       </div>
       <div className='pagenation'>
         <Pagination totalPages={totalPages} />

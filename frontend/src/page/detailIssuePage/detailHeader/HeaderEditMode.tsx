@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import { DetailHeaderProps } from 'page/detailIssuePage/detailType';
-import { titleEditMode, detailTitle, detailIssueTrigger } from 'store/detailStore';
+import { titleEditMode, detailIssueTrigger } from 'store/detailStore';
 import fetchEditTitle from 'util/api/fetchEditTitle';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
 

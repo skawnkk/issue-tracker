@@ -10,7 +10,6 @@ import ProfileImg from 'components/atom/ProfileImg';
 import IssueInput from 'page/createIssuePage/issueInput/IssueInput';
 import IssueDetailOption from 'page/createIssuePage/issueDetailOption/IssueDetailOption';
 import PrimaryButton from 'components/atom/PrimaryButton';
-import ErrorPage from 'page/errorPage/ErrorPage';
 
 type inputsType = {
   title?: string;
@@ -26,7 +25,6 @@ function CreateIssuePage(): ReactElement {
   const history = useHistory();
   const titleRef = useRef(null);
   const [comment, setComment] = useState('');
-  const [error, setError] = useState(false);
 
   const handleClick = async (btnType: string) => {
     if (btnType === 'cancel') {
@@ -44,19 +42,14 @@ function CreateIssuePage(): ReactElement {
       milestone: milestoneID ? milestoneID : null,
     };
 
-    try {
-      const isSuccess = await fetchCreateIssue(sample);
+    const isSuccess = await fetchCreateIssue(sample);
+    if (isSuccess) {
       const createdIssueID = isSuccess?.issueId;
       history.push(`/detail/${createdIssueID}`);
-    } catch (error) {
-      console.log('에러가발생했', error);
-      setError(true);
     }
   };
 
-  return error ? (
-    <ErrorPage />
-  ) : (
+  return (
     <CreateIssuePageBlock>
       <div className='create__section__header'>
         <Title className='create__title'>새로운 이슈 작성</Title>
