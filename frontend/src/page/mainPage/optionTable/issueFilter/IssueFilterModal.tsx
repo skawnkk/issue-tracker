@@ -1,13 +1,9 @@
 import React, { ReactElement, RefObject } from 'react';
 import styled from 'styled-components';
-import RadioBtn from 'components/atom/RadioBtn';
-import { useSetRecoilState } from 'recoil';
-import {
-  issueFilterSelectState,
-  issueFilterTypeState,
-  issueTypeState,
-  isFilterFullSetting,
-} from 'store/issueInfoStore';
+import { UserType } from 'components/common/tabModal/tapDataType';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { selectedUserState, issueTypeState, selectedAuthorState } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
 
 interface ModalProps {
   modalRef: RefObject<HTMLDivElement>;
@@ -19,32 +15,38 @@ interface filterItmeType {
 }
 export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement {
   const setIssueStatus = useSetRecoilState(issueTypeState);
-  const setFilterType = useSetRecoilState(issueFilterTypeState);
-  const setFilterSelect = useSetRecoilState(issueFilterSelectState);
-  const setIsFilterFullSetting = useSetRecoilState(isFilterFullSetting);
+  const setAuthorFilterSelect = useSetRecoilState(selectedAuthorState);
+  const setAssigneeFilterSelect = useSetRecoilState(selectedUserState);
+  const { loginData } = useRecoilValue(controlLoginState);
 
   const FILTER_LIST: filterItmeType[] = [
     { key: 'status', select: 'open', value: '열린 이슈' },
     { key: 'author', select: 'me', value: '내가 작성한 이슈' },
     { key: 'assignee', select: 'me', value: '나에게 할당된 이슈' },
-    { key: 'comments', select: 'me', value: '내가 댓글을 남긴 이슈' },
     { key: 'status', select: 'close', value: '닫힌 이슈' },
   ];
 
-  const handleFilterClick = ({ key, select, value }: filterItmeType) => {
+  const handleFilterClick = ({ key, select }: filterItmeType) => {
+    setAuthorFilterSelect(null);
+    setAssigneeFilterSelect([]);
     if (key === 'status') {
       setIssueStatus(select);
       return;
     }
-    setFilterType({ key, name: value, isMainPage: false });
-    setFilterSelect(select);
-    setIsFilterFullSetting(true);
+
+    const myInfo: UserType = {
+      id: 11,
+      userName: loginData?.userName as string,
+      assigned: false,
+      image: loginData?.avatarUrl as string,
+    };
+    if (key === 'author') setAuthorFilterSelect(myInfo);
+    if (key === 'assignee') setAssigneeFilterSelect([myInfo]);
   };
 
   const filterList = FILTER_LIST.map((list, idx) => (
     <ModalItemBlock key={'filter' + idx} onClick={() => handleFilterClick(list)}>
       <div>{list.value}</div>
-      <RadioBtn />
     </ModalItemBlock>
   ));
 
@@ -58,7 +60,7 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
 
 const IssueFilterModalBlock = styled.div`
   position: absolute;
-  top: 190px;
+  top: 15%;
   z-index: 9999;
   background-color: ${({ theme }) => theme.color.white};
   width: 240px;

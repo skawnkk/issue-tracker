@@ -17,8 +17,7 @@ interface filterObjType {
   key: string;
   name: string;
 }
-
-export default function IssueDetailOption({ id }: Props): ReactElement {
+function IssueDetailOption({ id }: Props): ReactElement {
   const setFilterType = useSetRecoilState(issueFilterTypeState);
   //선택한 애들?
   const selectTab = useRecoilValue(selectedTabState);
@@ -45,32 +44,15 @@ export default function IssueDetailOption({ id }: Props): ReactElement {
     modal: modalRef,
   });
 
-  /*
-  props로 issue생성 페이지 | issue Detail 페이지 인지 구별 
-  (id?:number)로구별
-  
-  구별해서 useGetRecoilValue(fetch-get-data);
-  useEffect{
-    assigned & checked 한거 상태에 등록 (atom & 현재 상태 )
-  ,[]}
-
-  useEffect{
-    !open {
-      atom상태값을 => useState상태에 setting
-    }
-  ,[open]}
-
-  이 컴포넌트 렌더링은 useState상태만 기준으로 렌더링
-  fetch에 보낼 데이터는 atom에 있음
-  */
-
   useEffect(() => {
     setSelectTabToRender(selectTab);
   }, [selectTab]);
 
-  const handleClick = ({ key, name }: filterObjType) => {
-    setFilterType({ key, name, isMainPage: false });
-  };
+  useEffect(() => {
+    if (open) return;
+  }, [open]);
+
+  const handleClick = ({ key, name }: filterObjType) => setFilterType({ key, name });
 
   const checkedList: { [key: string]: ReactElement | Array<ReactElement> | null } = {
     assignee: selectTabToRender.assignee?.map((user) => (
@@ -102,12 +84,22 @@ export default function IssueDetailOption({ id }: Props): ReactElement {
   });
 
   return (
-    <>
+    <IssueDetailOptionWrapper>
       <IssueDetailOptionBlock>{tabOptionList}</IssueDetailOptionBlock>
-      {open && <TabModal modalRef={modalRef} />}
-    </>
+      {open && <TabModal modalRef={modalRef} className='create-option__modal' />}
+    </IssueDetailOptionWrapper>
   );
 }
+
+export default React.memo(IssueDetailOption);
+
+const IssueDetailOptionWrapper = styled.div`
+  position: relative;
+  .create-option__modal {
+    top: 0;
+    left: -250px;
+  }
+`;
 
 const IssueDetailOptionBlock = styled.div`
   border-radius: 16px;

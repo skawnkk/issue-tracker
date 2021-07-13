@@ -5,9 +5,14 @@ import { LabelColorType } from 'page/mainPage/issueTable/issueType';
 interface LabelBadgeProps {
   color: LabelColorType;
   desc?: string;
+  className?: string;
 }
-function LabelBadge({ color, desc }: LabelBadgeProps) {
-  return <LabelBadgeBlock labelColor={color}>{desc}</LabelBadgeBlock>;
+function LabelBadge({ color, desc, className }: LabelBadgeProps) {
+  return (
+    <LabelBadgeBlock labelColor={color} className={className}>
+      {desc}
+    </LabelBadgeBlock>
+  );
 }
 
 interface StyledProps {
@@ -30,4 +35,4 @@ const LabelBadgeBlock = styled.div<StyledProps>`
   background-color: ${({ labelColor }) => labelColor.backgroundColorCode};
 `;
 
-export default LabelBadge;
+export default React.memo(LabelBadge);

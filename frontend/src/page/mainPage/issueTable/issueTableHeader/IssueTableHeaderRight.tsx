@@ -1,10 +1,9 @@
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import styled from 'styled-components';
-import List from 'components/atom/List';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import useToggle from 'hooks/useToggle';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { issueFilterTypeState, getTabInfoState } from 'store/issueInfoStore';
+import { useSetRecoilState } from 'recoil';
+import { issueFilterTypeState } from 'store/issueInfoStore';
 import TabModal from 'components/common/tabModal/TabModal';
 
 interface Props {}
@@ -14,7 +13,6 @@ interface filterObjType {
 }
 export default function IssueListHeaderRight({}: Props): ReactElement {
   const setFilterType = useSetRecoilState(issueFilterTypeState);
-
   const assigneeToggle = useRef<HTMLDivElement>(null);
   const labelToggle = useRef<HTMLDivElement>(null);
   const milestoneToggle = useRef<HTMLDivElement>(null);
@@ -31,9 +29,7 @@ export default function IssueListHeaderRight({}: Props): ReactElement {
     modal: modalRef,
   });
 
-  const handleClick = ({ key, name }: filterObjType): void => {
-    setFilterType({ key, name, isMainPage: true });
-  };
+  const handleClick = ({ key, name }: filterObjType): void => setFilterType({ key, name });
 
   const filterStandardList = filterStandards.map(({ key, name, ref }, idx) => (
     <div ref={ref} key={idx} onClick={() => handleClick({ key, name })}>

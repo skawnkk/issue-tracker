@@ -10,10 +10,11 @@ const Theme = {
     bgGrey: '#F7F7FC',
     lineGrey: '#e2e5e9',
     skyblue: '#007AFF',
+    blueGrey: '#bbbdda',
     blue: '#007AFF',
     transparent: '#00ffff00',
     primary: '#3f51b5',
-    red: '#FF3B30'
+    red: '#FF3B30',
   },
   size: {
     sm: 12,

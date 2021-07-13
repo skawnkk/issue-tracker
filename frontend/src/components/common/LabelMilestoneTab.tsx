@@ -1,47 +1,77 @@
-import React, { ReactElement } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { labelMilestoneClickedState } from 'store/labelMilestoneTabStore';
+import { getIssuesInfoState, IssuesInfoStateType } from 'store/issueInfoStore';
+import { controlLoginState } from 'store/loginStore';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
-import { getIssuesInfoState } from 'store/issueInfoStore';
-import { Link } from 'react-router-dom';
-import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
-
+import { useHistory } from 'react-router-dom';
+import ErrorPage from 'page/errorPage/ErrorPage';
+import MyPortal from 'Portal';
+import { fetchLogOut } from 'util/api/fetchLogin';
 interface Props {
-  lableState?: boolean;
+  labelState?: boolean;
   milestoneState?: boolean;
 }
-export default function LabelMilestoneTab(): ReactElement {
+function LabelMilestoneTab() {
+  const history = useHistory();
+  const [isError, setError] = useState(false);
+  const resetLoginState = useResetRecoilState(controlLoginState);
+
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
+  const issuesInfoData = useRecoilValue(getIssuesInfoState);
 
-  const IssuesInfoData = useRecoilValue(getIssuesInfoState);
+  const logout = async () => {
+    const logoutStatus = await fetchLogOut();
+    if (logoutStatus) {
+      localStorage.clear();
+      resetLoginState();
+      history.push('/');
+    }
+  };
 
-  return (
+  if (typeof issuesInfoData === 'number') {
+    if (issuesInfoData === 400) logout();
+    else setError(true);
+  }
+  let countInfo = issuesInfoData as IssuesInfoStateType;
+  let labelCount = countInfo.count.label;
+  let milestoneCount = countInfo.count.milestone;
+  return isError ? (
+    <MyPortal>
+      <ErrorPage />
+    </MyPortal>
+  ) : (
     <LabelMilestoneTabBlock>
       <Link to='/label'>
-        <LableBlock lableState={labelMilestoneClick.label}>
+        <LabelBlock labelState={labelMilestoneClick.label}>
           <LoyaltyIcon fontSize='small' />
-          &nbsp;레이블 ({IssuesInfoData?.count?.label})
-        </LableBlock>
+          &nbsp;레이블 ({labelCount})
+        </LabelBlock>
       </Link>
       <Link to='/milestone'>
         <MilestoneBlock milestoneState={labelMilestoneClick.milestone}>
           <MilestoneIcon sizeType={14} />
-          마일스톤 ({IssuesInfoData?.count?.milestone})
+          마일스톤 ({milestoneCount})
         </MilestoneBlock>
       </Link>
     </LabelMilestoneTabBlock>
   );
 }
+
+export default React.memo(LabelMilestoneTab);
+
 const MilestoneBlock = styled.div<Props>`
   border-radius: 0 11px 11px 0;
   background-color: ${({ milestoneState, theme }) =>
     milestoneState ? theme.color.bgGrey : theme.color.white};
 `;
-const LableBlock = styled.div<Props>`
+const LabelBlock = styled.div<Props>`
   border-radius: 11px 0 0 11px;
-  background-color: ${({ lableState, theme }) =>
-    lableState ? theme.color.bgGrey : theme.color.white};
+  background-color: ${({ labelState, theme }) =>
+    labelState ? theme.color.bgGrey : theme.color.white};
 `;
 const LabelMilestoneTabBlock = styled.div`
   display: flex;

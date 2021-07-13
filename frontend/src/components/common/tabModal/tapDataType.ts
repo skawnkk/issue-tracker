@@ -24,6 +24,7 @@ export interface MilestoneType {
   openedIssueCount: number;
   closedIssueCount: number;
   checked?: boolean;
+  open?: boolean;
 }
 
 export interface CommentType {
@@ -33,4 +34,13 @@ export interface CommentType {
   createdDateTime: string;
   author: boolean;
   owner: boolean;
+  avatarUrl: string;
+}
+
+export interface LoginUserType {
+  avatarUrl: string;
+  email: string;
+  name: string;
+  token: string | null;
+  userName: string;
 }

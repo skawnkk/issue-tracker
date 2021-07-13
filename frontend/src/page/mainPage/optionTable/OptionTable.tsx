@@ -1,18 +1,15 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
-import LabelMilestoneTab from 'components/common/LabelMilestoneTab';
-import IssueFilter from './issueFilter/IssueFilter';
-import PrimaryButton from 'components/atom/PrimaryButton';
 import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { resetSelectedTab } from 'store/issueInfoStore';
+import LabelMilestoneTab from 'components/common/LabelMilestoneTab';
+import IssueFilter from './issueFilter/IssueFilter';
+import PrimaryButton from 'components/atom/PrimaryButton';
 
 export default function OptionTable(): ReactElement {
   const resetSelectTab = useSetRecoilState(resetSelectedTab);
-
-  const handleCreateClick = () => {
-    resetSelectTab(null);
-  };
+  const handleCreateClick = () => resetSelectTab(null);
 
   return (
     <OptionTableBlock>
