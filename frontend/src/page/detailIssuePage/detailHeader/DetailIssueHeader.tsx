@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { DetailIssueType } from 'page/detailIssuePage/DetailIssuePage';
 import { timeChecker } from '../../../util/timeUtil';
 import DetailIssueStatus from './DetailIssueStatus';
 import HeaderViewMode from 'page/detailIssuePage/detailHeader/HeaderViewMode';
 import HeaderEditMode from 'page/detailIssuePage/detailHeader/HeaderEditMode';
-import { titleEditMode, detailTitle } from 'store/detailStore';
+import { titleEditMode } from 'store/detailStore';
 interface Props {
   issueData: DetailIssueType;
 }

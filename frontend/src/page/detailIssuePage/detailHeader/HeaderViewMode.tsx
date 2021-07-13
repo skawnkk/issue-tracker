@@ -1,8 +1,6 @@
-import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { titleEditMode, detailIssueTrigger } from 'store/detailStore';
-import { issueTypeState } from 'store/issueInfoStore';
 import Title from 'components/atom/Title';
 import PrimaryOutlinedButton from 'components/atom/PrimaryOutlinedButton';
 import { DetailHeaderProps } from 'page/detailIssuePage/detailType';
@@ -10,18 +8,14 @@ import { fetchIssueClose, fetchIssueOpen } from 'util/api/fetchCreateIssue';
 
 export default function HeaderViewMode({ issueNumber, status, title }: DetailHeaderProps) {
   const setTitleEditMode = useSetRecoilState(titleEditMode);
-  const setIssueOpenClose = useSetRecoilState(detailIssueTrigger); //이슈를 여닫으면서 상세페이지 데이터를 새로 요청함.
-  const [issueStatus, setIssueStatus] = useRecoilState(issueTypeState);
+  const setIssueOpenClose = useSetRecoilState(detailIssueTrigger); //이슈를 여닫으면서 상세페이지 데이터를 새로 요청함->이슈상태를 바꿔줄 필요x.
   const issueStateValue = status ? '이슈닫기' : '이슈열기';
   const handleEditClick = () => setTitleEditMode(true);
   const handleOpenClose = async () => {
     const response = status
       ? await fetchIssueClose(issueNumber)
       : await fetchIssueOpen(issueNumber);
-    if (response === 200) {
-      setIssueOpenClose((trigger) => trigger + 1);
-      // setIssueStatus(status ? 'close' : 'open');
-    }
+    if (response === 200) setIssueOpenClose((trigger) => trigger + 1);
   };
   return (
     <HeaderViewBlock>

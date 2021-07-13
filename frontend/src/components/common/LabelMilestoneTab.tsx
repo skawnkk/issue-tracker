@@ -1,41 +1,60 @@
-import React, { ReactElement } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { labelMilestoneClickedState } from 'store/labelMilestoneStore';
-import { getIssuesInfoState } from 'store/issueInfoStore';
+import { labelMilestoneClickedState } from 'store/labelMilestoneTabStore';
+import { getIssuesInfoState, IssuesInfoStateType } from 'store/issueInfoStore';
 import { controlLoginState } from 'store/loginStore';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
-
+import { useHistory } from 'react-router-dom';
+import ErrorPage from 'page/errorPage/ErrorPage';
+import MyPortal from 'Portal';
+import { fetchLogOut } from 'util/api/fetchLogin';
 interface Props {
   labelState?: boolean;
   milestoneState?: boolean;
 }
-function LabelMilestoneTab(): ReactElement {
+function LabelMilestoneTab() {
   const history = useHistory();
+  const [isError, setError] = useState(false);
   const resetLoginState = useResetRecoilState(controlLoginState);
+
   const labelMilestoneClick = useRecoilValue(labelMilestoneClickedState);
   const issuesInfoData = useRecoilValue(getIssuesInfoState);
 
-  if (issuesInfoData === null) {
-    localStorage.clear();
-    resetLoginState();
-    history.push('/');
-  }
+  const logout = async () => {
+    const logoutStatus = await fetchLogOut();
+    if (logoutStatus) {
+      localStorage.clear();
+      resetLoginState();
+      history.push('/');
+    }
+  };
 
-  return (
+  if (typeof issuesInfoData === 'number') {
+    if (issuesInfoData === 400) logout();
+    else setError(true);
+  }
+  let countInfo = issuesInfoData as IssuesInfoStateType;
+  let labelCount = countInfo.count.label;
+  let milestoneCount = countInfo.count.milestone;
+  return isError ? (
+    <MyPortal>
+      <ErrorPage />
+    </MyPortal>
+  ) : (
     <LabelMilestoneTabBlock>
       <Link to='/label'>
         <LabelBlock labelState={labelMilestoneClick.label}>
           <LoyaltyIcon fontSize='small' />
-          &nbsp;레이블 ({issuesInfoData?.count?.label})
+          &nbsp;레이블 ({labelCount})
         </LabelBlock>
       </Link>
       <Link to='/milestone'>
         <MilestoneBlock milestoneState={labelMilestoneClick.milestone}>
           <MilestoneIcon sizeType={14} />
-          마일스톤 ({issuesInfoData?.count?.milestone})
+          마일스톤 ({milestoneCount})
         </MilestoneBlock>
       </Link>
     </LabelMilestoneTabBlock>

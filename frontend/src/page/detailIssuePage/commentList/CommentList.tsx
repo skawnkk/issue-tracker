@@ -1,13 +1,12 @@
-import React, { useRef } from 'react';
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { detailIssueTrigger } from 'store/detailStore';
 import styled from 'styled-components';
 import { CommentType } from 'components/common/tabModal/tapDataType';
 import Comment from 'page/detailIssuePage/commentList/Comment';
 import CommentInput from './CommentInput';
 import PrimaryButton from 'components/atom/PrimaryButton';
 import { editComments } from 'util/api/fetchIssueDetail';
-import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { detailIssueTrigger } from 'store/detailStore';
 
 interface Props {
   issueId: number;

@@ -16,6 +16,7 @@ export default interface newAPItype {
     CREATE: string;
     EDIT: (milestoneID: number) => string;
     DELETE: (milestoneID: number) => string;
+    OPEN_CLOSE: (status: string) => string;
   };
   LABEL: {
     EDIT: (id: number) => string;

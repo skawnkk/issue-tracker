@@ -1,7 +1,6 @@
 import React, { ReactElement, RefObject } from 'react';
 import styled from 'styled-components';
 import { UserType } from 'components/common/tabModal/tapDataType';
-import RadioBtn from 'components/atom/RadioBtn';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { selectedUserState, issueTypeState, selectedAuthorState } from 'store/issueInfoStore';
 import { controlLoginState } from 'store/loginStore';
@@ -48,7 +47,6 @@ export default function IssueFilterModal({ modalRef }: ModalProps): ReactElement
   const filterList = FILTER_LIST.map((list, idx) => (
     <ModalItemBlock key={'filter' + idx} onClick={() => handleFilterClick(list)}>
       <div>{list.value}</div>
-      <RadioBtn />
     </ModalItemBlock>
   ));
 

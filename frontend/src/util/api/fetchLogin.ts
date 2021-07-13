@@ -33,8 +33,9 @@ export async function fetchLogOut() {
       headers: authorizedHeaders(token),
     });
     if (response.status === 200) return true;
-    throw Error;
+    else throw Error;
   } catch (err) {
-    throw err;
+    console.log('로그아웃에러', err);
+    return err;
   }
 }
