@@ -1,7 +1,6 @@
 import APItype from 'util/api/apiType';
 
 const basicURL = process.env.REACT_APP_DB_BASIC_URL;
-
 export const authorizedHeaders = (token: string | null) => ({
   Authorization: `Bearer ${token}`,
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { LabelColorType } from 'page/mainPage/issueTable/issueType';
+import { LabelColorType } from 'components/mainPage/issueTable/issueType';
 
 interface LabelBadgeProps {
   color: LabelColorType;

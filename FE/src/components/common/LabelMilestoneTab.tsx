@@ -8,7 +8,7 @@ import { controlLoginState } from 'store/loginStore';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import MilestoneIcon from 'components/atom/MilestoneIcon';
 import { useHistory } from 'react-router-dom';
-import ErrorPage from 'page/errorPage/ErrorPage';
+import ErrorPage from 'page/ErrorPage';
 import MyPortal from 'Portal';
 import { fetchLogOut } from 'util/api/fetchLogin';
 interface Props {
@@ -65,13 +65,11 @@ export default React.memo(LabelMilestoneTab);
 
 const MilestoneBlock = styled.div<Props>`
   border-radius: 0 11px 11px 0;
-  background-color: ${({ milestoneState, theme }) =>
-    milestoneState ? theme.color.bgGrey : theme.color.white};
+  background-color: ${({ milestoneState, theme }) => (milestoneState ? theme.color.bgGrey : theme.color.white)};
 `;
 const LabelBlock = styled.div<Props>`
   border-radius: 11px 0 0 11px;
-  background-color: ${({ labelState, theme }) =>
-    labelState ? theme.color.bgGrey : theme.color.white};
+  background-color: ${({ labelState, theme }) => (labelState ? theme.color.bgGrey : theme.color.white)};
 `;
 const LabelMilestoneTabBlock = styled.div`
   display: flex;
