@@ -26,7 +26,7 @@
 ![](https://images.velog.io/images/skawnkk/post/99847daf-1e84-4ee0-8ec8-cf9684a3503a/0722%EB%A1%9C%EA%B7%B8%EC%9D%B8%EB%A1%9C%EA%B7%B8%EC%95%84%EC%9B%83.gif)
 
 #### 이슈 생성 및 리스트
-![](https://images.velog.io/images/skawnkk/post/dc2e9eae-b327-4fa5-968f-1488d494a99d/0722%EC%9D%B4%EC%8A%88%EC%83%9D%EC%84%B1%EB%B0%8F%EC%9E%91%EC%84%B1.gif)
+![](https://images.velog.io/images/skawnkk/post/78765b26-394e-478b-aa67-b6a905e8a9c9/Issue-Tracker-Chrome-2021-07-24-00-25-42.gif)
 
 #### 라벨 관리
 ![](https://images.velog.io/images/skawnkk/post/59c214b4-2a81-417c-a3bb-856caed8d0e8/0722%EB%9D%BC%EB%B2%A8%ED%8E%B8%EC%A7%91.gif)
