@@ -5,7 +5,7 @@
 - Ray([@torch-ray](https://github.com/torch-ray))
 ### FE
 - Kyle([@hayoung123](https://github.com/hayoung123))
-- Junami([@skawnkk](https://github.com/skawnkk))
+- Junami([@skawnkk](https://github.com/skawnkk)) : ✨[김남주: 이슈트랙커 프로젝트 블로그](https://velog.io/@skawnkk/%EC%9D%B4%EC%8A%88%ED%8A%B8%EB%9E%98%EC%BB%A4)
 ### BE
 - 이노([@eNoLJ](https://github.com/eNoLJ))
 - Jane([@janeljs](https://github.com/janeljs))
