@@ -1,9 +1,9 @@
-import API, { authorizedHeaders } from './api';
+import API, { authorizedHeaders } from "./api";
 
 export async function fetchIssueDetail(id: number) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   try {
-    const response = await fetch(API.ISSUE_DETAIL.GET(id), {
+    const response = await fetch(API.ISSUE_DETAIL.GET.CLICKED(id), {
       headers: authorizedHeaders(token),
     });
     if (response.status >= 400) throw new Error(`${response.status}`);
@@ -26,12 +26,16 @@ export async function editIssueDetailOption(
   patchData: patchAssigneeType | patchLabelType | patchMilestoneType | null
 ) {
   if (!type || !patchData) return;
-  const token = localStorage.getItem('token');
-  const newValue = type === 'milestone' ? { [type]: patchData } : { [`${type}s`]: patchData };
+  const token = localStorage.getItem("token");
+  const newValue =
+    type === "milestone" ? { [type]: patchData } : { [`${type}s`]: patchData };
   try {
-    const response = await fetch(API.ISSUE_DETAIL.EDIT.OPTION(issueId, type), {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+    const response = await fetch(API.ISSUE_DETAIL.PATCH.FILTER(issueId, type), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...authorizedHeaders(token),
+      },
       body: JSON.stringify(newValue),
     });
     if (response.status === 200) return true;
@@ -43,9 +47,9 @@ export async function editIssueDetailOption(
 
 export async function getFileURL(formData: any) {
   try {
-    const token = localStorage.getItem('token');
-    const postFileURL = await fetch(API.ISSUE_DETAIL.EDIT.FILE, {
-      method: 'POST',
+    const token = localStorage.getItem("token");
+    const postFileURL = await fetch(API.ISSUE_DETAIL.POST.FILE, {
+      method: "POST",
       headers: authorizedHeaders(token),
       body: formData,
     });
@@ -56,13 +60,20 @@ export async function getFileURL(formData: any) {
   }
 }
 
-export async function editComments(issueId: number, comment: string, commentId?: number) {
-  const token = localStorage.getItem('token');
+export async function editComments(
+  issueId: number,
+  comment: string,
+  commentId?: number
+) {
+  const token = localStorage.getItem("token");
   const newComment = commentId ? { id: commentId, comment } : { comment };
   try {
-    const response = await fetch(API.ISSUE_DETAIL.EDIT.COMMENTS(issueId), {
-      method: commentId ? 'PATCH' : 'POST',
-      headers: { 'Content-Type': 'application/json', ...authorizedHeaders(token) },
+    const response = await fetch(API.ISSUE_DETAIL.POST.COMMENTS(issueId), {
+      method: commentId ? "PATCH" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authorizedHeaders(token),
+      },
       body: JSON.stringify(newComment),
     });
     if (response.status === 200) return true;

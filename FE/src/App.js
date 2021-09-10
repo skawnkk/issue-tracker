@@ -2,18 +2,18 @@ import { Suspense, lazy, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Header from './components/header/Header';
-import LoginPage from 'page/loginPage/LoginPage';
+import LoginPage from 'page/LoginPage';
 import { useRecoilState } from 'recoil';
 import { controlLoginState } from 'store/loginStore';
 import { getUserInfoUsingJWT } from 'util/api/fetchLogin';
 import LoadingProgress from 'components/atom/LoadingProgress';
-import ErrorPage from 'page/errorPage/ErrorPage';
+import ErrorPage from 'page/ErrorPage';
 function App() {
-  const MainPage = lazy(() => import('./page/mainPage/MainPage'));
-  const CreateIssuePage = lazy(() => import('./page/createIssuePage/CreateIssuePage'));
-  const DetailIssuePage = lazy(() => import('./page/detailIssuePage/DetailIssuePage'));
-  const LabelPage = lazy(() => import('./page/labelPage/LabelPage'));
-  const MilestonePage = lazy(() => import('./page/milestonePage/MilestonePage'));
+  const MainPage = lazy(() => import('./page/MainPage'));
+  const CreateIssuePage = lazy(() => import('./page/CreateIssuePage'));
+  const DetailIssuePage = lazy(() => import('./page/DetailIssuePage'));
+  const LabelPage = lazy(() => import('./page/LabelPage'));
+  const MilestonePage = lazy(() => import('./page/MilestonePage'));
   const [{ isLogin }, setLoginData] = useRecoilState(controlLoginState);
 
   useEffect(() => {
